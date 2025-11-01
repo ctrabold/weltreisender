@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://ctrabold.github.io/weltreisender/sitemap.xml
