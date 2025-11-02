@@ -1,11 +1,9 @@
-+++
-title = "Und wie kommt man auf so eine Idee?"
-date = "2009-02-01T16:56:43+02:00"
-tags = ["Orga"]
-categories = ["Orga", "Mindset"]
-menu = ""
-banner = ""
-+++
+---
+title: Und wie kommt man auf so eine Idee?
+date: 2009-02-01T16:56:43+02:00
+tags: ["Orga"]
+categories: ["Orga", "Mindset"]
+---
 ## Und wie kommt man auf so eine Idee?
 
 Die Idee für meine Radreise entstand früh morgens gegen 5 Uhr nach einem illustren Abend in meiner Heimatstadt Dieburg.
