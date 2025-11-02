@@ -1,11 +1,9 @@
-+++
-title = "Risiko-Management und Fragen zur Reiseplanung"
-date = "2009-02-02T16:56:43+02:00"
-tags = ["Orga"]
-categories = ["Orga", "Mindset"]
-menu = ""
-banner = ""
-+++
+---
+title: Risiko-Management und Fragen zur Reiseplanung
+date: 2009-02-02T16:56:43+02:00
+tags: ["Orga"]
+categories: ["Orga", "Mindset"]
+---
 ## Risiko-Management und Fragen zur Reiseplanung
 
 Vor der Abfahrt spielen sich viele Szenarien im Kopf ab. Freunde, Bekannte und die eigene Familie hämmert mit Fragen auf mich ein.
