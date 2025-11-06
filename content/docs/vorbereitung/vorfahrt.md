@@ -103,9 +103,7 @@ Herausgearbeitet aus vielen vielen anderen Checklisten, von denen, die so smart 
 
 Die Checkliste von Alf (Daubner) hat mir enorm geholfen und ich empfehle jedem, der eine längere Reise plant, eine Checkliste anzulegen und von anderen zu lernen!
 
-![[alfs_reisecheckliste.doc]]
-
-![[alfs_reisecheckliste.pdf]]
+- [Alfs Reisecheckliste](http://www.jordan-peter.de/equip/alfs_reisecheckliste.pdf)
 
 Zusätzlich zu der Checkliste habe ich detaillierte Merkblätter mit Checklisten zu jedem Land gemacht: Landkarte, Position auf der Weltkarte und die wichtigsten Fakten zu Politik und Einreise basierend auf den Empfehlungen, Hinweisen und Visa-Bestimmungen vom Auswärtigem Amt.
 
