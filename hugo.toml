@@ -18,6 +18,8 @@ enableGitInfo = true
   BookTheme = 'auto'
   BookComments = false
   BookSearch = false
+  #BookLastChangeLink = 'https://github.com/ctrabold/weltreisender/commit/{{ .GitInfo.Hash }}'
+  #BookEditLink = 'https://github.com/ctrabold/weltreisender/edit/main/{{ .Path }}'
 
 [params.hugomods]
   [params.hugomods.images]
