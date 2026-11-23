@@ -18,3 +18,11 @@ hugo.linux
 
 # End of https://www.toptal.com/developers/gitignore/api/hugo
 .gitmessage
+tmp/
+__source/
+scripts/image-copies.tsv
+assets/2009-2010/
+
+# temporary to avoid accidential commits
+*.jpg
+*.jpeg
