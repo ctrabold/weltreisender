@@ -1,0 +1,73 @@
+{{/*
+  Per-day trip numbers for every diary post with a location, keyed by the file path of the
+  German page (the location source), so German and English pages share one entry:
+
+    day         day of the trip (departure = first post with a bike leg = day 1, 0 before)
+    totalDays   length of the trip in days (departure to the last post with a location)
+    gapDays     days since the previous post with a location (the leg covers all of them)
+    mode        travel mode of the leg ending at this post ("" if none)
+    km          length of that leg in km
+    ascent, descent, maxEle   only for bike legs with an elevation profile
+    cumKm, cumAscent          ridden so far (bike legs with elevation profile), incl. this day
+
+  Call cached: partialCached "docs/trip-stats" site site.Language.Lang
+*/}}
+{{- $entries := slice -}}
+{{- $departure := "" -}}
+{{- range sort (where site.RegularPages "Section" "docs") "Date" -}}
+  {{- $src := partial "docs/location-source" . -}}
+  {{- if and $src.Params.location $src.File -}}
+    {{- $leg := partial "docs/route-leg" $src -}}
+    {{- $date := .Date.Format "2006-01-02" -}}
+    {{- if and $leg (eq $leg.mode "bike") (not $departure) -}}{{- $departure = $date -}}{{- end -}}
+    {{- $entries = $entries | append (dict "key" $src.File.Path "date" $date "leg" $leg) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* trip length: day of the last entry */ -}}
+{{- $totalDays := 0 -}}
+{{- if and $departure $entries -}}
+  {{- $lastDate := (index $entries (sub (len $entries) 1)).date -}}
+  {{- $totalDays = add 1 (div (sub (time.AsTime $lastDate).Unix (time.AsTime $departure).Unix) 86400) -}}
+{{- end -}}
+
+{{- $stats := dict -}}
+{{- $cumKm := 0.0 -}}
+{{- $cumAscent := 0 -}}
+{{- $prevDate := "" -}}
+{{- range $entries -}}
+  {{- $leg := .leg -}}
+  {{- $day := 0 -}}
+  {{- if and $departure (ge .date $departure) -}}
+    {{- $day = add 1 (div (sub (time.AsTime .date).Unix (time.AsTime $departure).Unix) 86400) -}}
+  {{- end -}}
+  {{- $gap := 0 -}}
+  {{- if $prevDate -}}
+    {{- $gap = div (sub (time.AsTime .date).Unix (time.AsTime $prevDate).Unix) 86400 -}}
+  {{- end -}}
+  {{- $prevDate = .date -}}
+  {{- $mode := "" -}}
+  {{- $km := 0.0 -}}
+  {{- $ascent := 0 -}}
+  {{- $descent := 0 -}}
+  {{- $maxEle := 0 -}}
+  {{- with $leg -}}
+    {{- $mode = .mode -}}
+    {{- $km = div (float .distance) 1000.0 -}}
+    {{- with .elevation -}}
+      {{- if eq $leg.mode "bike" -}}
+        {{- $km = float (index (index .points (sub (len .points) 1)) 0) -}}
+        {{- $ascent = .ascent -}}
+        {{- $descent = .descent -}}
+        {{- $maxEle = .max -}}
+        {{- $cumKm = add $cumKm $km -}}
+        {{- $cumAscent = add $cumAscent .ascent -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $stats = merge $stats (dict .key (dict
+    "day" $day "totalDays" $totalDays "gapDays" $gap "mode" $mode "km" $km "ascent" $ascent "descent" $descent "maxEle" $maxEle
+    "cumKm" $cumKm "cumAscent" $cumAscent
+  )) -}}
+{{- end -}}
+{{- return $stats -}}

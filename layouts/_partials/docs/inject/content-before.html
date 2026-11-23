@@ -1,0 +1,24 @@
+{{/* tag pages: map of the tagged posts above the post list (first page only) */}}
+{{ if and (eq .Kind "term") (eq .Paginator.PageNumber 1) }}
+  {{ partial "docs/trip-map" (dict
+    "pages" .Pages
+    "id" (printf "term-map-%s" (md5 .RelPermalink))
+    "height" "50vh"
+  ) }}
+
+  {{/* tags only (categories have no time span): all photos from the time covered by the tag */}}
+  {{ if eq .Data.Plural "tags" }}
+    {{ $page := . }}
+    {{ $groups := partial "docs/tag-photos" .Pages }}
+    {{ with $groups }}
+      {{/* data-pswp: one lightbox across all post grids, so it continues into the next post */}}
+      <div class="markdown book-tag-photos" data-pswp>
+        <h2>{{ i18n "tagPhotos" }}</h2>
+        {{ range . }}
+          <h3><a href="{{ .post.RelPermalink }}">{{ .post.LinkTitle }}</a></h3>
+          {{ partial "docs/gallery-grid" (dict "page" $page "images" .images "grouped" true) }}
+        {{ end }}
+      </div>
+    {{ end }}
+  {{ end }}
+{{ end }}

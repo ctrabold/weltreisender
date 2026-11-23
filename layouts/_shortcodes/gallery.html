@@ -1,0 +1,67 @@
+{{/*
+  Photo gallery from assets/images/<year>/<month>/<day>/ (the 1600 px web copies, see docs/gallery-grid).
+
+    {{< gallery from="2009-11-14" to="2009-11-15" >}}   all photos of these days
+    {{< gallery from="2009-11-14" >}}                   one day
+    {{< gallery tag="Kashgar, Hongkong" >}}             photos of all posts with these tags:
+                                                        their gallery days + inline images
+
+  Rendering (sizes, lightbox) lives in the partial docs/gallery-grid; the originals live
+  outside the site (print source), see scripts/make-web-images.sh.
+*/}}
+{{- $maxDays := 62 -}}
+
+{{- /* collect day ranges and inline image paths */ -}}
+{{- $ranges := slice -}}
+{{- $inline := slice -}}
+{{- with .Get "from" -}}
+  {{- $ranges = $ranges | append (dict "from" . "to" ($.Get "to" | default .)) -}}
+{{- end -}}
+{{- with .Get "tag" -}}
+  {{- range split . "," -}}
+    {{- with site.GetPage (printf "/tags/%s" (urlize (strings.TrimSpace .))) -}}
+      {{- range .Pages -}}
+        {{- range findRESubmatch `\{\{<\s*gallery\s+([^>]*)>\}\}` .RawContent -}}
+          {{- $args := index . 1 -}}
+          {{- with findRESubmatch `from="([^"]+)"` $args 1 -}}
+            {{- $from := index (index . 0) 1 -}}
+            {{- $to := $from -}}
+            {{- with findRESubmatch `to="([^"]+)"` $args 1 -}}{{- $to = index (index . 0) 1 -}}{{- end -}}
+            {{- $ranges = $ranges | append (dict "from" $from "to" $to) -}}
+          {{- end -}}
+        {{- end -}}
+        {{- range findRESubmatch `\]\((/images/[^)\s]+)\)` .RawContent -}}
+          {{- $inline = $inline | append (strings.TrimPrefix "/" (index . 1)) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- else -}}
+      {{- warnf "gallery: tag %q not found (%s)" . $.Page.File.Path -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if and (not $ranges) (not $inline) -}}
+  {{- warnf "gallery: needs from/to or tag (%s)" .Page.File.Path -}}
+{{- end -}}
+
+{{- /* resolve to image resources, de-duplicated by path */ -}}
+{{- $images := dict -}}
+{{- range $ranges -}}
+  {{- $start := time.AsTime .from -}}
+  {{- $end := time.AsTime .to -}}
+  {{- range seq 0 $maxDays -}}
+    {{- $day := $start.AddDate 0 0 . -}}
+    {{- if le $day.Unix $end.Unix -}}
+      {{- range resources.Match (printf "images/%s/*" ($day.Format "2006/01/02")) -}}
+        {{- if eq .ResourceType "image" -}}{{- $images = merge $images (dict .Name .) -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- range $inline -}}
+  {{- /* inline links name the original JPEG; the site only has its web copy */ -}}
+  {{- with resources.Get (printf "%s.webp" (strings.TrimSuffix (path.Ext .) .)) -}}{{- $images = merge $images (dict .Name .) -}}{{- end -}}
+{{- end -}}
+
+{{- $list := slice -}}
+{{- range $images -}}{{- $list = $list | append . -}}{{- end -}}
+{{- partial "docs/gallery-grid" (dict "page" .Page "images" $list) -}}

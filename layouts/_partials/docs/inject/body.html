@@ -1,0 +1,38 @@
+{{- /*
+  PhotoSwipe lightbox for all photo grids (docs/gallery-grid) of the page. Loaded here once per
+  page instead of from the grid partial: a per-page flag in .Store survives `hugo server` rebuilds,
+  so the script went missing after the first edit and thumbnails opened in a new tab.
+  Pages without a grid ([data-pswp]) load nothing.
+*/ -}}
+<script>
+  // Thumbnails are plain links (target="_blank") as a no-JS fallback. PhotoSwipe ignores clicks
+  // until its module has loaded and while a previous lightbox is still closing, so the browser
+  // would open the image in a new tab. Swallow such clicks and retry for a few seconds; only
+  // after that (e.g. CDN blocked) the plain link is followed.
+  document.addEventListener('click', function (e) {
+    var a = e.target instanceof Element ? e.target.closest('.book-gallery a') : null;
+    if (!a) return;
+    if (e.defaultPrevented) { delete a.dataset.pswpTries; return; } // PhotoSwipe handled it
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    var tries = Number(a.dataset.pswpTries || 0);
+    if (tries >= 40) return;
+    a.dataset.pswpTries = tries + 1;
+    e.preventDefault();
+    setTimeout(function () { a.click(); }, 150);
+  });
+</script>
+<script type="module">
+  if (document.querySelector('[data-pswp]')) {
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'https://unpkg.com/photoswipe@5.4.4/dist/photoswipe.css';
+  document.head.append(css);
+  const { default: PhotoSwipeLightbox } = await import('https://unpkg.com/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js');
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '[data-pswp]', // one lightbox per marked container (post grid or whole tag page)
+    children: 'a[data-pswp-width]', // images only, not headings or other links inside
+    pswpModule: () => import('https://unpkg.com/photoswipe@5.4.4/dist/photoswipe.esm.min.js'),
+  });
+  lightbox.init();
+  }
+</script>

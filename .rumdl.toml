@@ -1,0 +1,15 @@
+# @see https://rumdl.dev/getting-started/quickstart/#example-configuration
+[global]
+exclude = ['node_modules', 'vendor', '.git']
+flavor = 'hugo'
+
+[per-file-flavor]
+"**/*.mdx" = 'mdx'
+
+[MD045] # Image missing alt text
+enabled = false
+
+[MD013] # Line length
+enabled = false
+line_length = 120
+code_blocks = false # Don't check code blocks

@@ -1,0 +1,108 @@
+{{/*
+  Height profile of all bike rides of the trip as one static SVG: x = ridden kilometres (legs
+  other than bike, and bike legs without an elevation profile, are left out), y = altitude.
+  Every leg is a clickable column linking to the diary post that ends it, in the current
+  language; the tooltip names day, place, distance, ascent and highest point. Works without
+  JavaScript. Data: data/routes/<year>/<month>/<post>.json (scripts/build_routes.py).
+  Usage: partial "docs/trip-profile" (dict "pages" site.RegularPages)
+*/}}
+{{- $legs := slice -}}
+{{- $total := 0.0 -}}
+{{- $ascent := 0 -}}
+{{- $minEle := 0.0 -}}
+{{- $maxEle := 0.0 -}}
+{{- $maxPage := false -}}
+{{- range sort (where .pages "Section" "docs") "Date" -}}
+  {{- $page := . -}}
+  {{- $src := partial "docs/location-source" . -}}
+  {{- with partial "docs/route-leg" $src -}}
+    {{- $e := .elevation -}}
+    {{- if and (eq .mode "bike") $e -}}
+      {{- $km := float (index (index $e.points (sub (len $e.points) 1)) 0) -}}
+      {{- if gt $km 0.0 -}}
+        {{- $place := $src.Params.location.placeName | default $src.Params.location.name -}}
+        {{- $legs = $legs | append (dict "page" $page "place" $place "e" $e "km" $km "start" $total) -}}
+        {{- $total = add $total $km -}}
+        {{- $ascent = add $ascent $e.ascent -}}
+        {{- $minEle = math.Min $minEle (float $e.min) -}}
+        {{- if gt (float $e.max) $maxEle -}}
+          {{- $maxEle = float $e.max -}}
+          {{- $maxPage = $page -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $legs -}}
+  {{- /* plot area inside the 1000 x 224 viewBox */ -}}
+  {{- $x0 := 44.0 -}}
+  {{- $w := 950.0 -}}
+  {{- $y0 := 10.0 -}}
+  {{- $h := 170.0 -}}
+  {{- $yb := add $y0 $h -}}
+  {{- $ymin := mul (math.Floor (div $minEle 500.0)) 500.0 -}}
+  {{- $ymax := mul (math.Ceil (div $maxEle 1000.0)) 1000.0 -}}
+  {{- $span := sub $ymax $ymin -}}
+<figure class="trip-profile">
+  <svg viewBox="0 0 1000 224" width="100%" role="group" aria-label="{{ i18n "tripProfile.aria" }}">
+    {{- /* altitude grid and labels every 1000 m */ -}}
+    {{- range seq (int (math.Ceil (div $ymin 1000.0))) (int (div $ymax 1000.0)) }}
+      {{- $y := sub $yb (mul (div (sub (mul (float .) 1000.0) $ymin) $span) $h) }}
+    <line x1="{{ $x0 }}" x2="{{ add $x0 $w }}" y1="{{ printf "%.1f" $y }}" y2="{{ printf "%.1f" $y }}" class="grid" />
+    <text x="{{ sub $x0 6 }}" y="{{ printf "%.1f" (add $y 4) }}" text-anchor="end">{{ mul . 1000 }} m</text>
+    {{- end }}
+    {{- /* ridden kilometres every 1000 km */ -}}
+    {{- range seq 0 (int (div $total 1000.0)) }}
+      {{- $x := add $x0 (mul (div (mul (float .) 1000.0) $total) $w) }}
+    <text x="{{ printf "%.1f" $x }}" y="198" text-anchor="middle">{{ mul . 1000 }} km</text>
+    {{- end }}
+    {{- $lastMonth := "" -}}
+    {{- $lastLabel := -100.0 -}}
+    {{- range $legs }}
+      {{- $e := .e -}}
+      {{- $start := .start -}}
+      {{- $km := .km -}}
+      {{- $page := .page -}}
+      {{- $xs := add $x0 (mul (div $start $total) $w) -}}
+      {{- $xe := add $x0 (mul (div (add $start $km) $total) $w) -}}
+      {{- /* thin out the profile: about 1500 points for the whole trip, at least 12 per leg */ -}}
+      {{- $step := int (math.Ceil (div (float (len $e.points)) (math.Max 12.0 (mul (div $km $total) 1500.0)))) -}}
+      {{- $last := sub (len $e.points) 1 -}}
+      {{- $pts := slice -}}
+      {{- range $i, $p := $e.points -}}
+        {{- if or (eq (mod $i $step) 0) (eq $i $last) -}}
+          {{- $x := add $x0 (mul (div (add $start (float (index $p 0))) $total) $w) -}}
+          {{- $y := sub $yb (mul (div (sub (float (index $p 1)) $ymin) $span) $h) -}}
+          {{- $pts = $pts | append (printf "%.1f,%.1f" $x $y) -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $month := $page.Date.Format "2006-01" -}}
+      {{- if ne $month $lastMonth -}}
+        {{- $lastMonth = $month -}}
+        {{- if gt (sub $xs $lastLabel) 42.0 -}}
+          {{- $lastLabel = $xs }}
+    <line x1="{{ printf "%.1f" $xs }}" x2="{{ printf "%.1f" $xs }}" y1="{{ $yb }}" y2="{{ add $yb 4 }}" class="grid" />
+    <text x="{{ printf "%.1f" $xs }}" y="213" text-anchor="middle">{{ time.Format "Jan 06" $page.Date }}</text>
+        {{- end -}}
+      {{- end }}
+    <polygon points="{{ printf "%.1f" $xs }},{{ $yb }} {{ delimit $pts " " }} {{ printf "%.1f" $xe }},{{ $yb }}" class="area" />
+    <polyline points="{{ delimit $pts " " }}" class="line" />
+    <a href="{{ $page.RelPermalink }}">
+      <title>{{ $page.LinkTitle }} · {{ .place }} · {{ printf "%.0f" $km }} km · ↗ {{ $e.ascent }} m · {{ $e.max }} m</title>
+      <rect x="{{ printf "%.1f" $xs }}" y="{{ $y0 }}" width="{{ printf "%.1f" (math.Max 1.5 (sub $xe $xs)) }}" height="{{ $h }}" class="hit" />
+    </a>
+    {{- end }}
+    <line x1="{{ $x0 }}" x2="{{ add $x0 $w }}" y1="{{ $yb }}" y2="{{ $yb }}" class="axis" />
+  </svg>
+  <figcaption>
+    <small>{{ $place := "" }}
+    {{- with $maxPage }}{{ $place = printf `<a href="%s">%s</a>` .RelPermalink (.LinkTitle | htmlEscape) }}{{ end -}}
+    {{ i18n "tripProfile.caption" (dict
+      "km" (lang.FormatNumber 0 $total) "ascent" (lang.FormatNumber 0 $ascent)
+      "everest" (lang.FormatNumber 1 (div (float $ascent) 8849.0))
+      "highest" (lang.FormatNumber 0 $maxEle) "place" $place) | safeHTML }}
+    <br>{{ i18n "tripProfile.hint" }}</small>
+  </figcaption>
+</figure>
+{{- end -}}

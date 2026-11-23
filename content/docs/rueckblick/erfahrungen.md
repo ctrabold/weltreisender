@@ -1,9 +1,12 @@
 ---
-title: Erfahrungen aus dem Reisealltag
 date: 2010-01-01T16:56:43+02:00
-tags: ["Orga", "Mindset"]
-categories: ["Orga", "Mindset"]
+title: Erfahrungen aus dem Reisealltag
+translationKey: erfahrungen
+draft: false
+tags: []
+categories: ["Blog", "Orga", "Mindset"]
 ---
+
 ## Fotos verwalten
 
 ### Vorüberlegung
@@ -38,9 +41,9 @@ Mein Weg
 
 6. Beschreibung und Titel hinzufügen!
 
-    Durch die Verwendung der Alben und der Zuordnung auf der Karte kann ich die Situation - auch später noch - schon viel besser ins Gedächtnis rufen.
+   Durch die Verwendung der Alben und der Zuordnung auf der Karte kann ich die Situation - auch später noch - schon viel besser ins Gedächtnis rufen.
 
-    Ein Titel sowie die Beschreibung kann dann relativ leicht auch unabhängig von den vorherigen Schritten hinzugefügt werden. Tagebuchaufzeichnungen helfen zusätzlich beim Erinnern. Trotz allem ist das Betiteln und Beschreiben des Bildes mit Abstand am aufwendigsten.
+   Ein Titel sowie die Beschreibung kann dann relativ leicht auch unabhängig von den vorherigen Schritten hinzugefügt werden. Tagebuchaufzeichnungen helfen zusätzlich beim Erinnern. Trotz allem ist das Betiteln und Beschreiben des Bildes mit Abstand am aufwendigsten.
 
 7. Bilder veröffentlichen mit Hilfe der Sichtbarkeitseinstellungen von Flickr. Familien-Mitglieder und Freunde sehen (manchmal) mehr Bilder, als die "Welt".
 
@@ -51,20 +54,3 @@ Mein Weg
 Bis heute funktioniert dieser Workflow echt gut. Es kostet sehr sehr viel Zeit, die Bilder zu verwalten (Ich habe ganze Tage damit in InternetCafes verbracht. Vom Hochladen der Bilder mal ganz abgesehen), ABER: Obwohl ich bereits über 6000 Bilder mit Flickr verwalte, habe ich immer noch alles gut im Griff. Vor allem die Tags ermöglichen mir einen erstaunlich schnellen und intuitiven Zugriff auf vergangene Situationen.
 
 Und ich kann die Momente mit euch teilen... und darum geht es doch beim Fotografieren, oder?
-
----
-
----
-
-Date: 2 May 2010 09:26
-Tags: Blog, Orga, Reise, Reiseberichte
-
----
-
-## Internetmonotonie[](#internetmonotonie)
-
-Eines der häufig gehörten Universalwörter auf meiner Reise: Facebook.
-
-Touristen, Asiaten alt und jung zeigen auf dieser Seite ihr Gesicht.
-
-In China weiß jeder, was ein anonymous-Proxy ist, oder was Tunneln bedeutet. Zuerst besorgt man sich einen Weg, die staatliche Blockade der Website zu umgehen (Stand: 01.2010).

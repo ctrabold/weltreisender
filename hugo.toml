@@ -18,16 +18,55 @@ ignoreLogs = ['warning-duplicate-target-paths']
 [[module.imports]]
   path = 'github.com/hugomods/images'
 
+# @see https://book.alxs.dev/docs/content/multilingual/
+[languages]
+[languages.de]
+label = 'Deutsch'
+contentDir = 'content'
+weight = 1
+[languages.en]
+label = 'English'
+contentDir = 'content.en'
+weight = 2
+locale = 'en-gb'
+title = 'Christian Trabold - Travel Blog - World Traveller'
+
+[[languages.en.menus.after]]
+  name = 'Map'
+  pageRef = '/map'
+  weight = 5
+
+[[languages.en.menus.after]]
+  name = 'Data'
+  pageRef = '/data'
+  weight = 7
+
+[[languages.en.menus.after]]
+  name = 'Tags'
+  pageRef = '/posts'
+  weight = 10
+
+[[languages.en.menus.after]]
+  name = 'Website'
+  url = 'https://christian-trabold.de/'
+  weight = 40
+
+[[languages.en.menus.after]]
+  name = 'Pictures'
+  pageRef = '/pictures'
+  weight = 50
+
 [params]
   BookTheme = 'auto'
   BookComments = false
   BookSearch = false
-  #BookLastChangeLink = 'https://github.com/ctrabold/weltreisender/commit/{{ .GitInfo.Hash }}'
-  #BookEditLink = 'https://github.com/ctrabold/weltreisender/edit/main/{{ .Path }}'
+  BookTranslatedOnly = true
+  # BookLastChangeLink = 'https://github.com/ctrabold/weltreisender/commit/{{ .GitInfo.Hash }}'
+  # BookEditLink = 'https://github.com/ctrabold/weltreisender/edit/main/{{ .Path }}'
 
 [params.hugomods]
-  [params.hugomods.images]
-    modern_format = 'webp'
+    [params.hugomods.images]
+      modern_format = 'webp'
 
 [markup]
 [markup.goldmark.renderer]
@@ -36,6 +75,16 @@ ignoreLogs = ['warning-duplicate-target-paths']
   startLevel = 3
 
 [menu]
+[[menu.after]]
+  name = 'Karte'
+  pageRef = '/karte'
+  weight = 5
+
+[[menu.after]]
+  name = 'Daten'
+  pageRef = '/daten'
+  weight = 7
+
 [[menu.after]]
   name = 'Schlagworte'
   pageRef = '/posts'
@@ -48,5 +97,5 @@ ignoreLogs = ['warning-duplicate-target-paths']
 
 [[menu.after]]
   name = 'Bilder'
-  url = 'https://www.flickr.com/photos/christian-trabold/'
+  pageRef = '/bilder'
   weight = 50

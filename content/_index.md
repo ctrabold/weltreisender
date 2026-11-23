@@ -1,26 +1,32 @@
 ---
-title: Willkommen
 date: 2017-06-07T15:36:00+05:30
+title: Willkommen
+draft: false
+bookToc: false
 noprevnext: false
 nodateline: true
 disable_comments: true
-bookToc: false
 ---
 
 ## I travelled…
 
 > [!NOTE]
-> > **🎶 I travelled through light**
-> >
-> > Essil on erifet al Essil on Essil on eriftel al Essil on
-> >
-> > I travelled through light I travelled through light;
-> >
-> > I am not afraid In this lake of souls In this lake of souls,
-> >
-> > I lose all fear
-> >
-> > – [Untitled (Popplagið) 8 Sigur Ros](https://soundcloud.com/sigur-ros/sigur-ros-untitled8)
+>
+>> **🎶 I travelled through light**
+>>
+>> Essil on erifet al Essil on Essil on eriftel al Essil on
+>>
+>> I travelled through light I travelled through light;
+>>
+>> I am not afraid In this lake of souls In this lake of souls,
+>>
+>> I lose all fear
+>>
+>> – [Untitled (Popplagið) 8 Sigur Ros](https://soundcloud.com/sigur-ros/sigur-ros-untitled8)
+
+## Reiseprofil
+
+{{< trip-profile >}}
 
 ## Warum dieses Buch
 
@@ -51,7 +57,7 @@ Denn sie war wirklich lustig und viel kurzweiliger als ich vorher angenommen hat
 > Ich habe diese Texte vor über 15 Jahren geschrieben.
 > Die Texte sind sehr persönlich und bewusst ungekürzt geblieben.
 > So wie ich sie damals aufgeschrieben habe.
-> Viele meiner Ansichten und Meinungen haben sich teils start geändert.
+> Viele meiner Ansichten und Meinungen haben sich teils stark geändert.
 
 ## Wie dieses Buch aufgebaut ist
 
@@ -69,9 +75,9 @@ Denn sie war wirklich lustig und viel kurzweiliger als ich vorher angenommen hat
 
    Die Ankunft und die Reise dort hin
 
-3. ## [Rückblick]({{< ref "docs/rueckblick/erfahrungen" >}})
+4. ## [Rückblick]({{< ref "docs/rueckblick/erfahrungen" >}})
 
    Was ist passiert. Wie geht es weiter…
-{{% /steps %}}
+   {{% /steps %}}
 
 [Los geht's 🚴‍♂️💨!!]({{< ref "docs/vorbereitung/vorfahrt" >}})

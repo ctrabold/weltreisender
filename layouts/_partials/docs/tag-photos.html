@@ -1,0 +1,43 @@
+{{/*
+  All photos taken during the time a tag covers: each tagged diary post covers the days after
+  the previous diary post (of any tag) up to and including its own date; the first diary post
+  covers only its own day. Photos are grouped by the post whose stretch they fall into, so
+  places visited twice (e.g. Germany at start and end) don't swallow the time in between.
+  Videos and other non-image files are skipped.
+  Returns a slice of dict "post" (page) "images" (slice of resources), in post order.
+  Usage: partial "docs/tag-photos" .Pages
+*/}}
+{{- $isDiary := `^docs/20\d\d/\d\d/` -}}
+{{- $diary := slice -}}
+{{- range sort (where site.RegularPages "Section" "docs") "Date" -}}
+  {{- $p := . -}}
+  {{- with .File }}{{ if findRE $isDiary .Path 1 }}{{ $diary = $diary | append $p }}{{ end }}{{ end -}}
+{{- end -}}
+
+{{- $groups := slice -}}
+{{- $covered := dict -}}
+{{- range sort (where . "Section" "docs") "Date" -}}
+  {{- $post := . -}}
+  {{- with .File }}{{ if not (findRE $isDiary .Path 1) }}{{ continue }}{{ end }}{{ end -}}
+  {{- $day := $post.Date.Format "2006-01-02" -}}
+  {{- /* previous diary post: the last one dated before this post's day */ -}}
+  {{- $from := $day -}}
+  {{- range $diary -}}
+    {{- $d := .Date.Format "2006-01-02" -}}
+    {{- if lt $d $day -}}{{- $from = (((time.AsTime $d).AddDate 0 0 1).Format "2006-01-02") -}}{{- end -}}
+  {{- end -}}
+  {{- /* posts of the same day (a, b, ...) cover the same days: the first one gets the photos */ -}}
+  {{- $key := printf "%s|%s" $from $day -}}
+  {{- if index $covered $key }}{{ continue }}{{ end -}}
+  {{- $covered = merge $covered (dict $key true) -}}
+  {{- $start := time.AsTime $from -}}
+  {{- $days := add 1 (div (sub (time.AsTime $day).Unix $start.Unix) 86400) -}}
+  {{- $images := slice -}}
+  {{- range seq 0 (sub $days 1) -}}
+    {{- range resources.Match (printf "images/%s/*" (($start.AddDate 0 0 .).Format "2006/01/02")) -}}
+      {{- if reflect.IsImageResourceProcessable . -}}{{- $images = $images | append . -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $images -}}{{- $groups = $groups | append (dict "post" $post "images" .) -}}{{- end -}}
+{{- end -}}
+{{- return $groups -}}

@@ -1,0 +1,15 @@
+{
+  "Czech Republic": { "iso": "CZ", "de": "Tschechien", "en": "Czech Republic" },
+  "China": { "iso": "CN", "de": "China", "en": "China" },
+  "Germany": { "iso": "DE", "de": "Deutschland", "en": "Germany" },
+  "Russia": { "iso": "RU", "de": "Russland", "en": "Russia" },
+  "Kyrgyzstan": { "iso": "KG", "de": "Kirgisistan", "en": "Kyrgyzstan" },
+  "Malaysia": { "iso": "MY", "de": "Malaysia", "en": "Malaysia" },
+  "Ukraine": { "iso": "UA", "de": "Ukraine", "en": "Ukraine" },
+  "Singapore": { "iso": "SG", "de": "Singapur", "en": "Singapore" },
+  "Poland": { "iso": "PL", "de": "Polen", "en": "Poland" },
+  "Laos": { "iso": "LA", "de": "Laos", "en": "Laos" },
+  "Cambodia": { "iso": "KH", "de": "Kambodscha", "en": "Cambodia" },
+  "Thailand": { "iso": "TH", "de": "Thailand", "en": "Thailand" },
+  "Hong Kong": { "iso": "HK", "de": "Hongkong", "en": "Hong Kong" }
+}

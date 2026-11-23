@@ -1,0 +1,390 @@
+/*
+  Project styles, loaded last by the hugo-book theme (assets/styles/index.yaml).
+*/
+
+/* {{< gallery >}}: square thumbnail grid */
+.book-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 4px;
+  margin: 1rem 0;
+}
+
+.book-gallery a {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.book-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* {{< photo-overview >}}: one tile per country */
+.book-photo-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.book-photo-tile {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+.book-photo-tile img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.book-photo-tile-title {
+  font-weight: bold;
+  margin-top: 0.4rem;
+}
+
+.book-photo-tile-meta {
+  font-size: 0.85em;
+  opacity: 0.75;
+}
+
+.trip-profile {
+  margin: 1.5rem 0;
+}
+
+.trip-profile svg {
+  display: block;
+  overflow: visible;
+}
+
+.trip-profile text {
+  font-size: 11px;
+  fill: currentColor;
+  opacity: 0.7;
+}
+
+.trip-profile .grid {
+  stroke: currentColor;
+  stroke-opacity: 0.15;
+}
+
+.trip-profile .axis {
+  stroke: currentColor;
+  stroke-opacity: 0.4;
+}
+
+.trip-profile .area {
+  fill: var(--color-link);
+  fill-opacity: 0.18;
+}
+
+.trip-profile .line {
+  fill: none;
+  stroke: var(--color-link);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.trip-profile .hit {
+  fill: transparent;
+  cursor: pointer;
+}
+
+.trip-profile a:hover .hit,
+.trip-profile a:focus .hit {
+  fill: var(--color-link);
+  fill-opacity: 0.25;
+}
+
+/* metrics page (docs/trip-metrics); shares axes, grid, area and line with .trip-profile */
+.trip-metrics .bar {
+  fill: var(--color-link);
+  fill-opacity: 0.6;
+}
+
+.trip-metrics a:hover .bar,
+.trip-metrics a:focus .bar {
+  fill-opacity: 1;
+}
+
+.trip-metrics .area {
+  fill: currentColor;
+  fill-opacity: 0.1;
+}
+
+.trip-metrics .mood-line {
+  fill: none;
+  stroke: var(--color-link);
+  stroke-width: 1;
+  stroke-opacity: 0.5;
+}
+
+.trip-metrics .mood {
+  fill: var(--color-link);
+}
+
+.trip-metrics text.emoji {
+  font-size: 14px;
+  opacity: 1;
+}
+
+.trip-metrics .zero {
+  stroke: currentColor;
+  stroke-opacity: 0.4;
+}
+
+.trip-metrics .range {
+  stroke: currentColor;
+  stroke-opacity: 0.25;
+  stroke-width: 1.5;
+}
+
+.trip-metrics .cold {
+  fill: #2f7fd8;
+}
+
+.trip-metrics .mild {
+  fill: #9a9a9a;
+}
+
+.trip-metrics .warm {
+  fill: #e4572e;
+}
+
+.trip-metrics a:hover circle,
+.trip-metrics a:focus circle {
+  r: 5px;
+}
+
+.trip-profile figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.9em;
+}
+
+/* day datasheet (docs/datasheet): hero cards, progress bar, fact tiles */
+.book-datasheet .ds-title {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin: 0.5rem 0 0.8rem;
+}
+
+.book-datasheet .ds-hero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.book-datasheet .ds-card,
+.book-datasheet .ds-facts > div {
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 0.6rem;
+  padding: 0.7rem 1rem;
+}
+
+.book-datasheet .ds-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.book-datasheet .ds-country {
+  flex: 1 1 11rem;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.book-datasheet .ds-weather {
+  flex: 1 1 15rem;
+}
+
+.book-datasheet .ds-wind {
+  flex: 1 1 14rem;
+}
+
+.book-datasheet .ds-wind small {
+  display: block;
+}
+
+.book-datasheet .ds-rose {
+  flex: none;
+}
+
+.book-datasheet .ds-rose .ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.35;
+  stroke-width: 1.5;
+}
+
+.book-datasheet .ds-rose .tick {
+  stroke: currentColor;
+  stroke-opacity: 0.5;
+}
+
+.book-datasheet .ds-rose .dir {
+  font-size: 9px;
+  fill: currentColor;
+  opacity: 0.7;
+}
+
+.book-datasheet .ds-rose .shaft {
+  stroke: var(--color-link);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.book-datasheet .ds-rose .head {
+  fill: var(--color-link);
+}
+
+.book-datasheet .ds-flag,
+.book-datasheet .ds-icon {
+  font-size: 3.2rem;
+  line-height: 1;
+}
+
+.book-datasheet .ds-temp {
+  display: block;
+  font-size: 1.6em;
+  line-height: 1.2;
+}
+
+.book-datasheet .ds-weather small {
+  display: block;
+  opacity: 0.8;
+}
+
+.book-datasheet .ds-progress {
+  margin: 1rem 0;
+}
+
+.book-datasheet .ds-progress-label {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-datasheet .ds-bar {
+  height: 0.8rem;
+  border-radius: 0.4rem;
+  background: var(--gray-200);
+  overflow: hidden;
+}
+
+.book-datasheet .ds-bar span {
+  display: block;
+  height: 100%;
+  min-width: 0.4rem;
+  border-radius: 0.4rem;
+  background: var(--color-link);
+}
+
+.book-datasheet .ds-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.8rem;
+  margin: 0.8rem 0;
+}
+
+/* wide screens: all fact tiles stay in one row (Etappe | Bisher | Stimmung | Besonderes ...) */
+@media (min-width: 48rem) {
+  .book-datasheet .ds-facts {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+  }
+}
+
+.book-datasheet .ds-facts dt {
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.book-datasheet .ds-facts dd {
+  overflow-wrap: anywhere;
+  margin: 0.15rem 0 0;
+  font-size: 0.9em;
+  line-height: 1.45;
+}
+
+.book-datasheet .ds-emoji {
+  font-size: 1.6em;
+  vertical-align: middle;
+}
+
+/* mood: the emoji alone fills the tile (word as tooltip and for screen readers) */
+.book-datasheet .ds-facts dd.ds-mood {
+  font-size: 4.5em;
+  line-height: 1;
+  text-align: center;
+}
+
+.book-datasheet .ds-source {
+  margin: 0;
+}
+
+/* height profile of a post: hover cursor, linked to the map marker */
+.book-elevation svg {
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.book-elevation .cursor {
+  display: none;
+  pointer-events: none;
+}
+
+.book-elevation .cursor line {
+  stroke: #e53935;
+  stroke-width: 1.5;
+}
+
+.book-elevation .cursor circle {
+  fill: #e53935;
+}
+
+.book-elevation .cursor text {
+  font-size: 12px;
+  font-weight: bold;
+  fill: currentColor;
+}
+
+.book-datasheet .ds-lines span {
+  display: block;
+}
+
+.book-datasheet .ds-track {
+  position: relative;
+  padding-top: 1.7rem;
+}
+
+.book-datasheet .ds-bike {
+  position: absolute;
+  top: 0;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--color-link);
+}
+
+/* Font Awesome Free 6.7.2 bicycle (assets/icons/bicycle.svg, CC BY 4.0), inlined, faces right */
+.book-datasheet .ds-bike svg {
+  display: block;
+  height: 1em;
+  width: 1.25em;
+  fill: currentColor;
+}
+
+.book-datasheet .ds-event {
+  display: block;
+}

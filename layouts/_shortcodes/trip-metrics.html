@@ -1,0 +1,5 @@
+{{/*
+  One chart of the trip numbers over the days of the trip; every bar or dot links to its post.
+  Usage: {{< trip-metrics chart="distance|km|ascent|mood|temperature" >}}
+*/}}
+{{ partial "docs/trip-metrics" (dict "chart" (.Get "chart")) }}

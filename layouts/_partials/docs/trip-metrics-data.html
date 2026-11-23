@@ -1,0 +1,66 @@
+{{/*
+  Day rows for the metrics page (docs/trip-metrics), from departure (day 1) to the last post with
+  a location. One row per trip day with a post; several posts of one day (a/b/…) are merged: km
+  and ascent added up, highest point, link, place, weather and mood of the first post.
+
+    day      day of the trip (docs/trip-stats); the row covers the days [day - span, day]
+    span     days since the previous post (at least 1, never before departure)
+    page     diary post in the current language; place: place name of the day
+    km (bike legs only), ascent, maxEle, cumKm   as in docs/trip-stats; bike: a bike leg with elevation profile
+    mood     1 (terrible) … 5 (great), neutral if unset
+    w        weather of the day (data/weather) or an empty dict
+
+  Also returns total (days of the trip) and months (trip day offset and label of each 1st).
+  Call cached: partialCached "docs/trip-metrics-data" site site.Language.Lang
+*/}}
+{{- $stats := partialCached "docs/trip-stats" site site.Language.Lang -}}
+{{- $levels := dict "terrible" 1 "bad" 2 "neutral" 3 "good" 4 "great" 5 -}}
+{{- $rows := slice -}}
+{{- $cur := dict -}}
+{{- $total := 0 -}}
+{{- $departure := false -}}
+{{- range sort (where site.RegularPages "Section" "docs") "Date" -}}
+  {{- $src := partial "docs/location-source" . -}}
+  {{- if and $src.Params.location $src.File -}}
+    {{- $s := index $stats $src.File.Path -}}
+    {{- if and $s (gt $s.day 0) -}}
+      {{- $total = $s.totalDays -}}
+      {{- if not $departure -}}
+        {{- $departure = (time.AsTime (.Date.Format "2006-01-02")).AddDate 0 0 (sub 1 $s.day) -}}
+      {{- end -}}
+      {{- if and $cur (eq $cur.day $s.day) -}}
+        {{- $cur = merge $cur (dict
+          "km" (add $cur.km (cond (eq $s.mode "bike") $s.km 0.0)) "ascent" (add $cur.ascent $s.ascent) "cumKm" $s.cumKm
+          "maxEle" (math.Max $cur.maxEle $s.maxEle) "bike" (or $cur.bike (gt $s.ascent 0))
+        ) -}}
+      {{- else -}}
+        {{- with $cur }}{{ $rows = $rows | append . }}{{ end -}}
+        {{- $w := dict -}}
+        {{- $parts := split (strings.TrimSuffix "/" (strings.TrimPrefix "docs/" $src.File.Dir)) "/" -}}
+        {{- if eq (len $parts) 2 -}}
+          {{- with index hugo.Data "weather" (index $parts 0) (index $parts 1) $src.File.ContentBaseName }}{{ $w = . }}{{ end -}}
+        {{- end -}}
+        {{- $cur = dict
+          "day" $s.day "span" (math.Min $s.day (math.Max 1 $s.gapDays)) "page" .
+          "place" ($src.Params.location.placeName | default $src.Params.location.name)
+          "km" (cond (eq $s.mode "bike") $s.km 0.0) "ascent" $s.ascent "maxEle" $s.maxEle "cumKm" $s.cumKm "bike" (gt $s.ascent 0)
+          "mood" (index $levels ($src.Params.mood | default "neutral") | default 3) "w" $w
+        -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with $cur }}{{ $rows = $rows | append . }}{{ end -}}
+
+{{- $months := slice -}}
+{{- with $departure -}}
+  {{- $first := time.AsTime (printf "%s-01" (.Format "2006-01")) -}}
+  {{- range seq 0 36 -}}
+    {{- $t := $first.AddDate 0 . 0 -}}
+    {{- $offset := div (sub $t.Unix $departure.Unix) 86400 -}}
+    {{- if and (ge $offset 0) (le $offset $total) -}}
+      {{- $months = $months | append (dict "offset" $offset "label" (time.Format "Jan 06" $t)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return (dict "rows" $rows "total" $total "months" $months) -}}

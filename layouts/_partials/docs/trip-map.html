@@ -1,0 +1,79 @@
+{{/*
+  Map of a set of diary posts: every post with a location becomes a clickable marker linking
+  to the post in the current language, and the leg *ending* at each post (data/routes) is
+  drawn as a line (solid = routed, dashed = straight line, grey = unknown). Renders nothing if
+  none of the pages has a location.
+  Usage: partial "docs/trip-map" (dict "pages" $pages "id" "unique-dom-id" "height" "50vh")
+*/}}
+{{- $posts := slice -}}
+{{- $legs := slice -}}
+{{- $maxPoints := 60 -}}
+{{- range sort (where .pages "Section" "docs") "Date" -}}
+  {{- $page := . -}}
+  {{- $src := partial "docs/location-source" . -}}
+  {{- with $src.Params.location -}}
+    {{- $posts = $posts | append (dict
+      "lat" .latitude
+      "lon" .longitude
+      "title" $page.LinkTitle
+      "url" $page.RelPermalink
+      "place" .name
+    ) -}}
+  {{- end -}}
+  {{- with partial "docs/route-leg" $src -}}
+    {{- /* thin out long legs, the overview doesn't need every bend */ -}}
+    {{- $step := math.Max 1 (math.Floor (div (len .coordinates) (float $maxPoints))) -}}
+    {{- $last := sub (len .coordinates) 1 -}}
+    {{- $coords := slice -}}
+    {{- range $i, $c := .coordinates -}}
+      {{- if or (eq (mod $i (int $step)) 0) (eq $i $last) -}}
+        {{- /* wrapped in a dict: append would flatten a [lat, lon] slice */ -}}
+        {{- $coords = $coords | append (dict "p" $c) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $legs = $legs | append (dict "c" $coords "routed" .routed "unknown" (eq .mode "unknown")) -}}
+  {{- end -}}
+{{- end -}}
+
+{{ if $posts }}
+{{ $id := .id }}
+{{ $height := .height | default "70vh" }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<div id="{{ $id }}" style="height: {{ $height }}; min-height: 400px; width: 100%; border-radius: 8px; margin: 1rem 0;"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const posts = {{ $posts | jsonify | safeJS }};
+  const legs = {{ $legs | jsonify | safeJS }};
+  const map = L.map({{ $id }});
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  legs.forEach(function (leg) {
+    L.polyline(leg.c.map(function (c) { return c.p; }), {
+      color: leg.unknown ? '#888888' : '#1a73e8',
+      weight: 3,
+      opacity: 0.8,
+      dashArray: leg.routed ? null : '6, 8',
+    }).addTo(map);
+  });
+
+  const markers = posts.map(function (post) {
+    const link = document.createElement('a');
+    link.href = post.url;
+    link.textContent = post.title;
+    const popup = document.createElement('div');
+    popup.append(link, document.createElement('br'), post.place);
+    return L.circleMarker([post.lat, post.lon], {
+      radius: 5, color: '#e53935', weight: 2, fillOpacity: 0.8,
+    }).bindPopup(popup).addTo(map);
+  });
+
+  map.fitBounds(L.featureGroup(markers).getBounds(), { padding: [20, 20] });
+});
+</script>
+{{ end }}

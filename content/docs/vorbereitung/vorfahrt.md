@@ -1,9 +1,12 @@
 ---
-title: Und wie kommt man auf so eine Idee?
 date: 2009-02-01T16:56:43+02:00
-tags: ["Orga"]
+title: Und wie kommt man auf so eine Idee?
+translationKey: vorfahrt
+draft: false
+tags: []
 categories: ["Orga", "Mindset"]
 ---
+
 ## Und wie kommt man auf so eine Idee?
 
 Die Idee für meine Radreise entstand früh morgens gegen 5 Uhr nach einem illustren Abend in meiner Heimatstadt Dieburg.
@@ -58,7 +61,7 @@ Ich glaube es ist Steen / Steven (?) der mit dem Mountainbike durch Schottland f
 
 Und planen. Ich lese alle Bücher, die es über Radreisen gibt, besuche die Touristen Messe in Frankfurt, treffe Tilmann Waldthaler, den ich bisher nur aus seinen Büchern kenne. Dort sehe ich seine Räder, die mit ihm auf Reisen waren.
 
-Ich erkenne immer mehr, dass Reisen kein Hexenwerk ist sondern mehr das zulassen, sich trauen, das *machen*, das 'in die Tat umsetzen'. Kein Geschwafel sondern machen.
+Ich erkenne immer mehr, dass Reisen kein Hexenwerk ist sondern mehr das zulassen, sich trauen, das _machen_, das 'in die Tat umsetzen'. Kein Geschwafel sondern machen.
 
 Diese Einstellung wird zu meiner neuen Maxime.
 
@@ -94,8 +97,8 @@ Herausgearbeitet aus vielen vielen anderen Checklisten, von denen, die so smart 
 
 ---
 
-> [!HINT]
-> Damals war es doch einfacher, die Inhalte zu finden. Heute werde ich über die  Suchmaschine nicht mehr fündig. Wie sich die Zeit geändert hat.
+> [!NOTE]
+> Damals war es doch einfacher, die Inhalte zu finden. Heute werde ich über die Suchmaschine nicht mehr fündig. Wie sich die Zeit geändert hat.
 
 ---
 
@@ -142,7 +145,7 @@ Ich hatte diese Antworten sogar auf russisch übersetzen lassen. Danke Diana!
 
 Diese Liste spiegelt schön meine damalige Weltsicht wider finde ich und ist daher für mich heute eher amüsant. Bestenfalls nützlich zur Selbsterkenntnis.
 
-Während meiner Reise war sie *nicht* nützlich, denn kein Mensch wollte jemals solche Details von mir wissen (eher 'woher - wohin'). Und die Antworten kann wohl jeder beantworten, ohne das Papier mitzuschleppen.
+Während meiner Reise war sie _nicht_ nützlich, denn kein Mensch wollte jemals solche Details von mir wissen (eher 'woher - wohin'). Und die Antworten kann wohl jeder beantworten, ohne das Papier mitzuschleppen.
 
 ### Versicherung
 

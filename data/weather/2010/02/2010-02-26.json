@@ -1,0 +1,14 @@
+{
+ "date": "2010-02-26",
+ "latitude": 13.75,
+ "longitude": 100.5167,
+ "gridElevation": 12.0,
+ "temperatureMax": 35.1,
+ "temperatureMin": 25.7,
+ "precipitation": 0.0,
+ "sunshineHours": 11.0,
+ "windMax": 13.0,
+ "windDirection": 187,
+ "weatherCode": 3,
+ "source": "Open-Meteo (ERA5)"
+}

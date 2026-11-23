@@ -1,0 +1,163 @@
+{{/*
+  Renders "Ort / GPS" as text plus a Leaflet map from the `location` front matter.
+  The German page is the single source of truth: translations without their own
+  `location` fall back to the location of a translated page that has one.
+  If scripts/build_routes.py computed a leg from the previous location
+  (data/routes/<year>/<month>/<post>.json), the map shows that route as well.
+*/}}
+{{ $src := partial "docs/location-source" . }}
+
+{{ with $src.Params.location }}
+  {{ $lat := .latitude }}
+  {{ $lon := .longitude }}
+  {{ $coords := printf "%v,%v" $lat $lon }}
+  {{ $id := printf "location-map-%s" (md5 $coords) }}
+
+  {{- /* Plus Code (Open Location Code, 10 digits): 5 base-20 lat/lon pairs of 1/8000 degree */}}
+  {{- $alphabet := "23456789CFGHJMPQRVWX" }}
+  {{- $la := int (add (div (add (float $lat) 90.0) 0.000125) 0.000001) }}
+  {{- $lo := int (add (div (add (float $lon) 180.0) 0.000125) 0.000001) }}
+  {{- $digits := "" }}
+  {{- range seq 5 }}
+    {{- $digits = printf "%s%s%s" (substr $alphabet (mod $la 20) 1) (substr $alphabet (mod $lo 20) 1) $digits }}
+    {{- $la = div $la 20 }}
+    {{- $lo = div $lo 20 }}
+  {{- end }}
+  {{- $plusCode := printf "%s+%s" (substr $digits 0 8) (substr $digits 8) }}
+
+  {{ $leg := partial "docs/route-leg" $src }}
+  {{ $from := false }}
+  {{ with $leg }}
+    {{ with .fromPost }}{{ $from = site.GetPage (printf "/docs/%s" .) }}{{ end }}
+  {{ end }}
+
+  <div class="markdown book-location">
+    <hr>
+    <p>
+      {{ i18n "location.place" }}: <a href="https://www.google.com/search?q={{ urlquery .name }}">{{ .name }}</a><br>
+      {{ i18n "location.gps" }}: <a href="https://www.google.com/maps/search/?api=1&query={{ $coords }}">{{ $lat }}, {{ $lon }}</a><br>
+      {{ i18n "location.plusCode" }}: <a href="https://plus.codes/{{ $plusCode }}">{{ $plusCode }}</a>
+    </p>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.css" />
+    <script src="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.js"></script>
+
+    <div id="{{ $id }}" style="height: 320px; width: 100%; border-radius: 8px; margin: 1rem 0;"></div>
+
+    {{- $profile := false }}
+    {{- /* elevation profile of the leg (bike/foot only), drawn as static SVG */}}
+    {{- with and $leg $leg.elevation }}
+      {{- $w := 600.0 }}
+      {{- $h := 120.0 }}
+      {{- $total := float (index (index .points (sub (len .points) 1)) 0) }}
+      {{- $min := float .min }}
+      {{- $range := math.Max 1 (sub (float .max) $min) }}
+      {{- $pts := slice }}
+      {{- range .points }}
+        {{- $x := mul (div (float (index . 0)) (math.Max 0.01 $total)) $w }}
+        {{- $y := sub $h (mul (div (sub (float (index . 1)) $min) $range) (sub $h 16)) }}
+        {{- $pts = $pts | append (printf "%.1f,%.1f" $x $y) }}
+      {{- end }}
+      {{- $line := delimit $pts " " }}
+      {{- $profile = dict "points" .points "total" $total "min" $min "range" $range "w" $w "h" $h }}
+    <details class="book-elevation" open>
+      <summary>{{ i18n "elevationProfile" }}: {{ printf "%.0f" $total }} km · ↗ {{ .ascent }} m · ↘ {{ .descent }} m</summary>
+      <svg id="{{ $id }}-profile" viewBox="0 0 600 140" width="100%" role="img" aria-label="{{ i18n "elevationProfile" }}">
+        <polygon points="0,{{ $h }} {{ $line }} {{ $w }},{{ $h }}" fill="#1a73e8" fill-opacity="0.15" />
+        <polyline points="{{ $line }}" fill="none" stroke="#1a73e8" stroke-width="2" />
+        <line x1="0" y1="{{ $h }}" x2="{{ $w }}" y2="{{ $h }}" stroke="currentColor" stroke-opacity="0.3" />
+        <text x="2" y="12" font-size="11" fill="currentColor">{{ .max }} m</text>
+        <text x="2" y="{{ sub $h 4 }}" font-size="11" fill="currentColor">{{ .min }} m</text>
+        <text x="0" y="135" font-size="11" fill="currentColor">0 km</text>
+        <text x="{{ $w }}" y="135" font-size="11" fill="currentColor" text-anchor="end">{{ printf "%.0f" $total }} km</text>
+        <g class="cursor"><line x1="0" x2="0" y1="0" y2="{{ $h }}" /><circle r="4" cx="0" cy="0" /><text x="0" y="12"></text></g>
+      </svg>
+    </details>
+    {{- end }}
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const position = [{{ $lat }}, {{ $lon }}];
+      const map = L.map({{ $id }}, { scrollWheelZoom: false }).setView(position, 10);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      // overview inset: fixed continent-level zoom, red box marks the visible area
+      new L.Control.MiniMap(L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'), {
+        position: 'topright',
+        zoomLevelFixed: 2,
+        width: 140,
+        height: 110,
+        toggleDisplay: true,
+        aimingRectOptions: { color: '#e53935', weight: 3, fillOpacity: 0.3 },
+        shadowRectOptions: { opacity: 0, fillOpacity: 0 },
+      }).addTo(map);
+
+      L.marker(position).addTo(map).bindPopup({{ .name }});
+
+      {{- with $leg }}
+      const route = L.polyline({{ .coordinates }}, {
+        color: {{ cond (eq .mode "unknown") "#888888" "#1a73e8" }},
+        weight: 5,
+        opacity: 0.85,
+        {{- if not .routed }}
+        dashArray: '6, 10',
+        {{- end }}
+      }).addTo(map);
+      const start = L.circleMarker({{ .from }}, { radius: 6, color: '#1a73e8', fillOpacity: 0.9 }).addTo(map);
+      {{- with $from }}
+      start.bindPopup({{ printf "<a href=\"%s\">%s</a>" .RelPermalink .LinkTitle }});
+      {{- end }}
+      map.fitBounds(route.getBounds(), { padding: [30, 30] });
+      {{- end }}
+
+      {{- with $profile }}
+      // hovering the height profile moves a dot along the route on the map: the route's
+      // coordinates are placed by their share of the route length, the profile by km
+      const coords = route.getLatLngs();
+      const cum = [0];
+      for (let i = 1; i < coords.length; i++) cum.push(cum[i - 1] + coords[i - 1].distanceTo(coords[i]));
+      const length = cum[cum.length - 1] || 1;
+      const points = {{ .points }};
+      const total = {{ .total }}, min = {{ .min }}, range = {{ .range }}, width = {{ .w }}, height = {{ .h }};
+      const svg = document.getElementById({{ printf "%s-profile" $id }});
+      const cursor = svg.querySelector('.cursor');
+      const label = cursor.querySelector('text');
+      const dot = L.circleMarker(position, { radius: 8, color: '#fff', weight: 2, fillColor: '#e53935', fillOpacity: 1 });
+      const at = (list, key, value) => { // linear interpolation in a sorted list
+        let lo = 0, hi = list.length - 1;
+        while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (key(list[mid]) <= value) lo = mid; else hi = mid; }
+        const a = list[lo], b = list[hi], span = key(b) - key(a) || 1;
+        return [a, b, Math.min(1, Math.max(0, (value - key(a)) / span))];
+      };
+      const show = (event) => {
+        const box = svg.getBoundingClientRect();
+        const share = Math.min(1, Math.max(0, (event.clientX - box.left) / box.width));
+        const km = share * total;
+        const [p, q, f] = at(points, (e) => e[0], km);
+        const ele = p[1] + (q[1] - p[1]) * f;
+        const [c, d, g] = at(cum, (e) => e, share * length);
+        const ci = cum.indexOf(c), di = cum.indexOf(d);
+        dot.setLatLng([coords[ci].lat + (coords[di].lat - coords[ci].lat) * g, coords[ci].lng + (coords[di].lng - coords[ci].lng) * g]);
+        if (!map.hasLayer(dot)) dot.addTo(map);
+        const x = share * width, y = height - ((ele - min) / range) * (height - 16);
+        cursor.style.display = 'block';
+        cursor.querySelector('line').setAttribute('x1', x); cursor.querySelector('line').setAttribute('x2', x);
+        cursor.querySelector('circle').setAttribute('cx', x); cursor.querySelector('circle').setAttribute('cy', y);
+        label.textContent = km.toFixed(1) + ' km · ' + Math.round(ele) + ' m';
+        label.setAttribute('x', x); label.setAttribute('text-anchor', share > 0.75 ? 'end' : 'start');
+        label.setAttribute('dx', share > 0.75 ? -6 : 6);
+      };
+      const hide = () => { cursor.style.display = 'none'; map.removeLayer(dot); };
+      svg.addEventListener('pointermove', show);
+      svg.addEventListener('pointerdown', show);
+      svg.addEventListener('pointerleave', hide);
+      {{- end }}
+    });
+    </script>
+  </div>
+{{ end }}

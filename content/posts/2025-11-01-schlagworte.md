@@ -1,8 +1,11 @@
 ---
-layout: post
-title: Schlagworte
 date: 2025-11-01
+title: Schlagworte
+translationKey: tags
 draft: false
+tags: []
+categories: []
+layout: post
 ---
 
 ## Anleitung

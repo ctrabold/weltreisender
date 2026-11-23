@@ -1,0 +1,28 @@
+{{/*
+  Overview of all trip photos: one tile per tag (in the given order) with a cover photo,
+  the number of photos (time-span rule, see docs/tag-photos) and a link to the tag page,
+  which shows the map and all photos grouped by post.
+  Usage: {{< photo-overview tags="Deutschland, Tschechien, Polen" >}}
+*/}}
+<div class="book-photo-overview">
+{{- range split (.Get "tags") "," }}
+  {{- $name := strings.TrimSpace . }}
+  {{- with site.GetPage (printf "/tags/%s" (urlize $name)) }}
+    {{- $term := . }}
+    {{- $groups := partial "docs/tag-photos" .Pages }}
+    {{- $all := slice }}
+    {{- range $groups }}{{ $all = $all | append .images }}{{ end }}
+    {{- with $all }}
+      {{- $img := (index $all (div (len $all) 2)).Process "fill 600x400 webp q75 Smart" }}
+      {{- $posts := sort (where $term.Pages "Section" "docs") "Date" }}
+  <a class="book-photo-tile" href="{{ $term.RelPermalink }}">
+    <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $term.LinkTitle }}" loading="lazy" />
+    <span class="book-photo-tile-title">{{ $term.LinkTitle }}</span>
+    <span class="book-photo-tile-meta">{{ len $all }} {{ i18n "photos" }} · {{ time.Format ":date_medium" (index $posts 0).Date }} – {{ time.Format ":date_medium" (index $posts (sub (len $posts) 1)).Date }}</span>
+  </a>
+    {{- end }}
+  {{- else }}
+    {{- warnf "photo-overview: tag %q not found (%s)" $name $.Page.File.Path }}
+  {{- end }}
+{{- end }}
+</div>

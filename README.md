@@ -6,8 +6,7 @@ Dieses Repository enthält den Reise-Blog von meiner Radreise von Deutschland na
 
 ```shell
 # for maximum cleanups and rebuilds, run where you checked out the repository
-hugo server --printPathWarnings \
-	--disableFastRender \
+hugo server --disableFastRender \
 	--cleanDestinationDir=true \
 	--logLevel=debug \
 	--gc \

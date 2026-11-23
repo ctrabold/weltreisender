@@ -1,0 +1,168 @@
+{{/*
+  "Day data" below a diary post: day of the trip, country, the day's stage (from
+  data/routes), what has been ridden so far, the weather (data/weather, Open-Meteo/ERA5) and,
+  where the German front matter has them, mood, sleeping place and costs. Everything comes from
+  the German page (the location source), so both languages show the same numbers.
+  Sleeping place and costs share one tile.
+  Country: flag (emoji from the ISO code) and link to Wikipedia, names from data/countries.json.
+  Shown after the map and height profile (docs/inject/content-after.html).
+*/}}
+{{ $src := partial "docs/location-source" . }}
+{{ if and $src.Params.location $src.File }}
+  {{- $stats := partialCached "docs/trip-stats" site site.Language.Lang -}}
+  {{- $s := index $stats $src.File.Path -}}
+  {{- $parts := split (strings.TrimSuffix "/" (strings.TrimPrefix "docs/" $src.File.Dir)) "/" -}}
+  {{- $w := false -}}
+  {{- if eq (len $parts) 2 -}}
+    {{- $w = index hugo.Data "weather" (index $parts 0) (index $parts 1) $src.File.ContentBaseName -}}
+  {{- end -}}
+  {{- /* country: flag + Wikipedia link; unknown countries stay plain text */ -}}
+  {{- $country := $src.Params.location.country -}}
+  {{- $c := index hugo.Data "countries" $country -}}
+  {{- $lang := site.Language.Lang -}}
+  <div class="markdown book-datasheet">
+    <hr>
+    <p class="ds-title">{{ i18n "datasheet.title" }}</p>
+    <div class="ds-hero">
+      <div class="ds-card ds-country">
+        {{- if $c }}
+          {{- $name := index $c $lang | default $country }}
+          {{- $flag := printf "%c%c" (add 127397 (int (index $c.iso 0))) (add 127397 (int (index $c.iso 1))) }}
+        <span class="ds-flag" role="img" aria-label="{{ $name }}">{{ $flag }}</span>
+        <a href="https://{{ $lang }}.wikipedia.org/wiki/{{ replace $name " " "_" }}" title="Wikipedia: {{ $name }}">{{ $name }}</a>
+        {{- else }}
+        <span class="ds-flag" aria-hidden="true">📍</span>
+        <span>{{ $country }}</span>
+        {{- end }}
+      </div>
+      {{- with $w }}
+        {{- $code := int .weatherCode -}}
+        {{- $icon := "☁️" -}}
+        {{- $kind := "weather.overcast" -}}
+        {{- if eq $code 0 }}{{ $icon = "☀️" }}{{ $kind = "weather.clear" }}
+        {{- else if le $code 2 }}{{ $icon = "🌤️" }}{{ $kind = "weather.partly" }}
+        {{- else if eq $code 3 }}{{ $icon = "☁️" }}{{ $kind = "weather.overcast" }}
+        {{- else if le $code 48 }}{{ $icon = "🌫️" }}{{ $kind = "weather.fog" }}
+        {{- else if le $code 57 }}{{ $icon = "🌦️" }}{{ $kind = "weather.drizzle" }}
+        {{- else if le $code 67 }}{{ $icon = "🌧️" }}{{ $kind = "weather.rain" }}
+        {{- else if le $code 77 }}{{ $icon = "🌨️" }}{{ $kind = "weather.snow" }}
+        {{- else if le $code 82 }}{{ $icon = "🌦️" }}{{ $kind = "weather.showers" }}
+        {{- else if le $code 86 }}{{ $icon = "🌨️" }}{{ $kind = "weather.snow" }}
+        {{- else }}{{ $icon = "⛈️" }}{{ $kind = "weather.thunderstorm" }}
+        {{- end }}
+      <div class="ds-card ds-weather">
+        <span class="ds-icon" role="img" aria-label="{{ i18n $kind }}">{{ $icon }}</span>
+        <div>
+          <strong class="ds-temp">{{ lang.FormatNumber 0 .temperatureMin }}…{{ lang.FormatNumber 0 .temperatureMax }} °C</strong>
+          <small class="ds-lines">
+            <span>{{ i18n $kind }}</span>
+            <span>{{ i18n "weather.precipitation" (dict "mm" (lang.FormatNumber 1 .precipitation)) }}</span>
+            <span>{{ i18n "weather.sunshine" (dict "h" (lang.FormatNumber 1 .sunshineHours)) }}</span>
+          </small>
+        </div>
+      </div>
+      {{- /* wind rose: daily maximum, Beaufort from km/h; the arrow points where the wind blows to */ -}}
+      {{- $kmh := float .windMax -}}
+      {{- $bft := 12 -}}
+      {{- range $i, $limit := slice 1.0 5.0 11.0 19.0 28.0 38.0 49.0 61.0 74.0 88.0 102.0 117.0 -}}
+        {{- if and (eq $bft 12) (lt $kmh $limit) }}{{ $bft = $i }}{{ end -}}
+      {{- end -}}
+      {{- $hasDir := ne (printf "%v" .windDirection) "<nil>" -}}
+      {{- $from := 0.0 -}}
+      {{- $dir := "" -}}
+      {{- if $hasDir -}}
+        {{- $from = float .windDirection -}}
+        {{- $dir = i18n (printf "compass.%s" (index (slice "n" "ne" "e" "se" "s" "sw" "w" "nw") (mod (int (add (div $from 45.0) 0.5)) 8))) -}}
+      {{- end }}
+      <div class="ds-card ds-wind">
+        <svg class="ds-rose" viewBox="-50 -50 100 100" width="96" height="96" role="img" aria-label="{{ i18n "weather.wind" }} {{ $dir }}">
+          <circle r="44" class="ring" />
+          {{- range seq 0 7 }}
+          <line x1="0" y1="-44" x2="0" y2="{{ cond (eq (mod . 2) 0) -37 -40 }}" class="tick" transform="rotate({{ mul . 45 }})" />
+          {{- end }}
+          <text y="-28" class="dir" text-anchor="middle">{{ i18n "compass.n" }}</text>
+          <text x="31" y="4" class="dir" text-anchor="middle">{{ i18n "compass.e" }}</text>
+          <text y="35" class="dir" text-anchor="middle">{{ i18n "compass.s" }}</text>
+          <text x="-31" y="4" class="dir" text-anchor="middle">{{ i18n "compass.w" }}</text>
+          {{- if $hasDir }}
+          <g transform="rotate({{ mod (add $from 180.0) 360.0 }})"><line y1="22" y2="-14" class="shaft" /><polygon points="0,-24 -6,-12 6,-12" class="head" /></g>
+          {{- end }}
+        </svg>
+        <div>
+          <small>{{ i18n "weather.wind" }}</small>
+          <strong class="ds-temp">{{ lang.FormatNumber 0 .windMax }} km/h</strong>
+          <small class="ds-lines">
+            <span>{{ $bft }} Bft</span>
+            {{- with $dir }}
+            <span>{{ i18n "weather.windFrom" (dict "dir" .) }}</span>
+            {{- end }}
+          </small>
+        </div>
+      </div>
+      {{- end }}
+    </div>
+    {{- with $s }}
+      {{- if gt .day 0 }}
+        {{- $left := sub .totalDays .day }}
+    <div class="ds-progress">
+      <div class="ds-progress-label">
+        <strong>{{ i18n "datasheet.progress" (dict "day" .day "total" .totalDays) }} ({{ lang.FormatNumber 0 (mul 100 (div (float .day) .totalDays)) }}%)</strong>
+        <span>{{ if gt $left 0 }}{{ i18n "datasheet.left" (dict "left" $left) }}{{ else }}{{ i18n "datasheet.arrived" }}{{ end }}</span>
+      </div>
+      <div class="ds-track">
+        <span class="ds-bike" aria-hidden="true" style="left: {{ printf "%.1f" (mul 100 (div (float .day) .totalDays)) }}%; transform: translateX(-{{ printf "%.1f" (mul 100 (div (float .day) .totalDays)) }}%)">{{ (resources.Get "icons/bicycle.svg").Content | safeHTML }}</span>
+      <div class="ds-bar" role="progressbar" aria-label="{{ i18n "datasheet.day" }}" aria-valuemin="0" aria-valuemax="{{ .totalDays }}" aria-valuenow="{{ .day }}">
+        <span style="width: {{ printf "%.1f" (mul 100 (div (float .day) .totalDays)) }}%"></span>
+      </div>
+      </div>
+    </div>
+      {{- end }}
+    {{- end }}
+    <dl class="ds-facts">
+      {{- with $s }}
+        {{- /* one string per tile, fed with ready-formatted values */ -}}
+        {{- $data := dict "km" (lang.FormatNumber 0 .km) "ascent" (lang.FormatNumber 0 .ascent) "descent" (lang.FormatNumber 0 .descent) "max" (lang.FormatNumber 0 .maxEle) "mode" (i18n (printf "mode.%s" (.mode | default "bike"))) "ascentRaw" .ascent }}
+        {{- if gt .gapDays 1 }}{{ $data = merge $data (dict "days" .gapDays "perDay" (lang.FormatNumber 0 (div .km .gapDays))) }}{{ end }}
+        {{- if ge .km 1.0 }}
+      <div><dt>{{ i18n "datasheet.stage" }}</dt><dd>{{ i18n (cond (gt .ascent 0) "datasheet.stageBike" "datasheet.stageOther") $data | safeHTML }}</dd></div>
+        {{- end }}
+        {{- if ge .cumKm 1.0 }}
+      <div><dt>{{ i18n "datasheet.soFar" }}</dt><dd>{{ i18n "datasheet.soFarValue" (dict "km" (lang.FormatNumber 0 .cumKm) "ascent" (lang.FormatNumber 0 .cumAscent)) | safeHTML }}</dd></div>
+        {{- end }}
+      {{- end }}
+      {{- $mood := $src.Params.mood }}
+      {{- if $mood }}
+        {{- $emoji := index (dict "terrible" "😫" "bad" "🙁" "neutral" "😐" "good" "🙂" "great" "😄") $mood }}
+      <div><dt>{{ i18n "datasheet.mood" }}</dt><dd class="ds-mood"><span role="img" aria-label="{{ i18n (printf "mood.%s" $mood) }}" title="{{ i18n (printf "mood.%s" $mood) }}">{{ $emoji }}</span></dd></div>
+      {{- end }}
+      {{- /* special events of the day: own list of a translation, else the German one */ -}}
+      {{- $events := .Params.events | default $src.Params.events }}
+      {{- with $events }}
+      <div><dt>{{ i18n "datasheet.events" }}</dt><dd>
+        {{- range . }}
+          {{- $icon := index (split . " ") 0 -}}
+          <span class="ds-event"><span class="ds-emoji">{{ $icon }}</span> {{ strings.TrimPrefix (printf "%s " $icon) . }}</span>
+        {{- end }}
+      </dd></div>
+      {{- end }}
+      {{- /* sleeping place and costs share one tile */ -}}
+      {{- $sleeping := $src.Params.sleeping }}
+      {{- $costs := $src.Params.costs }}
+      {{- $hasCosts := or (eq (printf "%T" $costs) "float64") (eq (printf "%T" $costs) "int") }}
+      {{- if or $sleeping $hasCosts }}
+      <div><dt>{{ if and $sleeping $hasCosts }}{{ i18n "datasheet.sleepingCosts" }}{{ else if $sleeping }}{{ i18n "datasheet.sleeping" }}{{ else }}{{ i18n "datasheet.costs" }}{{ end }}</dt><dd>
+        {{- with $sleeping }}
+          {{- $bed := index (dict "tent" "⛺" "hostel" "🛏️" "hotel" "🏨" "homestay" "🏠" "vehicle" "🚐" "misc" "🌙") . }}
+        <span class="ds-event"><span class="ds-emoji">{{ $bed }}</span> {{ i18n (printf "sleeping.%s" .) }}</span>
+        {{- end }}
+        {{- if $hasCosts }}
+        <span class="ds-event"><span class="ds-emoji">💶</span> {{ lang.FormatNumber 2 $costs }} €</span>
+        {{- end }}
+      </dd></div>
+      {{- end }}
+    </dl>
+    {{- if $w }}
+    <p class="ds-source"><small>{{ i18n "weather.source" | safeHTML }}</small></p>
+    {{- end }}
+  </div>
+{{ end }}

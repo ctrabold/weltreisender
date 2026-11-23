@@ -1,0 +1,8 @@
+{{/*
+  Interactive map of the whole trip (all diary posts and legs).
+  Usage: {{< world-map >}}
+*/}}
+{{ partial "docs/trip-map" (dict
+  "pages" site.RegularPages
+  "id" (printf "world-map-%s" (md5 .Page.RelPermalink))
+) }}

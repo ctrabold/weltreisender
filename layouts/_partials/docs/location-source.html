@@ -1,0 +1,13 @@
+{{/*
+  Returns the page that holds the `location` front matter for the given page: the page
+  itself, or (for translations without their own location) the translated German page.
+*/}}
+{{ $src := . }}
+{{ if not .Params.location }}
+  {{ range .Translations }}
+    {{ if and (not $src.Params.location) .Params.location }}
+      {{ $src = . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $src }}

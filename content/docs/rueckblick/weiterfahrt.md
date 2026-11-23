@@ -1,9 +1,12 @@
 ---
-title: Weiterfahrt
 date: 2010-05-30T21:49:20+02:00
-tags: ["orga"]
-categories: ["mindset"]
+title: Weiterfahrt
+translationKey: weiterfahrt
+draft: false
+tags: []
+categories: ["Mindset", "Orga"]
 ---
+
 ## Wie geht es weiter?
 
 Ich suche ab und zu nach Anzeichen vom Christian, vor der Reise. Einige meiner Freunde sagen, ich habe mich seit oder durch die Reise sehr verändert. Ich kann es nicht sagen und lege auch keinen Wert darauf. Ich fühle mich gut.

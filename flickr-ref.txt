@@ -1,0 +1,65 @@
+post	flickr_id	old_markup	new
+content/docs/2009/09/2009-09-27.md	4019111566	![](http://farm3.static.flickr.com/2544/4019111566_78f3afd0b5.jpg)	/images/2009/09/21/4019111566.jpg
+content/docs/2009/09/2009-09-27.md	4019131094	![](http://farm3.static.flickr.com/2447/4019131094_be8a384317.jpg)	/images/2009/09/23/autobahn-nach-kashgar_4019131094_o.jpg
+content/docs/2009/11/2009-11-14a.md	4099728584	![](http://farm3.static.flickr.com/2722/4099728584_5e39160213.jpg)	/images/2009/11/12/4099728584.jpg
+content/docs/2010/01/2010-01-06.md	4258486535	![Inside a Sleeper Bus // Im Sleeper-Bus](http://farm5.static.flickr.com/4021/4258486535_61c4a33ff9_m.jpg)	/images/2010/01/05/4258486535.jpg
+content.en/docs/2009/09/2009-09-27.md	4019111566	![](http://farm3.static.flickr.com/2544/4019111566_78f3afd0b5.jpg)	/images/2009/09/21/4019111566.jpg
+content.en/docs/2009/09/2009-09-27.md	4019131094	![](http://farm3.static.flickr.com/2447/4019131094_be8a384317.jpg)	/images/2009/09/23/autobahn-nach-kashgar_4019131094_o.jpg
+content.en/docs/2009/11/2009-11-14a.md	4099728584	![](http://farm3.static.flickr.com/2722/4099728584_5e39160213.jpg)	/images/2009/11/12/4099728584.jpg
+content.en/docs/2010/01/2010-01-06.md	4258486535	![Inside a Sleeper Bus // Im Sleeper-Bus](http://farm5.static.flickr.com/4021/4258486535_61c4a33ff9_m.jpg)	/images/2010/01/05/4258486535.jpg
+content/docs/2009/11/2009-11-07.md	album:72157622774200160	Bilder: [http://www.flickr.com/photos/christian-trabold/sets/72157622774200160](http://www.flickr.co	{{< gallery from="2009-11-04" to="2009-11-07" >}}
+content/docs/2009/11/2009-11-15.md	album:72157622688889929	Bilder: [http://www.flickr.com/photos/christian-trabold/sets/72157622688889929](http://www.flickr.co	{{< gallery from="2009-11-14" to="2009-11-15" >}}
+content/docs/2009/11/2009-11-25.md	album:72157622853151990	Die Tage vergehen so rasant, wie schon lange nicht mehr. Das Leben hier ist aufregend und schnell. E	Die Tage vergehen so rasant, wie schon lange nicht mehr. Das Leben hier ist aufregend und schnell. Es gibt wahnsinnig viel zu sehen - auch w
+content/docs/2009/11/2009-11-25.md	album:72157622736471663	Besonders gut gefällt mir die Lamma-Insel ([Bilder](http://www.flickr.com/photos/christian-trabold/s	Besonders gut gefällt mir die Lamma-Insel. Dort kann ich einen fantastischen Sonnenuntergang im Südchinesischen Meer bewundern. In einer näc
+content/docs/2009/11/2009-11-25.md	album:72157622744515369	Der heutige Ausflug auf Lantau Island ist leider nur kurz, da ich dort zu spät eintreffe (dennoch gi	Der heutige Ausflug auf Lantau Island ist leider nur kurz, da ich dort zu spät eintreffe (dennoch gibt es ein paar Bilder). Morgen werde ich
+content/docs/2009/11/2009-11-27.md	album:72157622772498549	Bilder: [http://www.flickr.com/photos/christian-trabold/sets/72157622772498549](http://www.flickr.co	{{< gallery from="2009-11-26" to="2009-11-27" >}}
+content/docs/2009/11/2009-11-29.md	album:72157622786987681	Bilder: <https://www.flickr.com/photos/christian-trabold/sets/72157622786987681>	{{< gallery from="2009-11-27" to="2009-11-29" >}}
+content/docs/2010/01/2010-01-09.md	album:72157623194584644	Bilder: <https://www.flickr.com/photos/christian-trabold/sets/72157623194584644>	{{< gallery from="2010-01-09" >}}
+content/docs/2010/01/2010-01-15.md	album:72157623227566842	Bilder: <https://www.flickr.com/photos/christian-trabold/sets/72157623227566842/>	{{< gallery from="2010-01-15" >}}
+content/docs/2010/01/2010-01-17.md	album:72157623227575576	[](http://www.flickr.com/photos/christian-trabold/sets/72157623227575576/)	{{< gallery from="2010-01-16" >}}
+content/docs/2010/02/2010-02-05.md	album:72157623262644615	Bilder: <https://www.flickr.com/photos/christian-trabold/sets/72157623262644615/>	{{< gallery from="2010-02-04" to="2010-02-05" >}}
+content/docs/2010/04/2010-04-10.md	album:72157623803297220	[http://www.flickr.com/photos/christian-trabold/sets/72157623803297220](http://www.flickr.com/photos	{{< gallery from="2010-04-10" >}}
+content/docs/2010/04/2010-04-14.md	album:72157623754714463	[](http://www.flickr.com/photos/christian-trabold/sets/72157623754714463/)[](http://www.flickr.com/p	{{< gallery from="2010-04-14" >}}
+content/docs/2010/04/2010-04-15.md	album:72157623879253436	[http://www.flickr.com/photos/christian-trabold/sets/72157623879253436](http://www.flickr.com/photos	{{< gallery from="2010-04-15" >}}
+content.en/docs/2009/11/2009-11-07.md	album:72157622774200160	Pictures: [http://www.flickr.com/photos/christian-trabold/sets/72157622774200160](http://www.flickr.	{{< gallery from="2009-11-04" to="2009-11-07" >}}
+content.en/docs/2009/11/2009-11-15.md	album:72157622688889929	Pictures: [http://www.flickr.com/photos/christian-trabold/sets/72157622688889929](http://www.flickr.	{{< gallery from="2009-11-14" to="2009-11-15" >}}
+content.en/docs/2009/11/2009-11-25.md	album:72157622853151990	The days are flying by faster than they have in a long time. Life here is exciting and fast. There's	The days are flying by faster than they have in a long time. Life here is exciting and fast. There's an incredible amount to see - even if y
+content.en/docs/2009/11/2009-11-25.md	album:72157622736471663	I particularly like Lamma Island ([pictures](http://www.flickr.com/photos/christian-trabold/sets/721	I particularly like Lamma Island. There I watch a fantastic sunset over the South China Sea. A night-time boat trip takes us back to Hong Ko
+content.en/docs/2009/11/2009-11-25.md	album:72157622744515369	Today's trip to Lantau Island is sadly short, as I get there too late (there are still [a few pictur	Today's trip to Lantau Island is sadly short, as I get there too late (there are still a few pictures, though). Tomorrow I'll have another g
+content.en/docs/2009/11/2009-11-27.md	album:72157622772498549	Pictures: [http://www.flickr.com/photos/christian-trabold/sets/72157622772498549](http://www.flickr.	{{< gallery from="2009-11-26" to="2009-11-27" >}}
+content.en/docs/2009/11/2009-11-29.md	album:72157622786987681	Pictures: <https://www.flickr.com/photos/christian-trabold/sets/72157622786987681>	{{< gallery from="2009-11-27" to="2009-11-29" >}}
+content.en/docs/2010/01/2010-01-09.md	album:72157623194584644	Pictures: <https://www.flickr.com/photos/christian-trabold/sets/72157623194584644>	{{< gallery from="2010-01-09" >}}
+content.en/docs/2010/01/2010-01-15.md	album:72157623227566842	Pictures: <https://www.flickr.com/photos/christian-trabold/sets/72157623227566842/>	{{< gallery from="2010-01-15" >}}
+content.en/docs/2010/01/2010-01-17.md	album:72157623227575576	[](http://www.flickr.com/photos/christian-trabold/sets/72157623227575576/)	{{< gallery from="2010-01-16" >}}
+content.en/docs/2010/02/2010-02-05.md	album:72157623262644615	Pictures: <https://www.flickr.com/photos/christian-trabold/sets/72157623262644615/>	{{< gallery from="2010-02-04" to="2010-02-05" >}}
+content.en/docs/2010/04/2010-04-10.md	album:72157623803297220	[http://www.flickr.com/photos/christian-trabold/sets/72157623803297220](http://www.flickr.com/photos	{{< gallery from="2010-04-10" >}}
+content.en/docs/2010/04/2010-04-14.md	album:72157623754714463	[](http://www.flickr.com/photos/christian-trabold/sets/72157623754714463/)[](http://www.flickr.com/p	{{< gallery from="2010-04-14" >}}
+content.en/docs/2010/04/2010-04-15.md	album:72157623879253436	[http://www.flickr.com/photos/christian-trabold/sets/72157623879253436](http://www.flickr.com/photos	{{< gallery from="2010-04-15" >}}
+content/docs/2009/04/2009-04-04.md	link	<http://www.flickr.com/photos/christian-trabold/>	internal
+content/docs/2009/09/2009-09-27.md	link	 (<http://www.flickr.com/photos/christian-trabold/tags/irkeshtam/>)	internal
+content/docs/2009/09/2009-09-27.md	link	 (<http://www.flickr.com/photos/christian-trabold/tags/ulugqat/>)	internal
+content/docs/2009/10/2009-10-28.md	link	 ([http://www.flickr.com/photos/christian-trabold/tags/livestockmarket/](http://	internal
+content/docs/2009/10/2009-10-28.md	link	 ([http://www.flickr.com/photos/christian-trabold/tags/escapingkashgar/](http://	internal
+content/docs/2009/10/2009-10-28.md	link	 ([http://www.flickr.com/photos/christian-trabold/tags/taklamakandesert/](http:/	internal
+content/docs/2009/10/2009-10-28.md	link	 ([http://www.flickr.com/photos/christian-trabold/tags/qaidambasin/](http://www.	internal
+content/docs/2009/10/2009-10-28.md	link	[http://www.flickr.com/photos/christian-trabold/tags/kashgar/](http://www.flickr	internal
+content/docs/2009/11/2009-11-02.md	link	[http://www.flickr.com/photos/christian-trabold/collections/72157622603409566/](	internal
+content/docs/2009/11/2009-11-02.md	link	[http://www.flickr.com/photos/christian-trabold/tags/](http://www.flickr.com/pho	internal
+content/docs/2009/11/2009-11-14a.md	link	(Bilder: [http://www.flickr.com/photos/christian-trabold/tags/Nightsnacking/](ht	internal
+content/docs/2009/11/2009-11-25.md	link	[http://www.flickr.com/photos/christian-trabold/tags/hongkong/](http://www.flick	internal
+content/docs/2009/11/2009-11-25.md	link	[Videos](http://www.flickr.com/photos/christian-trabold/tags/videos/)	internal
+content/docs/2009/12/2009-12-29.md	link	[http://www.flickr.com/photos/christian-trabold/tags/guangxi/](http://www.flickr	internal
+content.en/docs/2009/04/2009-04-04.md	link	<http://www.flickr.com/photos/christian-trabold/>	internal
+content.en/docs/2009/09/2009-09-27.md	link	 (<http://www.flickr.com/photos/christian-trabold/tags/irkeshtam/>)	internal
+content.en/docs/2009/09/2009-09-27.md	link	 (<http://www.flickr.com/photos/christian-trabold/tags/ulugqat/>)	internal
+content.en/docs/2009/10/2009-10-28.md	link	 ([http://www.flickr.com/photos/christian-trabold/tags/livestockmarket/](http://	internal
+content.en/docs/2009/10/2009-10-28.md	link	 ([http://www.flickr.com/photos/christian-trabold/tags/escapingkashgar/](http://	internal
+content.en/docs/2009/10/2009-10-28.md	link	 ([http://www.flickr.com/photos/christian-trabold/tags/taklamakandesert/](http:/	internal
+content.en/docs/2009/10/2009-10-28.md	link	 ([http://www.flickr.com/photos/christian-trabold/tags/qaidambasin/](http://www.	internal
+content.en/docs/2009/10/2009-10-28.md	link	[http://www.flickr.com/photos/christian-trabold/tags/kashgar/](http://www.flickr	internal
+content.en/docs/2009/11/2009-11-02.md	link	[http://www.flickr.com/photos/christian-trabold/collections/72157622603409566/](	internal
+content.en/docs/2009/11/2009-11-02.md	link	[http://www.flickr.com/photos/christian-trabold/tags/](http://www.flickr.com/pho	internal
+content.en/docs/2009/11/2009-11-14a.md	link	[http://www.flickr.com/photos/christian-trabold/tags/Nightsnacking/](http://www.	internal
+content.en/docs/2009/11/2009-11-25.md	link	[http://www.flickr.com/photos/christian-trabold/tags/hongkong/](http://www.flick	internal
+content.en/docs/2009/11/2009-11-25.md	link	[videos](http://www.flickr.com/photos/christian-trabold/tags/videos/)	internal
+content.en/docs/2009/12/2009-12-29.md	link	[http://www.flickr.com/photos/christian-trabold/tags/guangxi/](http://www.flickr	internal

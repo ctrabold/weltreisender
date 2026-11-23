@@ -1,10 +1,12 @@
 ---
-title: Danke
 date: 2011-05-30T21:49:20+02:00
-tags: ['Orga']
-categories: ['Orga', 'Mindset']
+title: Danke
+translationKey: danke
 draft: false
+tags: []
+categories: ["Orga", "Mindset"]
 ---
+
 ## Danke
 
 Danke an meine lieben Freunde und Familie für ihre Unterstützung!

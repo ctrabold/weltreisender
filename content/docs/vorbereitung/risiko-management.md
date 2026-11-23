@@ -1,9 +1,12 @@
 ---
-title: Risiko-Management und Fragen zur Reiseplanung
 date: 2009-02-02T16:56:43+02:00
-tags: ["Orga"]
+title: Risiko-Management und Fragen zur Reiseplanung
+translationKey: risiko-management
+draft: false
+tags: []
 categories: ["Orga", "Mindset"]
 ---
+
 ## Risiko-Management und Fragen zur Reiseplanung
 
 Vor der Abfahrt spielen sich viele Szenarien im Kopf ab. Freunde, Bekannte und die eigene Familie hämmert mit Fragen auf mich ein.
@@ -28,7 +31,7 @@ Irgendwie schon. Wobei ich das albern finde. Kann ich in meinem Leben sonst nich
 
 Ich spare in diesen Monaten 15 000 EUR.
 
-```
+```text
 2008
 1 August
 2 September

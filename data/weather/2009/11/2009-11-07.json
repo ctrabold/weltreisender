@@ -1,0 +1,14 @@
+{
+ "date": "2009-11-07",
+ "latitude": 30.5847,
+ "longitude": 104.0705,
+ "gridElevation": 486.0,
+ "temperatureMax": 21.9,
+ "temperatureMin": 11.9,
+ "precipitation": 0.0,
+ "sunshineHours": 9.1,
+ "windMax": 6.0,
+ "windDirection": 68,
+ "weatherCode": 3,
+ "source": "Open-Meteo (ERA5)"
+}

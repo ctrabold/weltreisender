@@ -1,0 +1,15 @@
+{{- /*
+  Inline images `![](/images/….jpg)` use the pre-generated 1600 px WebP copy assets/images/….webp
+  (see scripts/make-web-images.sh); the originals live outside the site.
+  Anything else (external images, images without a web copy) goes through the hugomods hook.
+*/ -}}
+{{- $large := false -}}
+{{- if strings.HasPrefix .Destination "/images/" -}}
+  {{- $base := strings.TrimSuffix (path.Ext .Destination) (strings.TrimPrefix "/images/" .Destination) -}}
+  {{- $large = resources.Get (printf "images/%s.webp" $base) -}}
+{{- end -}}
+{{- with $large -}}
+<img class="img-fluid" src="{{ .RelPermalink }}" alt="{{ $.Text }}" {{ with $.Title }}title="{{ . }}" {{ end }}loading="lazy" width="{{ .Width }}" height="{{ .Height }}" />
+{{- else -}}
+{{- partial "images/image" (dict "Filename" .Destination "Alt" .Text "Caption" .Title "Page" .Page) -}}
+{{- end -}}

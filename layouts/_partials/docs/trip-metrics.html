@@ -1,0 +1,171 @@
+{{/*
+  One chart of the metrics page as a static SVG over the days of the trip (x = trip day, ticks on
+  the 1st of each month). Every bar or dot links to its diary post; the tooltip names the day.
+  Data: docs/trip-metrics-data (routes, weather and mood of the German pages).
+  Usage: partial "docs/trip-metrics" (dict "chart" "distance")
+    distance      km ridden so far (bike legs with elevation profile, as docs/trip-stats)
+    km, ascent    per day (bike legs); a post after a gap of several days spreads its leg evenly
+                  over them; the record in the caption counts single days only
+    mood          mood per day over the highest point of the day (bike days)
+    temperature   daily range; the dot shows the minimum on cold days (mean below 14 °C), the
+                  maximum on warm days (mean above 20 °C), the mean in between
+  Styles: .trip-profile and .trip-metrics in assets/styles/custom.css.
+*/}}
+{{- $d := partialCached "docs/trip-metrics-data" site site.Language.Lang -}}
+{{- $chart := .chart -}}
+{{- if and $d.rows (gt $d.total 0) -}}
+  {{- $total := float $d.total -}}
+  {{- /* plot area inside the 1000 x 190 viewBox; the right margin holds the mood scale */ -}}
+  {{- $x0 := 44.0 -}}
+  {{- $w := 910.0 -}}
+  {{- $y0 := 10.0 -}}
+  {{- $h := 150.0 -}}
+  {{- $yb := add $y0 $h -}}
+  {{- $caption := "" -}}
+<figure class="trip-profile trip-metrics">
+  <svg viewBox="0 0 1000 190" width="100%" role="group" aria-label="{{ i18n (printf "metrics.%s.aria" $chart) }}">
+    {{- /* month ticks, labels only where they don't overlap */ -}}
+    {{- $lastLabel := -100.0 -}}
+    {{- range $d.months }}
+      {{- $x := add $x0 (mul (div (float .offset) $total) $w) }}
+    <line x1="{{ printf "%.1f" $x }}" x2="{{ printf "%.1f" $x }}" y1="{{ $y0 }}" y2="{{ add $yb 4 }}" class="grid" />
+      {{- if gt (sub $x $lastLabel) 42.0 }}{{ $lastLabel = $x }}
+    <text x="{{ printf "%.1f" $x }}" y="178" text-anchor="middle">{{ .label }}</text>
+      {{- end }}
+    {{- end }}
+
+    {{- if eq $chart "distance" }}
+      {{- $last := index $d.rows (sub (len $d.rows) 1) -}}
+      {{- $ymax := mul (math.Ceil (div (math.Max 1.0 $last.cumKm) 2000.0)) 2000.0 -}}
+      {{- range seq 1 (int (div $ymax 2000.0)) }}
+        {{- $y := sub $yb (mul (div (mul (float .) 2000.0) $ymax) $h) }}
+    <line x1="{{ $x0 }}" x2="{{ add $x0 $w }}" y1="{{ printf "%.1f" $y }}" y2="{{ printf "%.1f" $y }}" class="grid" />
+    <text x="{{ sub $x0 6 }}" y="{{ printf "%.1f" (add $y 4) }}" text-anchor="end">{{ lang.FormatNumber 0 (mul . 2000) }}</text>
+      {{- end }}
+      {{- $pts := slice (printf "%.1f,%.1f" $x0 $yb) -}}
+      {{- $riding := 0.0 -}}
+      {{- range $d.rows -}}
+        {{- $pts = $pts | append (printf "%.1f,%.1f" (add $x0 (mul (div (float .day) $total) $w)) (sub $yb (mul (div .cumKm $ymax) $h))) -}}
+        {{- if .bike }}{{ $riding = add $riding .span }}{{ end -}}
+      {{- end }}
+    <polygon points="{{ delimit $pts " " }} {{ printf "%.1f" (add $x0 (mul (div (float $last.day) $total) $w)) }},{{ $yb }}" class="area" />
+    <polyline points="{{ delimit $pts " " }}" class="line" />
+      {{- range $d.rows }}
+        {{- $xs := add $x0 (mul (div (sub (float .day) .span) $total) $w) }}
+        {{- $xe := add $x0 (mul (div (float .day) $total) $w) }}
+    <a href="{{ .page.RelPermalink }}"><title>{{ .page.LinkTitle }} · {{ .place }} · {{ lang.FormatNumber 0 .cumKm }} km</title><rect x="{{ printf "%.1f" $xs }}" y="{{ $y0 }}" width="{{ printf "%.1f" (sub $xe $xs) }}" height="{{ $h }}" class="hit" /></a>
+      {{- end }}
+      {{- $caption = i18n "metrics.distance.caption" (dict
+        "km" (lang.FormatNumber 0 $last.cumKm) "days" (lang.FormatNumber 0 $total)
+        "riding" (lang.FormatNumber 0 $riding) "perDay" (lang.FormatNumber 0 (div $last.cumKm (math.Max 1.0 $riding)))) -}}
+
+    {{- else if or (eq $chart "km") (eq $chart "ascent") }}
+      {{- $step := cond (eq $chart "km") 50.0 500.0 -}}
+      {{- $unit := cond (eq $chart "km") "km" "m" -}}
+      {{- $max := 0.0 -}}
+      {{- $best := false -}}
+      {{- range $d.rows -}}
+        {{- $v := div (float (index . $chart)) .span -}}
+        {{- $max = math.Max $max $v -}}
+        {{- /* the record in the caption: single days only, not the average of a longer gap */ -}}
+        {{- if and (eq .span 1.0) (or (not $best) (gt (float (index . $chart)) (float (index $best $chart)))) }}{{ $best = . }}{{ end -}}
+      {{- end -}}
+      {{- $ymax := mul (math.Ceil (div (math.Max 1.0 $max) $step)) $step -}}
+      {{- range seq 1 (int (div $ymax $step)) }}
+        {{- $y := sub $yb (mul (div (mul (float .) $step) $ymax) $h) }}
+    <line x1="{{ $x0 }}" x2="{{ add $x0 $w }}" y1="{{ printf "%.1f" $y }}" y2="{{ printf "%.1f" $y }}" class="grid" />
+    <text x="{{ sub $x0 6 }}" y="{{ printf "%.1f" (add $y 4) }}" text-anchor="end">{{ lang.FormatNumber 0 (mul (float .) $step) }}</text>
+      {{- end }}
+      {{- range $d.rows }}
+        {{- $v := float (index . $chart) }}
+        {{- if gt $v 0.0 }}
+          {{- $xs := add $x0 (mul (div (sub (float .day) .span) $total) $w) }}
+          {{- $xe := add $x0 (mul (div (float .day) $total) $w) }}
+          {{- $bh := mul (div (div $v .span) $ymax) $h }}
+    <a href="{{ .page.RelPermalink }}"><title>{{ .page.LinkTitle }} · {{ .place }} · {{ lang.FormatNumber 0 $v }} {{ $unit }}{{ if gt .span 1.0 }} / {{ .span }} d{{ end }}</title><rect x="{{ printf "%.1f" $xs }}" y="{{ printf "%.1f" (sub $yb $bh) }}" width="{{ printf "%.1f" (math.Max 1.0 (sub $xe $xs 0.4)) }}" height="{{ printf "%.1f" $bh }}" class="bar" /></a>
+        {{- end }}
+      {{- end }}
+      {{- with $best }}
+        {{- $caption = i18n (printf "metrics.%s.caption" $chart) (dict
+          "value" (lang.FormatNumber 0 (index . $chart))
+          "place" (printf `<a href="%s">%s</a>` .page.RelPermalink (.place | htmlEscape))) -}}
+      {{- end }}
+
+    {{- else if eq $chart "mood" }}
+      {{- $top := 0.0 -}}
+      {{- range $d.rows }}{{ $top = math.Max $top .maxEle }}{{ end -}}
+      {{- /* altitude only as background shape (no scale, it would read as a mood scale); the tooltip has the metres */ -}}
+      {{- $ymax := mul (math.Ceil (div (math.Max 1.0 $top) 1000.0)) 1000.0 -}}
+      {{- range $d.rows }}
+        {{- if gt .maxEle 0 }}
+          {{- $xs := add $x0 (mul (div (sub (float .day) .span) $total) $w) }}
+          {{- $xe := add $x0 (mul (div (float .day) $total) $w) }}
+          {{- $bh := mul (div (float .maxEle) $ymax) $h }}
+    <rect x="{{ printf "%.1f" $xs }}" y="{{ printf "%.1f" (sub $yb $bh) }}" width="{{ printf "%.1f" (sub $xe $xs) }}" height="{{ printf "%.1f" $bh }}" class="area" />
+        {{- end }}
+      {{- end }}
+      {{- $emoji := slice "" "😫" "🙁" "😐" "🙂" "😄" -}}
+      {{- $names := slice "" "terrible" "bad" "neutral" "good" "great" -}}
+      {{- range seq 1 5 }}
+    <text x="{{ add $x0 $w 22 }}" y="{{ printf "%.1f" (add $y0 (mul (div (sub 5.0 .) 4.0) $h) 5) }}" text-anchor="middle" class="emoji">{{ index $emoji . }}</text>
+      {{- end }}
+      {{- $pts := slice -}}
+      {{- $counts := dict -}}
+      {{- range $d.rows -}}
+        {{- $pts = $pts | append (printf "%.1f,%.1f" (add $x0 (mul (div (sub (float .day) 0.5) $total) $w)) (add $y0 (mul (div (sub 5.0 .mood) 4.0) $h))) -}}
+        {{- $k := index $names .mood -}}
+        {{- $counts = merge $counts (dict $k (add 1 (index $counts $k | default 0))) -}}
+      {{- end }}
+    <polyline points="{{ delimit $pts " " }}" class="mood-line" />
+      {{- range $d.rows }}
+        {{- $x := add $x0 (mul (div (sub (float .day) 0.5) $total) $w) }}
+        {{- $y := add $y0 (mul (div (sub 5.0 .mood) 4.0) $h) }}
+    <a href="{{ .page.RelPermalink }}"><title>{{ .page.LinkTitle }} · {{ .place }} · {{ index $emoji .mood }} {{ i18n (printf "mood.%s" (index $names .mood)) }}{{ if gt .maxEle 0 }} · {{ .maxEle }} m{{ end }}</title><circle cx="{{ printf "%.1f" $x }}" cy="{{ printf "%.1f" $y }}" r="3" class="mood mood-{{ .mood }}" /></a>
+      {{- end }}
+      {{- $parts := slice -}}
+      {{- range seq 5 -1 1 }}{{ $parts = $parts | append (printf "%s %d" (index $emoji .) (index $counts (index $names .) | default 0)) }}{{ end -}}
+      {{- $caption = i18n "metrics.mood.caption" (dict "counts" (delimit $parts " · ")) -}}
+
+    {{- else if eq $chart "temperature" }}
+      {{- $lo := 100.0 -}}
+      {{- $hi := -100.0 -}}
+      {{- $cold := false -}}
+      {{- $hot := false -}}
+      {{- range $d.rows -}}
+        {{- if isset .w "temperatureMin" -}}
+          {{- if lt (float .w.temperatureMin) $lo }}{{ $lo = float .w.temperatureMin }}{{ $cold = . }}{{ end -}}
+          {{- if gt (float .w.temperatureMax) $hi }}{{ $hi = float .w.temperatureMax }}{{ $hot = . }}{{ end -}}
+        {{- end -}}
+      {{- end -}}
+      {{- if $cold }}
+        {{- $ymin := mul (math.Floor (div $lo 10.0)) 10.0 -}}
+        {{- $ymax := mul (math.Ceil (div $hi 10.0)) 10.0 -}}
+        {{- $span := sub $ymax $ymin -}}
+        {{- range seq (int (div $ymin 10.0)) (int (div $ymax 10.0)) }}
+          {{- $y := sub $yb (mul (div (sub (mul (float .) 10.0) $ymin) $span) $h) }}
+    <line x1="{{ $x0 }}" x2="{{ add $x0 $w }}" y1="{{ printf "%.1f" $y }}" y2="{{ printf "%.1f" $y }}" class="{{ if eq . 0 }}zero{{ else }}grid{{ end }}" />
+    <text x="{{ sub $x0 6 }}" y="{{ printf "%.1f" (add $y 4) }}" text-anchor="end">{{ mul . 10 }} °C</text>
+        {{- end }}
+        {{- range $d.rows }}
+          {{- if isset .w "temperatureMin" }}
+            {{- $min := float .w.temperatureMin }}
+            {{- $max := float .w.temperatureMax }}
+            {{- $mean := div (add $min $max) 2.0 }}
+            {{- $v := $mean }}{{ $kind := "mild" }}
+            {{- if lt $mean 14.0 }}{{ $v = $min }}{{ $kind = "cold" }}{{ else if gt $mean 20.0 }}{{ $v = $max }}{{ $kind = "warm" }}{{ end }}
+            {{- $x := add $x0 (mul (div (sub (float .day) 0.5) $total) $w) }}
+    <a href="{{ .page.RelPermalink }}"><title>{{ .page.LinkTitle }} · {{ .place }} · {{ lang.FormatNumber 0 $min }}…{{ lang.FormatNumber 0 $max }} °C</title><line x1="{{ printf "%.1f" $x }}" x2="{{ printf "%.1f" $x }}" y1="{{ printf "%.1f" (sub $yb (mul (div (sub $min $ymin) $span) $h)) }}" y2="{{ printf "%.1f" (sub $yb (mul (div (sub $max $ymin) $span) $h)) }}" class="range" /><circle cx="{{ printf "%.1f" $x }}" cy="{{ printf "%.1f" (sub $yb (mul (div (sub $v $ymin) $span) $h)) }}" r="2.5" class="{{ $kind }}" /></a>
+          {{- end }}
+        {{- end }}
+        {{- $caption = i18n "metrics.temperature.caption" (dict
+          "min" (lang.FormatNumber 0 $lo) "minPlace" (printf `<a href="%s">%s</a>` $cold.page.RelPermalink ($cold.place | htmlEscape))
+          "max" (lang.FormatNumber 0 $hi) "maxPlace" (printf `<a href="%s">%s</a>` $hot.page.RelPermalink ($hot.place | htmlEscape))) -}}
+      {{- end }}
+    {{- else }}
+      {{- errorf "trip-metrics: unknown chart %q (distance, km, ascent, mood, temperature)" $chart }}
+    {{- end }}
+    <line x1="{{ $x0 }}" x2="{{ add $x0 $w }}" y1="{{ $yb }}" y2="{{ $yb }}" class="axis" />
+  </svg>
+  <figcaption><small>{{ $caption | safeHTML }}</small></figcaption>
+</figure>
+{{- end -}}

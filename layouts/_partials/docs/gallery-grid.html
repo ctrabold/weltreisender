@@ -1,0 +1,37 @@
+{{/*
+  Renders image resources as a thumbnail grid with a PhotoSwipe lightbox, sorted by capture
+  time. The resources are the 1600 px WebP copies in assets/images/<y>/<m>/<d>/ (large view); the
+  400 px thumbnail of each is assets/images/thumb/<same path>. Both are upright; only the large copy keeps the metadata (capture date read here),
+  made by scripts/make-web-images.sh from the originals, which live outside the site.
+  Usage: partial "docs/gallery-grid" (dict "page" .Page "images" $resources)
+  The PhotoSwipe lightbox itself is loaded once per page by docs/inject/body.
+  Each grid is its own lightbox. With "grouped" true the grid belongs to an enclosing element
+  marked `data-pswp` instead, so the lightbox continues from one grid into the next.
+*/}}
+{{- $items := slice -}}
+{{- range .images -}}
+  {{- if not (reflect.IsImageResourceProcessable .) }}{{ continue }}{{ end -}}
+  {{- $date := "" -}}
+  {{- if reflect.IsImageResourceWithMeta . -}}
+    {{- with .Meta -}}{{- $date = .Date -}}{{- end -}}
+  {{- end -}}
+  {{- $items = $items | append (dict "date" (string $date) "taken" $date "img" .) -}}
+{{- end -}}
+
+{{- with $items -}}
+<div class="book-gallery"{{ if not $.grouped }} data-pswp{{ end }}>
+  {{- range sort . "date" }}
+    {{- $large := .img }}
+    {{- $thumb := resources.Get (printf "images/thumb/%s" (strings.TrimPrefix "/images/" $large.Name)) }}
+    {{- if not $thumb }}
+      {{- warnf "gallery: no thumbnail of %s, run scripts/make-web-images.sh" $large.Name }}
+      {{- $thumb = $large }}
+    {{- end }}
+    {{- $caption := "" }}
+    {{- with .taken }}{{ $caption = printf "%s, %s" (time.Format ":date_medium" .) (.Format "15:04") }}{{ end }}
+  <a href="{{ $large.RelPermalink }}" data-pswp-width="{{ $large.Width }}" data-pswp-height="{{ $large.Height }}" target="_blank" title="{{ $caption }}">
+    <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $caption }}" loading="lazy" />
+  </a>
+  {{- end }}
+</div>
+{{- end -}}

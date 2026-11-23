@@ -1,0 +1,14 @@
+{
+ "date": "2009-05-30",
+ "latitude": 50.2235,
+ "longitude": 12.8824,
+ "gridElevation": 434.0,
+ "temperatureMax": 12.1,
+ "temperatureMin": 8.9,
+ "precipitation": 1.1,
+ "sunshineHours": 3.6,
+ "windMax": 20.0,
+ "windDirection": 2,
+ "weatherCode": 51,
+ "source": "Open-Meteo (ERA5)"
+}

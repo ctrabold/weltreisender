@@ -1,0 +1,12 @@
+{{/*
+  Returns the leg computed by scripts/build_routes.py for a diary page
+  (data/routes/<year>/<month>/<post>.json), or false. Pass the location source page.
+*/}}
+{{ $leg := false }}
+{{ with .File }}
+  {{ $parts := split (strings.TrimSuffix "/" (strings.TrimPrefix "docs/" .Dir)) "/" }}
+  {{ if eq (len $parts) 2 }}
+    {{ $leg = index hugo.Data "routes" (index $parts 0) (index $parts 1) .ContentBaseName }}
+  {{ end }}
+{{ end }}
+{{ return $leg }}
