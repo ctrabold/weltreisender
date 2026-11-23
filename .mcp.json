@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "basic-memory": {
+      "command": "uvx",
+      "args": ["basic-memory", "mcp"]
+    },
+    "hk": {
+      "command": "mise",
+      "args": ["exec", "--", "hk", "mcp", "--root", "."]
+    }
+  }
+}
