@@ -1,0 +1,41 @@
+name: Check external links
+
+# Monthly report of broken links (internal ones are checked on every deploy).
+# Opens one issue labelled "broken-links" and updates it on later runs; never fails the build.
+on:
+  schedule:
+    - cron: "0 6 1 * *" # 06:00 UTC on the 1st of each month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check links
+        id: lychee
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --config lychee.conf --no-progress content content.en
+          fail: false
+      - name: Open or update the report issue
+        if: steps.lychee.outputs.exit_code != 0
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh label create broken-links --color d73a4a --description "lychee report" --force
+          n=$(gh issue list --label broken-links --state open --json number --jq '.[0].number // empty')
+          if [ -n "$n" ]; then
+            gh issue edit "$n" --body-file lychee/out.md
+            gh issue comment "$n" --body "Updated by run ${{ github.run_id }}."
+          else
+            gh issue create --title "Broken links" --label broken-links --body-file lychee/out.md
+          fi

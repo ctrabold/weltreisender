@@ -28,6 +28,13 @@ jobs:
           submodules: true # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
           persist-credentials: false
+      - name: Check internal links
+        # offline: local files only (post images resolve to assets/images, see lychee.conf);
+        # external links are checked monthly by links.yml
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --offline --config lychee.conf --no-progress content content.en
+          jobSummary: false
       - name: Setup Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - name: Setup Hugo
