@@ -27,7 +27,47 @@ The content of the site (blog posts and page content) is licensed under a **Crea
 See the [About page](http://christian-trabold.de/about/#content-on-this-site) for details.
 
 ```text
-Copyright 2025, Christian Trabold
+Copyright 2026, Christian Trabold
 Licensed under CC BY-NC-ND 4.0 License
 see <https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode.en> for details.
+```
+
+## FAQ
+
+### How do I fix file dates (to reflect pictures taken dates)
+
+```shell
+exiftool -r -d %s -tagsfromfile "%d/%F.json" \
+  "-AllDates<photoTakenTimeTimestamp" \
+  "-FileCreateDate<photoTakenTimeTimestamp" \
+  "-FileModifyDate<photoTakenTimeTimestamp" \
+  "-Description<description" \
+  "-Caption-Abstract<description" \
+  "-GPSLatitude<geoDataLatitude" \
+  "-GPSLatitudeRef<geoDataLatitude" \
+  "-GPSLongitude<geoDataLongitude" \
+  "-GPSLongitudeRef<geoDataLongitude" \
+  "-GPSAltitude<geoDataAltitude" \
+  -overwrite_original \
+  -ext jpg -ext jpeg -ext png -ext mp4 -ext mov .
+```
+
+# ===
+
+```shell
+. "$HOME/.cargo/env"
+
+exiftool-rs -r -d %s -tagsfromfile "%d/%F.json" \
+  "-AllDates<photoTakenTimeTimestamp" \
+  "-FileCreateDate<photoTakenTimeTimestamp" \
+  "-FileModifyDate<photoTakenTimeTimestamp" \
+  "-Description<description" \
+  "-Caption-Abstract<description" \
+  "-GPSLatitude<geoDataLatitude" \
+  "-GPSLatitudeRef<geoDataLatitude" \
+  "-GPSLongitude<geoDataLongitude" \
+  "-GPSLongitudeRef<geoDataLongitude" \
+  "-GPSAltitude<geoDataAltitude" \
+  -overwrite_original \
+  -ext jpg -ext jpeg -ext png -ext mp4 -ext mov .
 ```
