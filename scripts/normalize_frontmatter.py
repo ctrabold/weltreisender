@@ -34,6 +34,8 @@ ORDER = [
     "date",
     "title",
     "translationKey",
+    "slug",
+    "aliases",
     "draft",
     "summary",
     "location",
@@ -94,7 +96,18 @@ REQUIRED = {
 }
 
 KEY = re.compile(r"([A-Za-z][A-Za-z0-9_]*):")
-DIARY = re.compile(r"docs/20\d\d/\d\d/(20\d\d-\d\d-\d\d)[a-z]?\.md$")
+DIARY = re.compile(r"docs/(20\d\d/\d\d)/((20\d\d-\d\d-)(\d\d[a-z]?))\.md$")
+
+
+def diary_url(rel: str) -> dict[str, str]:
+    """Short URL of a diary post (`/docs/2009/05/21/`) and the old one it redirects from.
+
+    The slug is the day of the file name plus its suffix letter (`2009-05-21a.md` → `21a`).
+    The alias keeps the old URLs (`/docs/2009/05/2009-05-21/`) working; Hugo puts it below
+    the page's language root (`/en/…`).
+    """
+    month, stem, _, day = DIARY.search(rel).groups()
+    return {"slug": day, "alias": f"/docs/{month}/{stem}/"}
 
 
 def kind_of(rel: str) -> str:
@@ -127,7 +140,7 @@ def split_chunks(lines: list[str]) -> list[tuple[str, list[str]]]:
     return chunks
 
 
-def normalize(text: str, kind: str) -> tuple[str, list[str]]:
+def normalize(text: str, kind: str, rel: str) -> tuple[str, list[str]]:
     """Return the text with filled and sorted front matter, and the keys that were added."""
     if not text.startswith("---\n"):
         return text, []
@@ -135,7 +148,11 @@ def normalize(text: str, kind: str) -> tuple[str, list[str]]:
     chunks = split_chunks(front.rstrip("\n").split("\n"))
     present = {k for k, _ in chunks}
     added = []
-    for key, value in DEFAULTS[kind].items():
+    defaults = dict(DEFAULTS[kind])
+    if kind.startswith("diary"):
+        url = diary_url(rel)
+        defaults |= {"slug": f'"{url["slug"]}"', "aliases": f'["{url["alias"]}"]'}
+    for key, value in defaults.items():
         if key not in present:
             chunks.append((key, [f"{key}: {value}" if value else f"{key}:"]))
             added.append(key)
@@ -169,10 +186,16 @@ def validate(rel: str, kind: str, text: str) -> list[str]:
         ):
             problems.append(f"`{key}` must be a list of strings, not {value!r}")
     if kind.startswith("diary"):
-        day = DIARY.search(rel).group(1)
+        match = DIARY.search(rel)
+        day = match.group(3) + match.group(4)[:2]
         written = re.search(r"^date: (\d{4}-\d\d-\d\d)", front, re.MULTILINE)
         if not written or written.group(1) != day:
             problems.append(f"`date` does not match the file name day {day}")
+        url = diary_url(rel)
+        if data.get("slug") != url["slug"]:
+            problems.append(f"`slug` must be {url['slug']!r}, not {data.get('slug')!r}")
+        if url["alias"] not in (data.get("aliases") or []):
+            problems.append(f"`aliases` must contain {url['alias']!r} (old URL)")
     if kind == "diary-en":
         problems += [
             f"`{k}` belongs to the German page only"
@@ -240,7 +263,7 @@ def main() -> int:
             rel = str(path.relative_to(ROOT))
             kind = kind_of(rel)
             text = path.read_text()
-            new, added = normalize(text, kind)
+            new, added = normalize(text, kind, rel)
             if new != text:
                 changed += 1
                 note = f" (adds {', '.join(added)})" if added else ""

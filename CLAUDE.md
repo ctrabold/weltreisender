@@ -37,11 +37,14 @@ CI (`deploy.yml`) and local development both use Hugo `0.169`; use current APIs 
   `{{<section>}}`; ordering in menus and section lists is by `date` ascending
   (overrides in `layouts/_partials/docs/menu-filetree.html` and `layouts/_shortcodes/section.html`).
   Other top-level sections: `docs/vorbereitung`, `docs/rueckblick`, `posts/` (tag overview).
+- Diary URLs are short: `slug` = day plus suffix letter (`2009-05-21a.md` → `/docs/2009/05/21a/`,
+  English `/en/docs/2009/05/21a/`); `aliases` keeps the old `/docs/2009/05/2009-05-21a/` URL as a
+  redirect. Both are derived from the file name by `normalize_frontmatter.py` (never edit by hand).
 - Front matter is always YAML (`---`). German diary posts always carry, in this order: `date`,
-  `title`, `draft`, `summary`, `location` (lat/long and place names), `travelMode`, optional
+  `title`, `slug`, `aliases`, `draft`, `summary`, `location` (lat/long and place names), `travelMode`, optional
   `route`, the day datasheet `mood` (terrible|bad|neutral|good|great, default `neutral`),
   `sleeping` (tent|hostel|hotel|homestay|vehicle|misc) and `costs` (EUR; empty = unknown), then
-  `tags` and `categories`. English diary posts have only `date`, `title`, `draft`, `summary`,
+  `tags` and `categories`. English diary posts have only `date`, `title`, `slug`, `aliases`, `draft`, `summary`,
   `tags`, `categories`; other pages add `translationKey`, section indexes the `book*` settings.
   `uv run scripts/normalize_frontmatter.py` (dry run; `--apply` writes) adds missing keys with
   defaults, sorts them (a key moves together with its comment) and lists invalid settings (types,
