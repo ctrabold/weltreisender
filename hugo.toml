@@ -2,7 +2,7 @@ baseURL = 'https://ctrabold.github.io/weltreisender'
 title = 'Christian Trabold - Reise Blog - Weltreisender'
 theme = ['hugo-book']
 
-languageCode = 'de-de'
+locale = 'de-de'
 defaultContentLanguage = 'de'
 
 copyright = '[© CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode.en)'
