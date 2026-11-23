@@ -1,0 +1,64 @@
+amends "package://github.com/jdx/hk/releases/download/v2.12.0/hk@2.12.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.12.0/hk@2.12.0#/Builtins.pkl"
+// Using a coding agent? See https://hk.jdx.dev/agents
+
+exclude = List(
+    "zsh",
+)
+
+local linters = new Mapping {
+    //["actionlint"] = Builtins.actionlint
+    // web copies of the photos are expected to be large (up to ~750 KB, limit 500 KB)
+    ["check_added_large_files"] = (Builtins.check_added_large_files) {
+        exclude = List("assets/images/**")
+    }
+    ["check_case_conflict"] = Builtins.check_case_conflict
+    ["mixed_line_ending"] = Builtins.mixed_line_ending
+    ["newlines"] = Builtins.newlines
+    ["shellcheck"] = Builtins.shellcheck
+    ["shellharden"] = Builtins.shellharden
+    ["shfmt"] = Builtins.shfmt
+    ["trailing_whitespace"] = Builtins.trailing_whitespace
+    //["zizmor"] = Builtins.zizmor
+
+    //["check_conventional_commit"] = Builtins.check_conventional_commit
+    ["check_executables_have_shebangs"] = Builtins.check_executables_have_shebangs
+    ["check_merge_conflict"] = Builtins.check_merge_conflict
+    ["detect_private_key"] = Builtins.detect_private_key
+    //["dotenv_linter"] = Builtins.dotenv_linter
+    ["dprint"] = Builtins.dprint
+    //["ox-lint"] = Builtins.ox_lint
+    //["oxfmt"] = Builtins.oxfmt
+    //["osv_scanner"] = Builtins.osv_scanner
+    ["ruff"] = Builtins.ruff
+    ["ruff_format"] = Builtins.ruff_format
+    ["rumdl"] = Builtins.rumdl
+    //["rumdl_format"] = Builtins.rumdl_format
+    ["terraform"] = Builtins.terraform
+    //["terraform_docs"] = Builtins.terraform_docs
+    ["terraform_validate"] = Builtins.terraform_validate
+    ["terragrunt_hcl_fmt"] = Builtins.terragrunt_hcl_fmt
+    ["terragrunt_hcl_validate"] = Builtins.terragrunt_hcl_validate
+    ["tf_lint"] = Builtins.tf_lint
+    //["vale"] = Builtins.vale
+    ["lychee-instructions"] {
+    glob = List("*instructions.md", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "SKILL.md")
+    check = new Config.CommandSpec {
+      command = "lychee --offline --no-progress --include-fragments {{files}}"
+      effect = "read"
+    }
+    }
+}
+
+steps = linters
+
+hooks {
+    ["pre-commit"] {
+      fix = true
+      stash = false
+      steps = linters
+    }
+    //["pre-push"] {
+    //    steps = linters
+    //}
+}
