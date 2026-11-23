@@ -16,7 +16,7 @@ Die Sonne geht auf, die Vögel zwitschern, der Kopf ist leicht angeduselt.
 
 Ich treffe mich online mit meinem Freund in China (Guangzhou) und betone nochmal eindrucksvoll, dass ich ihn auf jeden Fall besuchen komme. Er müsste halt nur so ca. 1 Jahr warten. Denn ich komme mit dem Fahrrad.
 
-Zuvor war ich Monate lang mit meiner Idee alleine. Hatte auch eine erste Test-Fahrt nach Budapest hinter mir, um zu prüfen, ob mir das Radreisen wirklich gefällt.
+Zuvor war ich Monate lang mit meiner Idee alleine. Hatte auch eine erste [Test-Fahrt nach Budapest]({{< ref "docs/2007/09" >}}) hinter mir, um zu prüfen, ob mir das Radreisen wirklich gefällt.
 
 Meine ersten Gedanken, eine längere Radtour zu machen, funkeln auf, als ich während einer Radtour auf meiner Lieblingsstrecke wieder dem Heimweg antrete.
 
