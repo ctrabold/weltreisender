@@ -14,6 +14,8 @@ removed. `Blog` marks public posts (as opposed to private diary entries). Countr
 | German      | English        | Kind    | Note                        |
 | ----------- | -------------- | ------- | --------------------------- |
 | Deutschland | Germany        | country |                             |
+| Österreich  | Austria        | country | test ride 2007              |
+| Ungarn      | Hungary        | country | test ride 2007              |
 | Tschechien  | Czech Republic | country | name used in 2009           |
 | Polen       | Poland         | country |                             |
 | Ukraine     | Ukraine        | country |                             |
@@ -26,6 +28,8 @@ removed. `Blog` marks public posts (as opposed to private diary entries). Countr
 | Malaysia    | Malaysia       | country |                             |
 | Singapur    | Singapore      | country |                             |
 | Dieburg     | Dieburg        | place   | start and finish            |
+| Wien        | Vienna         | place   | test ride 2007              |
+| Budapest    | Budapest       | place   | test ride 2007              |
 | Prag        | Prague         | place   |                             |
 | Krakau      | Kraków         | place   |                             |
 | Bischkek    | Bishkek        | place   |                             |

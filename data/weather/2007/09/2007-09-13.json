@@ -1,0 +1,14 @@
+{
+ "date": "2007-09-13",
+ "latitude": 48.195,
+ "longitude": 16.353,
+ "gridElevation": 191.0,
+ "temperatureMax": 18.5,
+ "temperatureMin": 10.7,
+ "precipitation": 0.0,
+ "sunshineHours": 11.6,
+ "windMax": 15.0,
+ "windDirection": 315,
+ "weatherCode": 3,
+ "source": "Open-Meteo (ERA5)"
+}

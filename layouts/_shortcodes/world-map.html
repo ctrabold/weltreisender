@@ -1,8 +1,17 @@
 {{/*
-  Interactive map of the whole trip (all diary posts and legs).
-  Usage: {{< world-map >}}
+  Interactive map of the diary posts and legs: all trips, or one trip (key of site.Params.trips).
+  Usage: {{< world-map >}}   {{< world-map trip="budapest" height="50vh" >}}
 */}}
+{{- $pages := site.RegularPages -}}
+{{- with .Get "trip" -}}
+  {{- $trip := . -}}
+  {{- $pages = slice -}}
+  {{- range site.RegularPages -}}
+    {{- if eq (partial "docs/trip-key" .) $trip }}{{ $pages = $pages | append . }}{{ end -}}
+  {{- end -}}
+{{- end }}
 {{ partial "docs/trip-map" (dict
-  "pages" site.RegularPages
+  "pages" $pages
   "id" (printf "world-map-%s" (md5 .Page.RelPermalink))
+  "height" (.Get "height")
 ) }}

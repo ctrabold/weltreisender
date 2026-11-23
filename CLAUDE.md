@@ -105,6 +105,7 @@ CI (`deploy.yml`) and local development both use Hugo `0.169`; use current APIs 
   `'YYYY-MM'`, inclusive; `docs/trip-key` partial, `trip_key()` in `build_routes.py`). Day counter,
   km so far, charts and route legs never cross a trip; `{{< trip-profile >}}` and
   `{{< trip-metrics >}}` take an optional `trip="…"` (default `params.defaultTrip`).
+  `{{< world-map >}}` shows all trips, `{{< world-map trip="budapest" height="50vh" >}}` one.
   `docs/2007/` ("Vorgeschichte", test ride to Budapest) is its own trip.
 - `layouts/_shortcodes/map-route.html` draws a Leaflet/OSRM route
   (`startLat`, `startLon`, `endLat`, `endLon`, `mode` = foot|bike|car).

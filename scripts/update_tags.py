@@ -50,6 +50,8 @@ CATEGORY_EN = {
 }
 COUNTRIES = {  # location.country -> German tag
     "Germany": "Deutschland",
+    "Austria": "Österreich",
+    "Hungary": "Ungarn",
     "Czech Republic": "Tschechien",
     "Poland": "Polen",
     "Ukraine": "Ukraine",
@@ -66,6 +68,8 @@ COUNTRIES = {  # location.country -> German tag
 PLACE_RADIUS_KM = 30
 PLACES = {  # German tag -> localityName whose posts define the centre
     "Dieburg": "Dieburg",
+    "Wien": "Vienna",
+    "Budapest": "Budapest",
     "Prag": "Prague",
     "Krakau": "Krakow",
     "Bischkek": "Bishkek",
@@ -92,12 +96,15 @@ TAG_EN = {
     "Essen": "Food",
     "Meilenstein": "Milestone",
     "Deutschland": "Germany",
+    "Österreich": "Austria",
+    "Ungarn": "Hungary",
     "Tschechien": "Czech Republic",
     "Polen": "Poland",
     "Russland": "Russia",
     "Kirgistan": "Kyrgyzstan",
     "Kambodscha": "Cambodia",
     "Singapur": "Singapore",
+    "Wien": "Vienna",
     "Prag": "Prague",
     "Krakau": "Kraków",
     "Bischkek": "Bishkek",

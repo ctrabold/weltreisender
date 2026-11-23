@@ -2,6 +2,8 @@
   "Czech Republic": { "iso": "CZ", "de": "Tschechien", "en": "Czech Republic" },
   "China": { "iso": "CN", "de": "China", "en": "China" },
   "Germany": { "iso": "DE", "de": "Deutschland", "en": "Germany" },
+  "Austria": { "iso": "AT", "de": "Österreich", "en": "Austria" },
+  "Hungary": { "iso": "HU", "de": "Ungarn", "en": "Hungary" },
   "Russia": { "iso": "RU", "de": "Russland", "en": "Russia" },
   "Kyrgyzstan": { "iso": "KG", "de": "Kirgisistan", "en": "Kyrgyzstan" },
   "Malaysia": { "iso": "MY", "de": "Malaysia", "en": "Malaysia" },
