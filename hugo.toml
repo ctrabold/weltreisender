@@ -70,6 +70,19 @@ title = 'Christian Trabold - Travel Blog - World Traveller'
   BookTranslatedOnly = true
   # BookLastChangeLink = 'https://github.com/ctrabold/weltreisender/commit/{{ .GitInfo.Hash }}'
   # BookEditLink = 'https://github.com/ctrabold/weltreisender/edit/main/{{ .Path }}'
+  # trip whose numbers the homepage profile and the data page show (key of params.trips)
+  defaultTrip = 'weltreise'
+
+# Trips ("books"): diary posts are grouped by month, from/to inclusive ('YYYY-MM').
+# Day counter, km so far, route legs (scripts/build_routes.py) and charts never cross a trip.
+[[params.trips]]
+  key = 'budapest'
+  from = '2007-09'
+  to = '2007-09'
+[[params.trips]]
+  key = 'weltreise'
+  from = '2009-04'
+  to = '2010-05'
 
 [params.hugomods]
     [params.hugomods.images]

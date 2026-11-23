@@ -1,56 +1,65 @@
 {{/*
   Per-day trip numbers for every diary post with a location, keyed by the file path of the
-  German page (the location source), so German and English pages share one entry:
+  German page (the location source), so German and English pages share one entry. Every
+  number is counted within the post's trip (docs/trip-key, site.Params.trips):
 
+    trip        key of the trip ("" outside every trip)
     day         day of the trip (departure = first post with a bike leg = day 1, 0 before)
     totalDays   length of the trip in days (departure to the last post with a location)
-    gapDays     days since the previous post with a location (the leg covers all of them)
+    gapDays     days since the previous post with a location of the same trip (0 for the first)
     mode        travel mode of the leg ending at this post ("" if none)
     km          length of that leg in km
     ascent, descent, maxEle   only for bike legs with an elevation profile
-    cumKm, cumAscent          ridden so far (bike legs with elevation profile), incl. this day
+    cumKm, cumAscent          ridden so far on this trip (bike legs with elevation profile), incl. this day
 
   Call cached: partialCached "docs/trip-stats" site site.Language.Lang
 */}}
 {{- $entries := slice -}}
-{{- $departure := "" -}}
+{{- $departure := dict -}}
+{{- $lastDate := dict -}}
 {{- range sort (where site.RegularPages "Section" "docs") "Date" -}}
   {{- $src := partial "docs/location-source" . -}}
   {{- if and $src.Params.location $src.File -}}
     {{- $leg := partial "docs/route-leg" $src -}}
     {{- $date := .Date.Format "2006-01-02" -}}
-    {{- if and $leg (eq $leg.mode "bike") (not $departure) -}}{{- $departure = $date -}}{{- end -}}
-    {{- $entries = $entries | append (dict "key" $src.File.Path "date" $date "leg" $leg) -}}
+    {{- $trip := partial "docs/trip-key" . -}}
+    {{- if and $leg (eq $leg.mode "bike") (not (index $departure $trip)) -}}
+      {{- $departure = merge $departure (dict $trip $date) -}}
+    {{- end -}}
+    {{- $lastDate = merge $lastDate (dict $trip $date) -}}
+    {{- $entries = $entries | append (dict "key" $src.File.Path "date" $date "leg" $leg "trip" $trip) -}}
   {{- end -}}
-{{- end -}}
-
-{{- /* trip length: day of the last entry */ -}}
-{{- $totalDays := 0 -}}
-{{- if and $departure $entries -}}
-  {{- $lastDate := (index $entries (sub (len $entries) 1)).date -}}
-  {{- $totalDays = add 1 (div (sub (time.AsTime $lastDate).Unix (time.AsTime $departure).Unix) 86400) -}}
 {{- end -}}
 
 {{- $stats := dict -}}
-{{- $cumKm := 0.0 -}}
-{{- $cumAscent := 0 -}}
-{{- $prevDate := "" -}}
+{{- $cumKm := dict -}}
+{{- $cumAscent := dict -}}
+{{- $prevDate := dict -}}
 {{- range $entries -}}
   {{- $leg := .leg -}}
+  {{- $trip := .trip -}}
+  {{- $dep := index $departure $trip -}}
   {{- $day := 0 -}}
-  {{- if and $departure (ge .date $departure) -}}
-    {{- $day = add 1 (div (sub (time.AsTime .date).Unix (time.AsTime $departure).Unix) 86400) -}}
+  {{- $totalDays := 0 -}}
+  {{- if $dep -}}
+    {{- $totalDays = add 1 (div (sub (time.AsTime (index $lastDate $trip)).Unix (time.AsTime $dep).Unix) 86400) -}}
+    {{- if ge .date $dep -}}
+      {{- $day = add 1 (div (sub (time.AsTime .date).Unix (time.AsTime $dep).Unix) 86400) -}}
+    {{- end -}}
   {{- end -}}
+  {{- $date := .date -}}
   {{- $gap := 0 -}}
-  {{- if $prevDate -}}
-    {{- $gap = div (sub (time.AsTime .date).Unix (time.AsTime $prevDate).Unix) 86400 -}}
+  {{- with index $prevDate $trip -}}
+    {{- $gap = div (sub (time.AsTime $date).Unix (time.AsTime .).Unix) 86400 -}}
   {{- end -}}
-  {{- $prevDate = .date -}}
-  {{- $mode := "" -}}
+  {{- $prevDate = merge $prevDate (dict $trip .date) -}}
   {{- $km := 0.0 -}}
+  {{- $mode := "" -}}
   {{- $ascent := 0 -}}
   {{- $descent := 0 -}}
   {{- $maxEle := 0 -}}
+  {{- $tripKm := index $cumKm $trip | default 0.0 -}}
+  {{- $tripAscent := index $cumAscent $trip | default 0 -}}
   {{- with $leg -}}
     {{- $mode = .mode -}}
     {{- $km = div (float .distance) 1000.0 -}}
@@ -60,14 +69,16 @@
         {{- $ascent = .ascent -}}
         {{- $descent = .descent -}}
         {{- $maxEle = .max -}}
-        {{- $cumKm = add $cumKm $km -}}
-        {{- $cumAscent = add $cumAscent .ascent -}}
+        {{- $tripKm = add $tripKm $km -}}
+        {{- $tripAscent = add $tripAscent .ascent -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
+  {{- $cumKm = merge $cumKm (dict $trip $tripKm) -}}
+  {{- $cumAscent = merge $cumAscent (dict $trip $tripAscent) -}}
   {{- $stats = merge $stats (dict .key (dict
-    "day" $day "totalDays" $totalDays "gapDays" $gap "mode" $mode "km" $km "ascent" $ascent "descent" $descent "maxEle" $maxEle
-    "cumKm" $cumKm "cumAscent" $cumAscent
+    "trip" $trip "day" $day "totalDays" $totalDays "gapDays" $gap "mode" $mode "km" $km
+    "ascent" $ascent "descent" $descent "maxEle" $maxEle "cumKm" $tripKm "cumAscent" $tripAscent
   )) -}}
 {{- end -}}
 {{- return $stats -}}

@@ -2,7 +2,8 @@
   One chart of the metrics page as a static SVG over the days of the trip (x = trip day, ticks on
   the 1st of each month). Every bar or dot links to its diary post; the tooltip names the day.
   Data: docs/trip-metrics-data (routes, weather and mood of the German pages).
-  Usage: partial "docs/trip-metrics" (dict "chart" "distance")
+  Usage: partial "docs/trip-metrics" (dict "chart" "distance" "trip" "weltreise")
+    trip          key of site.Params.trips, default site.Params.defaultTrip
     distance      km ridden so far (bike legs with elevation profile, as docs/trip-stats)
     km, ascent    per day (bike legs); a post after a gap of several days spreads its leg evenly
                   over them; the record in the caption counts single days only
@@ -11,7 +12,8 @@
                   maximum on warm days (mean above 20 °C), the mean in between
   Styles: .trip-profile and .trip-metrics in assets/styles/custom.css.
 */}}
-{{- $d := partialCached "docs/trip-metrics-data" site site.Language.Lang -}}
+{{- $trip := .trip | default site.Params.defaultTrip -}}
+{{- $d := partialCached "docs/trip-metrics-data" $trip site.Language.Lang $trip -}}
 {{- $chart := .chart -}}
 {{- if and $d.rows (gt $d.total 0) -}}
   {{- $total := float $d.total -}}

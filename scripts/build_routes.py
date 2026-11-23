@@ -11,7 +11,9 @@ with BRouter (https://brouter.de) depending on the post's `travelMode` front mat
 are stored as a straight line with `routed: false`. Posts at the same place as the previous
 one (< SAME_PLACE_KM) or with `travelMode: static` get no leg. A `route:` list of [lat, lon]
 waypoints in the front matter replaces the automatic leg with the route of the day (start,
-via points, finish) - also for the first post, which has no previous location. Existing legs with unchanged
+via points, finish) - also for the first post, which has no previous location. Legs never cross
+trips (`params.trips` in hugo.toml): the first post of a trip is treated like the first post.
+Existing legs with unchanged
 input are not requested again; stale leg files are reported, never deleted.
 
     uv run scripts/build_routes.py              # compute missing/changed legs
@@ -24,6 +26,7 @@ import json
 import math
 import sys
 import time
+import tomllib
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -33,6 +36,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / "content/docs"
+CONFIG = ROOT / "hugo.toml"
 TARGET = ROOT / "data/routes"
 BROUTER = "https://brouter.de/brouter"
 PROFILES = {
@@ -65,7 +69,14 @@ def front_matter(path: Path) -> dict:
     return yaml.safe_load(text.split("---", 2)[1]) or {}
 
 
+def trip_key(date: str, trips: list[dict]) -> str:
+    """Key of the trip whose months ('YYYY-MM', inclusive) contain date, or "" (as docs/trip-key)."""
+    month = date[:7]
+    return next((t["key"] for t in trips if t["from"] <= month <= t["to"]), "")
+
+
 def posts() -> list[dict]:
+    trips = tomllib.loads(CONFIG.read_text()).get("params", {}).get("trips", [])
     result = []
     for path in CONTENT.glob("20*/*/20*.md"):
         fm = front_matter(path)
@@ -76,6 +87,7 @@ def posts() -> list[dict]:
             {
                 "key": path.relative_to(CONTENT).with_suffix(""),
                 "date": str(fm.get("date")),
+                "trip": trip_key(str(fm.get("date")), trips),
                 "point": [float(loc["latitude"]), float(loc["longitude"])],
                 "mode": fm.get("travelMode", "bike"),
                 "waypoints": [[float(a), float(b)] for a, b in fm.get("route") or []],
@@ -214,6 +226,8 @@ def main() -> int:
     counts: dict[str, int] = {}
     items = posts()
     for previous, current in zip([None, *items], items, strict=False):
+        if previous is not None and previous["trip"] != current["trip"]:
+            previous = None  # a new trip starts without a leg from the last one
         mode = current["mode"]
         points = current["waypoints"]
         if not points:

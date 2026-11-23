@@ -1,6 +1,6 @@
 {{/*
-  Day rows for the metrics page (docs/trip-metrics), from departure (day 1) to the last post with
-  a location. One row per trip day with a post; several posts of one day (a/b/…) are merged: km
+  Day rows for the metrics page (docs/trip-metrics) of one trip (context: its key in
+  site.Params.trips), from departure (day 1) to the last post with a location. One row per trip day with a post; several posts of one day (a/b/…) are merged: km
   and ascent added up, highest point, link, place, weather and mood of the first post.
 
     day      day of the trip (docs/trip-stats); the row covers the days [day - span, day]
@@ -11,8 +11,9 @@
     w        weather of the day (data/weather) or an empty dict
 
   Also returns total (days of the trip) and months (trip day offset and label of each 1st).
-  Call cached: partialCached "docs/trip-metrics-data" site site.Language.Lang
+  Call cached: partialCached "docs/trip-metrics-data" $trip site.Language.Lang $trip
 */}}
+{{- $trip := . -}}
 {{- $stats := partialCached "docs/trip-stats" site site.Language.Lang -}}
 {{- $levels := dict "terrible" 1 "bad" 2 "neutral" 3 "good" 4 "great" 5 -}}
 {{- $rows := slice -}}
@@ -23,7 +24,7 @@
   {{- $src := partial "docs/location-source" . -}}
   {{- if and $src.Params.location $src.File -}}
     {{- $s := index $stats $src.File.Path -}}
-    {{- if and $s (gt $s.day 0) -}}
+    {{- if and $s (eq $s.trip $trip) (gt $s.day 0) -}}
       {{- $total = $s.totalDays -}}
       {{- if not $departure -}}
         {{- $departure = (time.AsTime (.Date.Format "2006-01-02")).AddDate 0 0 (sub 1 $s.day) -}}

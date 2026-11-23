@@ -101,6 +101,11 @@ CI (`deploy.yml`) and local development both use Hugo `0.169`; use current APIs 
   (`content/bilder.md`, `content.en/pictures.md`) shows one tile per country. All grids render
   via `docs/gallery-grid`. Flickr links are replaced by internal ones (record: `flickr-ref.txt`);
   only `rueckblick/erfahrungen.md` and other users' photos still point to Flickr.
+- Trips ("books"): `[[params.trips]]` in `hugo.toml` groups diary posts by month (`from`/`to`
+  `'YYYY-MM'`, inclusive; `docs/trip-key` partial, `trip_key()` in `build_routes.py`). Day counter,
+  km so far, charts and route legs never cross a trip; `{{< trip-profile >}}` and
+  `{{< trip-metrics >}}` take an optional `trip="…"` (default `params.defaultTrip`).
+  `docs/2007/` ("Vorgeschichte", test ride to Budapest) is its own trip.
 - `layouts/_shortcodes/map-route.html` draws a Leaflet/OSRM route
   (`startLat`, `startLon`, `endLat`, `endLon`, `mode` = foot|bike|car).
 - `{{< trip-profile >}}` (homepage, below the quote; `docs/trip-profile` partial) draws the height

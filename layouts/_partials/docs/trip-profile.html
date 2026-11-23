@@ -4,7 +4,8 @@
   Every leg is a clickable column linking to the diary post that ends it, in the current
   language; the tooltip names day, place, distance, ascent and highest point. Works without
   JavaScript. Data: data/routes/<year>/<month>/<post>.json (scripts/build_routes.py).
-  Usage: partial "docs/trip-profile" (dict "pages" site.RegularPages)
+  Only legs of one trip (docs/trip-key): trip = key of site.Params.trips, default site.Params.defaultTrip.
+  Usage: partial "docs/trip-profile" (dict "pages" site.RegularPages "trip" "weltreise")
 */}}
 {{- $legs := slice -}}
 {{- $total := 0.0 -}}
@@ -12,8 +13,10 @@
 {{- $minEle := 0.0 -}}
 {{- $maxEle := 0.0 -}}
 {{- $maxPage := false -}}
+{{- $trip := .trip | default site.Params.defaultTrip -}}
 {{- range sort (where .pages "Section" "docs") "Date" -}}
   {{- $page := . -}}
+  {{- if ne (partial "docs/trip-key" .) $trip }}{{ continue }}{{ end -}}
   {{- $src := partial "docs/location-source" . -}}
   {{- with partial "docs/route-leg" $src -}}
     {{- $e := .elevation -}}

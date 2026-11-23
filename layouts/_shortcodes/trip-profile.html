@@ -1,5 +1,6 @@
 {{/*
   Height profile of all bike rides of the trip; every part of the curve links to its post.
-  Usage: {{< trip-profile >}}
+  Usage: {{< trip-profile [trip="budapest"] >}}
+  trip: key of site.Params.trips, default site.Params.defaultTrip
 */}}
-{{ partial "docs/trip-profile" (dict "pages" site.RegularPages) }}
+{{ partial "docs/trip-profile" (dict "pages" site.RegularPages "trip" (.Get "trip")) }}

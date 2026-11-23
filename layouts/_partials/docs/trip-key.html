@@ -1,0 +1,11 @@
+{{/*
+  Key of the trip (site.Params.trips) a page belongs to, by the month of its date
+  ('YYYY-MM' between from and to, inclusive), or "" outside every trip.
+  Usage: partial "docs/trip-key" $page
+*/}}
+{{- $month := .Date.Format "2006-01" -}}
+{{- $key := "" -}}
+{{- range site.Params.trips -}}
+  {{- if and (not $key) (ge $month .from) (le $month .to) -}}{{- $key = .key -}}{{- end -}}
+{{- end -}}
+{{- return $key -}}
