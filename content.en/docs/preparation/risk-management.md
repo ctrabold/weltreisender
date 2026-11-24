@@ -2,6 +2,7 @@
 date: 2009-02-02T16:56:43+02:00
 title: Risk Management and Questions About Planning the Trip
 translationKey: risiko-management
+aliases: ["/docs/preparation/risk-management/"]
 draft: false
 tags: []
 categories: ["Planning", "Mindset"]

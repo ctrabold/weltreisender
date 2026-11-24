@@ -99,15 +99,46 @@ KEY = re.compile(r"([A-Za-z][A-Za-z0-9_]*):")
 DIARY = re.compile(r"docs/(20\d\d/\d\d)/((20\d\d-\d\d-)(\d\d[a-z]?))\.md$")
 
 
-def diary_url(rel: str) -> dict[str, str]:
-    """Short URL of a diary post (`/docs/2009/05/21/`) and the old one it redirects from.
+DOCS = re.compile(r"^content(?:\.en)?/docs/(.+?)(?:/_index)?\.md$")
 
-    The slug is the day of the file name plus its suffix letter (`2009-05-21a.md` → `21a`).
-    The alias keeps the old URLs (`/docs/2009/05/2009-05-21/`) working; Hugo puts it below
-    the page's language root (`/en/…`).
+
+def diary_slug(rel: str) -> str:
+    """Slug of a diary post: day plus suffix letter (`2009-05-21a.md` → `21a`)."""
+    return DIARY.search(rel).group(4)
+
+
+def old_urls(rel: str) -> list[str]:
+    """Earlier URLs of a page below `docs/`, kept as redirects (`aliases`).
+
+    `hugo.toml` [permalinks] drops `docs/` from the URL; before that a page lived at
+    `/docs/<path>/`, a diary post first at `/docs/2009/05/2009-05-21/`, then
+    `/docs/2009/05/21/`. Hugo puts aliases below the page's language root (`/en/…`).
     """
-    month, stem, _, day = DIARY.search(rel).groups()
-    return {"slug": day, "alias": f"/docs/{month}/{stem}/"}
+    m = DOCS.match(rel)
+    if not m:
+        return []
+    d = DIARY.search(rel)
+    if d:
+        month, stem, _, day = d.groups()
+        return [f"/docs/{month}/{stem}/", f"/docs/{month}/{day}/"]
+    return [f"/docs/{m.group(1).lower()}/"]
+
+
+def set_aliases(chunks: list[tuple[str, list[str]]], urls: list[str]) -> bool:
+    """Make `aliases` start with `urls`, keep other aliases; return True if it was added."""
+    chunk = next((c for c in chunks if c[0] == "aliases"), None)
+    current = []
+    if chunk:
+        current = yaml.safe_load("\n".join(chunk[1])).get("aliases") or []
+    wanted = urls + [a for a in current if a not in urls]
+    line = "aliases: [" + ", ".join(f'"{a}"' for a in wanted) + "]"
+    if not chunk:
+        chunks.append(("aliases", [line]))
+        return True
+    if current != wanted:
+        comments = [ln for ln in chunk[1][1:] if ln.lstrip().startswith("#")]
+        chunk[1][:] = [line] + comments
+    return False
 
 
 def kind_of(rel: str) -> str:
@@ -150,12 +181,14 @@ def normalize(text: str, kind: str, rel: str) -> tuple[str, list[str]]:
     added = []
     defaults = dict(DEFAULTS[kind])
     if kind.startswith("diary"):
-        url = diary_url(rel)
-        defaults |= {"slug": f'"{url["slug"]}"', "aliases": f'["{url["alias"]}"]'}
+        defaults["slug"] = f'"{diary_slug(rel)}"'
     for key, value in defaults.items():
         if key not in present:
             chunks.append((key, [f"{key}: {value}" if value else f"{key}:"]))
             added.append(key)
+    urls = old_urls(rel)
+    if urls and set_aliases(chunks, urls):
+        added.append("aliases")
     rank = {k: i for i, k in enumerate(ORDER)}
     ordered = sorted(chunks, key=lambda c: rank.get(c[0], len(ORDER)))  # stable
     new_front = "\n".join(line for _, chunk in ordered for line in chunk) + "\n"
@@ -191,11 +224,12 @@ def validate(rel: str, kind: str, text: str) -> list[str]:
         written = re.search(r"^date: (\d{4}-\d\d-\d\d)", front, re.MULTILINE)
         if not written or written.group(1) != day:
             problems.append(f"`date` does not match the file name day {day}")
-        url = diary_url(rel)
-        if data.get("slug") != url["slug"]:
-            problems.append(f"`slug` must be {url['slug']!r}, not {data.get('slug')!r}")
-        if url["alias"] not in (data.get("aliases") or []):
-            problems.append(f"`aliases` must contain {url['alias']!r} (old URL)")
+        slug = diary_slug(rel)
+        if data.get("slug") != slug:
+            problems.append(f"`slug` must be {slug!r}, not {data.get('slug')!r}")
+    for url in old_urls(rel):
+        if url not in (data.get("aliases") or []):
+            problems.append(f"`aliases` must contain {url!r} (old URL)")
     if kind == "diary-en":
         problems += [
             f"`{k}` belongs to the German page only"

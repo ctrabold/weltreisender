@@ -2,6 +2,7 @@
 date: 2009-02-01T16:56:43+02:00
 title: Und wie kommt man auf so eine Idee?
 translationKey: vorfahrt
+aliases: ["/docs/vorbereitung/vorfahrt/"]
 draft: false
 tags: []
 categories: ["Orga", "Mindset"]

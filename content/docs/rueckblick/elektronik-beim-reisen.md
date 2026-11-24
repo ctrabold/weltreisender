@@ -2,6 +2,7 @@
 date: 2010-05-12T21:49:20+02:00
 title: Elektronik beim Reisen
 translationKey: elektronik-beim-reisen
+aliases: ["/docs/rueckblick/elektronik-beim-reisen/"]
 draft: false
 tags: []
 categories: ["Orga"]

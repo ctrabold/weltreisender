@@ -2,6 +2,7 @@
 date: 2009-02-02T16:56:43+02:00
 title: Risiko-Management und Fragen zur Reiseplanung
 translationKey: risiko-management
+aliases: ["/docs/vorbereitung/risiko-management/"]
 draft: false
 tags: []
 categories: ["Orga", "Mindset"]

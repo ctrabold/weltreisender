@@ -2,6 +2,7 @@
 date: 2011-05-30T21:49:20+02:00
 title: Danke
 translationKey: danke
+aliases: ["/docs/rueckblick/danke/"]
 draft: false
 tags: []
 categories: ["Orga", "Mindset"]

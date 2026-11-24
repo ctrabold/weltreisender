@@ -2,6 +2,7 @@
 date: 2010-01-01T16:56:43+02:00
 title: Lessons from Life on the Road
 translationKey: erfahrungen
+aliases: ["/docs/looking-back/experiences/"]
 draft: false
 tags: []
 categories: ["Blog", "Planning", "Mindset"]

@@ -37,9 +37,12 @@ CI (`deploy.yml`) and local development both use Hugo `0.169`; use current APIs 
   `{{<section>}}`; ordering in menus and section lists is by `date` ascending
   (overrides in `layouts/_partials/docs/menu-filetree.html` and `layouts/_shortcodes/section.html`).
   Other top-level sections: `docs/vorbereitung`, `docs/rueckblick`, `posts/` (tag overview).
-- Diary URLs are short: `slug` = day plus suffix letter (`2009-05-21a.md` → `/docs/2009/05/21a/`,
-  English `/en/docs/2009/05/21a/`); `aliases` keeps the old `/docs/2009/05/2009-05-21a/` URL as a
-  redirect. Both are derived from the file name by `normalize_frontmatter.py` (never edit by hand).
+- URLs drop the `docs/` section (`[permalinks]` in `hugo.toml`; files stay in `docs/` for the
+  hugo-book menu): `vorbereitung/vorfahrt.md` → `/vorbereitung/vorfahrt/`. Diary `slug` = day plus
+  suffix letter (`2009-05-21a.md` → `/2009/05/21a/`, English `/en/2009/05/21a/`). `aliases` keeps
+  every earlier URL as a redirect (`/docs/2009/05/2009-05-21a/`, `/docs/2009/05/21a/`,
+  `/docs/vorbereitung/vorfahrt/`). Slug and aliases are derived from the file path by
+  `normalize_frontmatter.py` (never edit by hand; extra aliases you add are kept).
 - Front matter is always YAML (`---`). German diary posts always carry, in this order: `date`,
   `title`, `slug`, `aliases`, `draft`, `summary`, `location` (lat/long and place names), `travelMode`, optional
   `route`, the day datasheet `mood` (terrible|bad|neutral|good|great, default `neutral`),

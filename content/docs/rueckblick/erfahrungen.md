@@ -2,6 +2,7 @@
 date: 2010-01-01T16:56:43+02:00
 title: Erfahrungen aus dem Reisealltag
 translationKey: erfahrungen
+aliases: ["/docs/rueckblick/erfahrungen/"]
 draft: false
 tags: []
 categories: ["Blog", "Orga", "Mindset"]

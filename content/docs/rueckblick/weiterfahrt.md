@@ -2,6 +2,7 @@
 date: 2010-05-30T21:49:20+02:00
 title: Weiterfahrt
 translationKey: weiterfahrt
+aliases: ["/docs/rueckblick/weiterfahrt/"]
 draft: false
 tags: []
 categories: ["Mindset", "Orga"]

@@ -2,6 +2,7 @@
 date: 2010-05-30 15:12:51+02:00
 title: Reise FAQ
 translationKey: reise-faq
+aliases: ["/docs/rueckblick/reise-faq/"]
 draft: false
 tags: []
 categories: ["Orga"]

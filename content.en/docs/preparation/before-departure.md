@@ -2,6 +2,7 @@
 date: 2009-02-01T16:56:43+02:00
 title: So How Do You Come Up With an Idea Like That?
 translationKey: vorfahrt
+aliases: ["/docs/preparation/before-departure/"]
 draft: false
 tags: []
 categories: ["Planning", "Mindset"]

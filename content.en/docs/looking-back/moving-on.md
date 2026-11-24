@@ -2,6 +2,7 @@
 date: 2010-05-30T21:49:20+02:00
 title: Moving On
 translationKey: weiterfahrt
+aliases: ["/docs/looking-back/moving-on/"]
 draft: false
 tags: []
 categories: ["Mindset", "Planning"]

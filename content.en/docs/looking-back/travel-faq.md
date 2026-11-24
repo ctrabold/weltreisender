@@ -2,6 +2,7 @@
 date: 2010-05-30 15:12:51+02:00
 title: Travel FAQ
 translationKey: reise-faq
+aliases: ["/docs/looking-back/travel-faq/"]
 draft: false
 tags: []
 categories: ["Planning"]

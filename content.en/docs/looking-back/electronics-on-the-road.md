@@ -2,6 +2,7 @@
 date: 2010-05-12T21:49:20+02:00
 title: Electronics on the Road
 translationKey: elektronik-beim-reisen
+aliases: ["/docs/looking-back/electronics-on-the-road/"]
 draft: false
 tags: []
 categories: ["Planning"]
