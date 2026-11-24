@@ -49,6 +49,7 @@ ORDER = [
     "categories",
     "category",
     "layout",
+    "build",
     "bookFlatSection",
     "bookCollapseSection",
     "bookToc",
@@ -115,7 +116,7 @@ def old_urls(rel: str) -> list[str]:
     `/docs/2009/05/21/`. Hugo puts aliases below the page's language root (`/en/…`).
     """
     m = DOCS.match(rel)
-    if not m:
+    if not m or m.group(1) == "_index":  # docs root: never rendered (build.render)
         return []
     d = DIARY.search(rel)
     if d:
