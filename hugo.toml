@@ -67,7 +67,6 @@ title = 'Christian Trabold - Travel Blog - World Traveller'
   BookTheme = 'auto'
   BookComments = false
   BookSearch = false
-  BookTranslatedOnly = true
   # BookLastChangeLink = 'https://github.com/ctrabold/weltreisender/commit/{{ .GitInfo.Hash }}'
   # BookEditLink = 'https://github.com/ctrabold/weltreisender/edit/main/{{ .Path }}'
   # trip whose numbers the homepage profile and the data page show (key of params.trips)
