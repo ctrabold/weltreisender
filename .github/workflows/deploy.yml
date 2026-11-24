@@ -45,6 +45,16 @@ jobs:
       - name: Run Hugo
         working-directory: .
         run: hugo --minify --baseURL="https://ctrabold.github.io/weltreisender"
+      - name: Check homepages
+        # another page rendered to the same URL (e.g. a section permalink resolving to /)
+        # silently replaces the homepage; expected titles come from the homepages' front matter
+        run: |
+          for lang in "content public" "content.en public/en"; do
+            set -- $lang
+            title=$(yq --front-matter=extract '.title' "$1/_index.md")
+            grep -qF "<title>$title" "$2/index.html" \
+              || { echo "::error::$2/index.html is not the homepage '$title'"; exit 1; }
+          done
       - name: Upload artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
@@ -52,3 +62,27 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+      - name: Smoke test live homepages
+        # the deployed site, not the build: both homepages carry their front matter title
+        # (retries while GitHub Pages propagates the new version)
+        env:
+          URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          de=$(yq --front-matter=extract '.title' content/_index.md)
+          en=$(yq --front-matter=extract '.title' content.en/_index.md)
+          for attempt in 1 2 3 4 5 6; do
+            curl -fsSL "$URL" | grep -qF "<title>$de" \
+              && curl -fsSL "${URL}en/" | grep -qF "<title>$en" && exit 0
+            sleep 10
+          done
+          echo "::error::$URL or ${URL}en/ is not the homepage ('$de' / '$en')"; exit 1
+      - name: Smoke test live internal links
+        # every internal link on both homepages (the menu reaches all sections and posts) must
+        # answer; external links are checked monthly by links.yml
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --no-progress --max-concurrency 4 --max-retries 2
+            --exclude '.*' --include '^${{ steps.deployment.outputs.page_url }}'
+            ${{ steps.deployment.outputs.page_url }} ${{ steps.deployment.outputs.page_url }}en/
+          jobSummary: false
