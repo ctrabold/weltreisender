@@ -12,4 +12,4 @@ bookToc: false
 
 Jeder Punkt ist ein Tagebucheintrag. Ein Klick öffnet die Geschichte dazu. Durchgezogene Linien zeigen die gefahrene Strecke, gestrichelte Linien Etappen mit Zug, Bus, Schiff oder Flugzeug (oder solche, die sich nicht berechnen ließen).
 
-{{< world-map >}}
+{{< world-map trip="singapore" >}}
