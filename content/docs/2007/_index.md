@@ -8,13 +8,11 @@ bookCollapseSection: true
 
 ## Testfahrt nach Budapest
 
-Hier kommt prosa
-
 {{< world-map trip="budapest" height="50vh" >}}
 
 {{% steps %}}
 
-1. ## [Main und Taubertal]({{< ref "docs/2007/09/2007-09-08" >}})
+1. ## [Main und Taubertal]({{< ref "docs/2007/09/2007-09-07" >}})
 
    Dieburg – Wertheim – Bad Mergentheim – Schwarzenbronn, 8.–9. September 2007
 
