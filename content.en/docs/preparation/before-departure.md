@@ -16,7 +16,7 @@ The sun is coming up, the birds are singing, my head is pleasantly fuzzy.
 
 I go online to chat with my friend in China (Guangzhou) and assure him, once again and with great conviction, that I'm definitely coming to visit him. He'd just have to wait about a year. Because I'm coming by bike.
 
-Before that, I'd been alone with my idea for months. I'd also done a first test ride to Budapest, to see whether I really enjoy cycle touring.
+Before that, I'd been alone with my idea for months. I'd also done a first [test ride to Budapest]({{< ref "docs/2007/09" >}}), to see whether I really enjoy cycle touring.
 
 My first thoughts of a longer bike tour sparked one day as I was heading home again on my favourite route.
 

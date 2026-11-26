@@ -100,6 +100,9 @@ Non-date pages get English file and directory names. Both language versions shar
 Diary posts keep their date-based file names (`2009-11-14`) in both languages and need no
 `translationKey`.
 
+Section titles of the 2007 test ride (same paths in both languages): `docs/2007/_index.md`
+Vorgeschichte → Prequel, `docs/2007/09/_index.md` Testfahrt nach Budapest → Test ride to Budapest.
+
 ## Terms
 
 | German                             | English                                                              | Note                                  |
@@ -194,6 +197,23 @@ explanation on first mention.
 | Glasperlenspiel                  | Hesse's _The Glass Bead Game_                          |
 | "et läuft!" (Kölsch)             | kept, glossed "as they say in Cologne … it's rolling!" |
 | Hessisch ("ebbes Uffjerescht")   | kept, glossed ("a bit excited")                        |
+
+### Test ride 2007
+
+| German                      | English                                                       |
+| --------------------------- | ------------------------------------------------------------- |
+| Vesper                      | _Vesper_ (a hearty Swabian cold supper), glossed on first use |
+| Kaiserschmarren             | _Kaiserschmarrn_ (shredded sweet pancake)                     |
+| Tacho / KM Stand            | bike computer / odometer                                      |
+| Schontag                    | rest day                                                      |
+| Daten (section heading)     | Stats                                                         |
+| Lipizaner                   | Lipizzaners                                                   |
+| Touri-Hochburgen            | tourist hotspots                                              |
+| West Bahnhof / Ostbahnhof   | Westbahnhof / Keleti, the East station                        |
+| Gellért-Bad                 | Gellért Baths                                                 |
+| "<3 lich" (herzlich)        | "<3-warming" (heart-warming)                                  |
+| Regenfahrt (Regensburg pun) | kept as a pun, glossed: _Regen_ is German for rain            |
+| SK                          | Slovakia (SK)                                                 |
 
 ### Place names
 
