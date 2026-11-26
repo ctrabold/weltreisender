@@ -9,8 +9,17 @@
 
 {{ define "book-section-children" }}{{/* (dict "Section" .Section "CurrentPage" .CurrentPage) */}}
   <ul>
+    {{ template "book-section-items" . }}
+  </ul>
+{{ end }}
+
+{{/* bookInlineSection: the section's own entry is left out, its children appear in the parent's
+     list (a level with a single child, e.g. the only month of a year) */}}
+{{ define "book-section-items" }}{{/* (dict "Section" .Section "CurrentPage" .CurrentPage) */}}
     {{ range sort (where .Section.Pages "Params.bookHidden" "ne" true) "Date" "asc" }}
-      {{ if .IsSection }}
+      {{ if and .IsSection .Params.bookInlineSection }}
+        {{ template "book-section-items" (dict "Section" . "CurrentPage" $.CurrentPage) }}
+      {{ else if .IsSection }}
         <li {{- if .Params.BookFlatSection }} class="book-section-flat" {{ end -}}>
           {{ template "book-page-link" (dict "Page" . "CurrentPage" $.CurrentPage) }}
           {{ template "book-section-children" (dict "Section" . "CurrentPage" $.CurrentPage) }}
@@ -21,7 +30,6 @@
         </li>
       {{ end }}
     {{ end }}
-  </ul>
 {{ end }}
 
 {{ define "book-page-link" }}{{/* (dict "Page" .Page "CurrentPage" .CurrentPage) */}}

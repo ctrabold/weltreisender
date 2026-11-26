@@ -107,6 +107,8 @@ CI (`deploy.yml`) and local development both use Hugo `0.169`; use current APIs 
   `{{< trip-metrics >}}` take an optional `trip="…"` (default `params.defaultTrip`).
   `{{< world-map >}}` shows all trips, `{{< world-map trip="budapest" height="50vh" >}}` one.
   `docs/2007/` ("Vorgeschichte", test ride to Budapest) is its own trip.
+  Its only month `2007/09` has `bookInlineSection: true`: the menu (`menu-filetree.html`) leaves
+  that level out and lists the days directly under Vorgeschichte.
 - `layouts/_shortcodes/map-route.html` draws a Leaflet/OSRM route
   (`startLat`, `startLon`, `endLat`, `endLon`, `mode` = foot|bike|car).
 - `{{< trip-profile >}}` (homepage, below the quote; `docs/trip-profile` partial) draws the height

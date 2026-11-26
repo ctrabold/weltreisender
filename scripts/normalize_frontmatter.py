@@ -52,6 +52,7 @@ ORDER = [
     "build",
     "bookFlatSection",
     "bookCollapseSection",
+    "bookInlineSection",
     "bookToc",
     "noprevnext",
     "nodateline",
