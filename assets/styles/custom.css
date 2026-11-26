@@ -388,3 +388,12 @@
 .book-datasheet .ds-event {
   display: block;
 }
+
+/* inline post photos (layouts/_markup/render-image.html): portrait photos stay within the screen
+   height instead of filling the column width; landscape photos keep the full width */
+.markdown img.img-fluid {
+  display: block;
+  max-height: 80vh;
+  width: auto;
+  margin-inline: auto;
+}
