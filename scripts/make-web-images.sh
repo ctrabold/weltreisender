@@ -11,8 +11,8 @@
 # Exif orientation, tag reset to 1). The large copies keep all metadata of the original: Exif, GPS, IPTC, XMP
 # and the colour profile. WebP has no IPTC block: caption and keywords move to XMP (dc:Description,
 # dc:Subject). Only the small preview image embedded in the Exif data is dropped.
-# Existing copies that are newer than their original are skipped, so re-runs only take the new
-# or changed photos. Copies of removed originals are only reported, never deleted.
+# The copies get the file dates (created/modified) of their original; copies whose original is not
+# newer are skipped, so re-runs only take the new or changed photos. Copies of removed originals are only reported, never deleted.
 #
 #   scripts/make-web-images.sh            # all photos
 #   scripts/make-web-images.sh --force    # regenerate everything
@@ -37,7 +37,8 @@ if [[ ${1:-} == --one ]]; then
 	base=${base%.*}
 	large=$DEST/$base.webp
 	thumb=$DEST/thumb/$base.webp
-	if [[ ${FORCE:-} != 1 && $large -nt $src && $thumb -nt $src ]]; then exit 0; fi
+	# copies carry the file dates of their original (see below): skip unless the original is newer
+	if [[ ${FORCE:-} != 1 && -f $large && -f $thumb && ! $src -nt $large && ! $src -nt $thumb ]]; then exit 0; fi
 	mkdir -p "$(dirname "$large")" "$(dirname "$thumb")"
 	# written under a temporary name and renamed at the end, so an interrupted run never leaves a
 	# copy without metadata that the next run would take for finished
@@ -51,6 +52,8 @@ if [[ ${1:-} == --one ]]; then
 	# (large copy only: Hugo reads the capture date from it; metadata would double the thumbnail size)
 	"$EXIFTOOL" -q -m -overwrite_original -TagsFromFile "$src" -all:all --IFD1:all -Orientation#=1 \
 		"-XMP-dc:Description<IPTC:Caption-Abstract" "-XMP-dc:Subject<IPTC:Keywords" "$tmp_large" 2>>"$WARNLOG"
+	# created/modified file dates as the original (macOS moves the creation date back with it)
+	touch -r "$src" "$tmp_thumb" "$tmp_large"
 	mv "$tmp_thumb" "$thumb" && mv "$tmp_large" "$large"
 	exit 0
 fi
