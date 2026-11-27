@@ -413,3 +413,101 @@
   padding-block-end: 0.5rem;
   border-block-end: 1px solid var(--gray-200);
 }
+
+/* mobile (theme breakpoint): the top prev/next bar shows arrows only; the page titles stay in the
+   link for screen readers (visually hidden, not display: none); 44px tap targets */
+@media screen and (max-width: 56rem) {
+  .book-page > .book-prev-next a {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    justify-content: center;
+  }
+
+  .book-page > .book-prev-next a span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* reading text: 18px on desktop, 17px on mobile (≈67 / 35 characters per line), softer black in the
+   light theme (#222, contrast ≈16:1); headings, menu and datasheet keep their sizes */
+.book-article {
+  font-size: 1.125rem;
+}
+
+@media screen and (max-width: 56rem) {
+  .book-article {
+    font-size: 1.0625rem;
+  }
+}
+
+:root[data-theme="light"] {
+  --body-font-color: #222;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] {
+    --body-font-color: #222;
+  }
+}
+
+/* hidden on screen, read by screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* segmented switches in the menu: language (docs/lang-switch) and light/dark (docs/theme-switch) */
+.book-switch {
+  display: flex;
+  margin: 0 0 var(--padding-8, 0.5rem);
+  padding: 0;
+  min-inline-size: 0;
+  list-style: none;
+  border: 1px solid var(--gray-200);
+  border-radius: 0.25rem;
+  font-size: var(--font-size-smaller);
+}
+
+.book-switch > li,
+.book-switch > label {
+  display: block; /* the theme makes menu labels flex: the highlight would only cover the text */
+  flex: 1;
+  margin: 0;
+  text-align: center;
+}
+
+.book-switch a,
+.book-switch [aria-current],
+.book-switch label > span {
+  display: block;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+.book-switch [aria-current],
+.book-switch input:checked + span {
+  background: var(--gray-100);
+  font-weight: 600;
+  cursor: default;
+}
+
+.book-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.book-switch input:focus-visible + span {
+  outline: 2px solid var(--color-link);
+  outline-offset: -2px;
+}

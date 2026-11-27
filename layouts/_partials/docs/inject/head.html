@@ -1,0 +1,7 @@
+{{- /* light/dark choice of docs/theme-switch, applied before the first paint (no flash) */ -}}
+<script>
+  try {
+    var t = localStorage.getItem('book-theme');
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>

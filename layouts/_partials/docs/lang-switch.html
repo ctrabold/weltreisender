@@ -1,0 +1,23 @@
+{{- /*
+  Language switch DE | EN (replaces the theme's language dropdown in docs/menu): the current language
+  is marked, the other links to this page in that language, or to its homepage if not translated.
+  Screen readers hear "EN – English". Styles: .book-switch in assets/styles/custom.css.
+*/ -}}
+{{- $page := . -}}
+{{- if gt (len hugo.Sites) 1 }}
+<ul class="book-switch book-lang-switch">
+  {{- range hugo.Sites }}
+    {{- $lang := .Language.Lang }}
+    {{- $target := .Home }}
+    {{- range $page.AllTranslations }}{{ if eq .Language.Lang $lang }}{{ $target = . }}{{ end }}{{ end }}
+    {{- $label := printf `%s<span class="visually-hidden"> – %s</span>` (upper $lang) (.Language.Label | default $lang) }}
+  <li>
+    {{- if eq $lang $page.Language.Lang }}
+    <span aria-current="true">{{ $label | safeHTML }}</span>
+    {{- else }}
+    <a href="{{ $target.RelPermalink }}" hreflang="{{ $lang }}" lang="{{ $lang }}">{{ $label | safeHTML }}</a>
+    {{- end }}
+  </li>
+  {{- end }}
+</ul>
+{{- end }}

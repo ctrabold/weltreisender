@@ -1,0 +1,26 @@
+{{- /*
+  Light/dark switch: Auto (follows the system, the site default params.BookTheme) / Hell / Dunkel.
+  The choice is stored in localStorage ("book-theme") and applied before the first paint by
+  docs/inject/head. Hidden without JavaScript. Styles: .book-switch in assets/styles/custom.css.
+*/ -}}
+<fieldset class="book-switch book-theme-switch" hidden>
+  <legend class="visually-hidden">{{ i18n "theme.legend" }}</legend>
+  {{- range slice "auto" "light" "dark" }}
+  <label><input type="radio" name="book-theme" value="{{ . }}" /><span>{{ i18n (printf "theme.%s" .) }}</span></label>
+  {{- end }}
+</fieldset>
+<script>
+  (function () {
+    var box = document.querySelector('.book-theme-switch');
+    var stored = null;
+    try { stored = localStorage.getItem('book-theme'); } catch (e) {}
+    var current = stored === 'light' || stored === 'dark' ? stored : 'auto';
+    box.querySelector('input[value="' + current + '"]').checked = true;
+    box.hidden = false;
+    box.addEventListener('change', function (e) {
+      var value = e.target.value;
+      document.documentElement.setAttribute('data-theme', value);
+      try { value === 'auto' ? localStorage.removeItem('book-theme') : localStorage.setItem('book-theme', value); } catch (e) {}
+    });
+  })();
+</script>

@@ -79,3 +79,7 @@ metrics.temperature.caption = 'Coldest night <strong>{{ .min }} °C</strong> in 
 prevNext.aria = 'Previous and next page'
 prevNext.ariaTop = 'Previous and next page (top)'
 menu.aria = 'Contents'
+theme.legend = 'Appearance'
+theme.auto = 'Auto'
+theme.light = 'Light'
+theme.dark = 'Dark'
