@@ -36,3 +36,18 @@
   lightbox.init();
   }
 </script>
+<script>
+  // Arrow keys: ← previous page, → next page (the rel="prev"/"next" links of docs/prev-next).
+  // Left alone: key combinations (browser shortcuts), form fields, the map (Leaflet pans with the
+  // arrows), the lightbox (PhotoSwipe browses photos) and keys another script already handled.
+  document.addEventListener('keydown', function (e) {
+    if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    var rel = { ArrowLeft: 'prev', ArrowRight: 'next' }[e.key];
+    if (!rel) return;
+    var t = e.target instanceof Element ? e.target : null;
+    if (t && t.closest('input, textarea, select, [contenteditable], .leaflet-container')) return;
+    if (document.querySelector('.pswp--open')) return;
+    var a = document.querySelector('nav.book-prev-next a[rel="' + rel + '"]');
+    if (a) { e.preventDefault(); location.href = a.href; }
+  });
+</script>

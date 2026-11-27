@@ -1,18 +1,23 @@
-{{ $bookSection := default "docs" .Site.Params.BookSection  }}
+{{- /* context: the page (theme footer) or (dict "page" . "top" true) above the content; the two
+     navigation landmarks need different labels (axe landmark-unique) */ -}}
+{{ $page := . }}
+{{ $label := i18n "prevNext.aria" }}
+{{ if reflect.IsMap . }}{{ $page = .page }}{{ $label = i18n "prevNext.ariaTop" }}{{ end }}
+{{ $bookSection := default "docs" $page.Site.Params.BookSection  }}
 {{ if eq $bookSection "*" }}
   {{ $bookSection = "/" }}{{/* Backward compatibility */}}
 {{ end }}
 
-{{ with .Site.GetPage $bookSection }}
+{{ with $page.Site.GetPage $bookSection }}
   {{ $pages := partialCached "docs/prev-next-cache" .Pages }}
-  {{ $prev := $pages.Next $ }}
-  {{ $next := $pages.Prev $ }}
+  {{ $prev := $pages.Next $page }}
+  {{ $next := $pages.Prev $page }}
 
   {{- if or $prev $next }}
-  <nav class="book-prev-next flex flex-wrap justify-between" aria-label="{{ i18n "prevNext.aria" }}">
+  <nav class="book-prev-next flex flex-wrap justify-between" aria-label="{{ $label }}">
     <span>
     {{ with $prev }}
-      <a href="{{ .RelPermalink }}" class="flex align-center">
+      <a href="{{ .RelPermalink }}" rel="prev" class="flex align-center">
         <svg class="book-icon" aria-hidden="true">{{ partial "docs/icon" "backward" }}</svg>
         <span>{{ partial "docs/title" . }}</span>
       </a>
@@ -20,7 +25,7 @@
     </span>
     <span>
     {{ with $next }}
-      <a href="{{ .RelPermalink }}" class="flex align-center">
+      <a href="{{ .RelPermalink }}" rel="next" class="flex align-center">
         <span>{{ partial "docs/title" . }}</span>
         <svg class="book-icon" aria-hidden="true">{{ partial "docs/icon" "forward" }}</svg>
       </a>
