@@ -577,6 +577,28 @@
   padding-inline-start: 1rem;
 }
 
+/* categories & tags overview (layouts/taxonomy.html): each group a list in columns, name left and
+   number of posts right (as the theme's taxonomy column on /posts/); one column on mobile */
+.markdown .book-term-list {
+  columns: 13rem;
+  column-gap: 2.5rem;
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+.book-term-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  break-inside: avoid;
+}
+
+.book-term-count {
+  font-size: var(--font-size-smaller);
+  color: var(--menu-muted);
+}
+
 /* menu: the current page in bold as well, so it is marked by more than colour (WCAG 1.4.1) */
 .book-menu-content a.active {
   font-weight: 600;

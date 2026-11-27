@@ -58,7 +58,7 @@ title = 'Christian Trabold - Travel Blog - World Traveller'
 
 [[languages.en.menus.after]]
   name = 'Tags'
-  pageRef = '/posts'
+  pageRef = '/tags'
   weight = 10
   params = { bookIcon = 'tag' }
 
@@ -118,8 +118,8 @@ title = 'Christian Trabold - Travel Blog - World Traveller'
   params = { bookIcon = 'bar-chart' }
 
 [[menu.after]]
-  name = 'Schlagworte'
-  pageRef = '/posts'
+  name = 'Tags'
+  pageRef = '/tags'
   weight = 10
   params = { bookIcon = 'tag' }
 

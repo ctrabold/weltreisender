@@ -1,0 +1,34 @@
+{{- /*
+  Overview of categories and tags (/tags/ and /categories/ show the same page): three groups -
+  categories (kind of post), countries and places (tags; countries listed in data/tags.yaml) - each
+  term with its number of posts, linking to the term page (map and photos). The theme has no such page.
+*/ -}}
+{{ define "main" }}
+{{- $countryNames := hugo.Data.tags.countries -}}
+{{- $countries := slice -}}
+{{- $places := slice -}}
+{{- range site.Taxonomies.tags.Alphabetical -}}
+  {{- if in $countryNames .Page.LinkTitle }}{{ $countries = $countries | append . }}{{ else }}{{ $places = $places | append . }}{{ end -}}
+{{- end -}}
+<article class="markdown book-article">
+  <h1 class="book-title">{{ i18n "terms.title" }}</h1>
+  {{- range $group := slice
+    (dict "title" (i18n "terms.categories") "terms" site.Taxonomies.categories.Alphabetical)
+    (dict "title" (i18n "terms.countries") "terms" $countries)
+    (dict "title" (i18n "terms.places") "terms" $places)
+  }}
+  {{- with $group.terms }}
+  <h2>{{ $group.title }}</h2>
+  <ul class="book-term-list">
+    {{- range . }}
+    <li><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a> <span class="book-term-count">{{ .Count }}</span></li>
+    {{- end }}
+  </ul>
+  {{- end }}
+  {{- end }}
+</article>
+{{ end }}
+
+{{ define "breadcrumbs" }}
+<!-- -->
+{{ end }}

@@ -1,0 +1,27 @@
+# Tags that are countries (German and English spelling as in glossary.md); all other tags are places.
+# Used by layouts/taxonomy.html to group the tags overview. Keep in sync with COUNTRIES/TAG_EN in
+# scripts/update_tags.py. "Hongkong" is a place: Hong Kong posts carry the country tag "China".
+countries:
+  - Deutschland
+  - Germany
+  - Österreich
+  - Austria
+  - Ungarn
+  - Hungary
+  - Tschechien
+  - Czech Republic
+  - Polen
+  - Poland
+  - Ukraine
+  - Russland
+  - Russia
+  - Kirgistan
+  - Kyrgyzstan
+  - China
+  - Laos
+  - Kambodscha
+  - Cambodia
+  - Thailand
+  - Malaysia
+  - Singapur
+  - Singapore
