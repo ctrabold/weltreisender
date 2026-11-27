@@ -24,6 +24,8 @@ Where several days lie between two entries, the distance is spread evenly across
 
 ## Ascent per day {icon="landscape"}
 
+Climbs point up, descents point down.
+
 {{< trip-metrics chart="ascent" >}}
 
 ## Mood {icon="mood"}

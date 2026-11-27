@@ -24,6 +24,8 @@ Liegen mehrere Tage zwischen zwei Einträgen, verteilt sich die Strecke gleichm�
 
 ## Höhenmeter pro Tag {icon="landscape"}
 
+Nach oben die Anstiege, nach unten die Abfahrten.
+
 {{< trip-metrics chart="ascent" >}}
 
 ## Stimmung {icon="mood"}

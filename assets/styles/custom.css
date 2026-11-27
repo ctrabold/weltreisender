@@ -120,6 +120,11 @@
   fill-opacity: 0.6;
 }
 
+/* descent below the zero line of the ascent chart: same colour, lighter */
+.trip-metrics .bar-down {
+  fill-opacity: 0.3;
+}
+
 .trip-metrics a:hover .bar,
 .trip-metrics a:focus .bar {
   fill-opacity: 1;

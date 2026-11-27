@@ -6,7 +6,7 @@
     day      day of the trip (docs/trip-stats); the row covers the days [day - span, day]
     span     days since the previous post (at least 1, never before departure)
     page     diary post in the current language; place: place name of the day
-    km (bike legs only), ascent, maxEle, cumKm   as in docs/trip-stats; bike: a bike leg with elevation profile
+    km (bike legs only), ascent, descent, maxEle, cumKm   as in docs/trip-stats; bike: a bike leg with elevation profile
     mood     1 (terrible) … 5 (great), neutral if unset
     w        weather of the day (data/weather) or an empty dict
 
@@ -31,7 +31,7 @@
       {{- end -}}
       {{- if and $cur (eq $cur.day $s.day) -}}
         {{- $cur = merge $cur (dict
-          "km" (add $cur.km (cond (eq $s.mode "bike") $s.km 0.0)) "ascent" (add $cur.ascent $s.ascent) "cumKm" $s.cumKm
+          "km" (add $cur.km (cond (eq $s.mode "bike") $s.km 0.0)) "ascent" (add $cur.ascent $s.ascent) "descent" (add $cur.descent $s.descent) "cumKm" $s.cumKm
           "maxEle" (math.Max $cur.maxEle $s.maxEle) "bike" (or $cur.bike (gt $s.ascent 0))
         ) -}}
       {{- else -}}
@@ -44,7 +44,7 @@
         {{- $cur = dict
           "day" $s.day "span" (math.Min $s.day (math.Max 1 $s.gapDays)) "page" .
           "place" ($src.Params.location.placeName | default $src.Params.location.name)
-          "km" (cond (eq $s.mode "bike") $s.km 0.0) "ascent" $s.ascent "maxEle" $s.maxEle "cumKm" $s.cumKm "bike" (gt $s.ascent 0)
+          "km" (cond (eq $s.mode "bike") $s.km 0.0) "ascent" $s.ascent "descent" $s.descent "maxEle" $s.maxEle "cumKm" $s.cumKm "bike" (gt $s.ascent 0)
           "mood" (index $levels ($src.Params.mood | default "neutral") | default 3) "w" $w
         -}}
       {{- end -}}
