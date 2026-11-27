@@ -58,6 +58,7 @@ title = 'Christian Trabold - Travel Blog - World Traveller'
 
 [[languages.en.menus.after]]
   name = 'Tags'
+  title = 'Tags' # menu label; the page itself is titled "Kategorien & Tags"
   pageRef = '/tags'
   weight = 10
   params = { bookIcon = 'tag' }
@@ -119,6 +120,7 @@ title = 'Christian Trabold - Travel Blog - World Traveller'
 
 [[menu.after]]
   name = 'Tags'
+  title = 'Tags' # menu label; the page itself is titled "Kategorien & Tags"
   pageRef = '/tags'
   weight = 10
   params = { bookIcon = 'tag' }
