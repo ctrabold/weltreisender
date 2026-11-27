@@ -1,14 +1,14 @@
 {
  "date": "2010-02-08",
- "latitude": 11.4107,
- "longitude": 103.4904,
- "gridElevation": 170.0,
- "temperatureMax": 32.2,
- "temperatureMin": 21.4,
- "precipitation": 0.0,
+ "latitude": 11.6153,
+ "longitude": 102.9846,
+ "gridElevation": 6.0,
+ "temperatureMax": 31.4,
+ "temperatureMin": 22.7,
+ "precipitation": 0.5,
  "sunshineHours": 11.0,
- "windMax": 11.0,
- "windDirection": 185,
- "weatherCode": 3,
+ "windMax": 12.0,
+ "windDirection": 196,
+ "weatherCode": 51,
  "source": "Open-Meteo (ERA5)"
 }
