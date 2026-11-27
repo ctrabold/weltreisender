@@ -1,7 +1,9 @@
-{{- /* light/dark choice of docs/theme-switch, applied before the first paint (no flash) */ -}}
+{{- /* choices of docs/theme-switch and docs/text-size-switch, applied before the first paint (no flash) */ -}}
 <script>
   try {
     var t = localStorage.getItem('book-theme');
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    var s = localStorage.getItem('book-text-size');
+    if (s === 'small' || s === 'large') document.documentElement.setAttribute('data-text-size', s);
   } catch (e) {}
 </script>

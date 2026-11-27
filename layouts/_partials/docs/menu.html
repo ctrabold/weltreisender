@@ -1,11 +1,12 @@
 {{- /* copy of the hugo-book partial (theme c3319fd): aria-label added (the menu landmark differs
      from the prev/next navigation, axe landmark-unique); language dropdown replaced by docs/lang-switch
-     plus docs/theme-switch */ -}}
+     plus docs/theme-switch and docs/text-size-switch */ -}}
 <nav aria-label="{{ i18n "menu.aria" }}">
 {{ partial "docs/brand" . }}
 {{ partial "docs/search" . }}
 {{ partial "docs/lang-switch" . }}
 {{ partial "docs/theme-switch" . }}
+{{ partial "docs/text-size-switch" . }}
 
 {{ partial "docs/inject/menu-before" . }}
 {{ partial "docs/menu-hugo" (dict "Page" .Page "Menu" .Site.Menus.before) }}

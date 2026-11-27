@@ -1,0 +1,27 @@
+{{- /*
+  Text size switch: A− / A / A+ scales the whole page (base size on <html>, the theme uses rem) to
+  87.5 / 100 / 125 %. The choice is stored in localStorage ("book-text-size") and applied before the
+  first paint by docs/inject/head. Hidden without JavaScript. Styles: .book-switch and
+  :root[data-text-size] in assets/styles/custom.css. The visible "A−" is part of the accessible name.
+*/ -}}
+<fieldset class="book-switch book-text-size-switch" hidden>
+  <legend class="visually-hidden">{{ i18n "textSize.legend" }}</legend>
+  {{- range slice (slice "small" "A−") (slice "default" "A") (slice "large" "A+") }}
+  <label><input type="radio" name="book-text-size" value="{{ index . 0 }}" /><span class="text-size-{{ index . 0 }}">{{ index . 1 }}<span class="visually-hidden"> {{ i18n (printf "textSize.%s" (index . 0)) }}</span></span></label>
+  {{- end }}
+</fieldset>
+<script>
+  (function () {
+    var box = document.querySelector('.book-text-size-switch');
+    var stored = null;
+    try { stored = localStorage.getItem('book-text-size'); } catch (e) {}
+    var current = stored === 'small' || stored === 'large' ? stored : 'default';
+    box.querySelector('input[value="' + current + '"]').checked = true;
+    box.hidden = false;
+    box.addEventListener('change', function (e) {
+      var value = e.target.value, root = document.documentElement;
+      if (value === 'default') root.removeAttribute('data-text-size'); else root.setAttribute('data-text-size', value);
+      try { value === 'default' ? localStorage.removeItem('book-text-size') : localStorage.setItem('book-text-size', value); } catch (e) {}
+    });
+  })();
+</script>

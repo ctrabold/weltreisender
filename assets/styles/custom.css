@@ -659,3 +659,22 @@ svg.heading-icon {
   height: 1em;
   vertical-align: -0.125em;
 }
+
+/* text size switch (docs/text-size-switch): the whole page scales with the base size (rem) */
+:root[data-text-size="small"] {
+  font-size: 87.5%;
+}
+
+:root[data-text-size="large"] {
+  font-size: 125%;
+}
+
+/* the labels hint at the size they set */
+.book-text-size-switch .text-size-small {
+  font-size: 0.85em;
+}
+
+.book-text-size-switch .text-size-large {
+  font-size: 1.2em;
+  line-height: 1.1;
+}
