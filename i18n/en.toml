@@ -78,3 +78,4 @@ metrics.temperature.aria = 'Temperature per day from the low to the high. Every 
 metrics.temperature.caption = 'Coldest night <strong>{{ .min }} °C</strong> in {{ .minPlace }}, hottest day <strong>{{ .max }} °C</strong> in {{ .maxPlace }}.'
 prevNext.aria = 'Previous and next page'
 prevNext.ariaTop = 'Previous and next page (top)'
+menu.aria = 'Contents'
