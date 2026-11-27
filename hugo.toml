@@ -42,26 +42,31 @@ title = 'Christian Trabold - Travel Blog - World Traveller'
   name = 'Map'
   pageRef = '/map'
   weight = 5
+  params = { bookIcon = 'map' }
+
+[[languages.en.menus.after]]
+  name = 'Pictures'
+  pageRef = '/pictures'
+  weight = 7
+  params = { bookIcon = 'image' }
 
 [[languages.en.menus.after]]
   name = 'Data'
   pageRef = '/data'
-  weight = 7
+  weight = 9
+  params = { bookIcon = 'bar-chart' }
 
 [[languages.en.menus.after]]
   name = 'Tags'
   pageRef = '/posts'
   weight = 10
+  params = { bookIcon = 'tag' }
 
 [[languages.en.menus.after]]
   name = 'Website'
   url = 'https://christian-trabold.de/'
   weight = 40
-
-[[languages.en.menus.after]]
-  name = 'Pictures'
-  pageRef = '/pictures'
-  weight = 50
+  params = { bookIcon = 'outgoing' }
 
 [params]
   BookTheme = 'auto'
@@ -98,23 +103,28 @@ title = 'Christian Trabold - Travel Blog - World Traveller'
   name = 'Karte'
   pageRef = '/karte'
   weight = 5
+  params = { bookIcon = 'map' }
+
+[[menu.after]]
+  name = 'Bilder'
+  pageRef = '/bilder'
+  weight = 7
+  params = { bookIcon = 'image' }
 
 [[menu.after]]
   name = 'Daten'
   pageRef = '/daten'
-  weight = 7
+  weight = 9
+  params = { bookIcon = 'bar-chart' }
 
 [[menu.after]]
   name = 'Schlagworte'
   pageRef = '/posts'
   weight = 10
+  params = { bookIcon = 'tag' }
 
 [[menu.after]]
   name = 'Website'
   url = 'https://christian-trabold.de/'
   weight = 40
-
-[[menu.after]]
-  name = 'Bilder'
-  pageRef = '/bilder'
-  weight = 50
+  params = { bookIcon = 'outgoing' }
