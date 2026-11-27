@@ -32,9 +32,9 @@ The mood of each day above the highest point of the day (grey area).
 
 {{< trip-metrics chart="mood" >}}
 
-## Days per mood {icon="bar-chart"}
+## Mood balance {icon="bar-chart"}
 
-How many days did I feel which way?
+How I felt on the days I wrote my diary.
 
 {{< trip-metrics chart="moodDays" >}}
 

@@ -32,9 +32,9 @@ Die Stimmung des Tages über dem höchsten Punkt des Tages (graue Fläche).
 
 {{< trip-metrics chart="mood" >}}
 
-## Tage pro Stimmung {icon="bar-chart"}
+## Stimmungsbilanz {icon="bar-chart"}
 
-An wie vielen Tagen war ich wie drauf?
+So ging es mir an den Tagen, an denen ich Tagebuch geschrieben habe.
 
 {{< trip-metrics chart="moodDays" >}}
 
