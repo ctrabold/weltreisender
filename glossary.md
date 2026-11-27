@@ -206,7 +206,7 @@ explanation on first mention.
 | Kaiserschmarren             | _Kaiserschmarrn_ (shredded sweet pancake)                     |
 | Tacho / KM Stand            | bike computer / odometer                                      |
 | Schontag                    | rest day                                                      |
-| Daten (section heading)     | Stats                                                         |
+| Daten (one-line label)      | **Stats:** …                                                  |
 | Lipizaner                   | Lipizzaners                                                   |
 | Touri-Hochburgen            | tourist hotspots                                              |
 | West Bahnhof / Ostbahnhof   | Westbahnhof / Keleti, the East station                        |
