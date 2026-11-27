@@ -1,3 +1,6 @@
+{{/* previous/next page also above the content (theme shows it in the footer); nothing where there is none */}}
+{{ partial "docs/prev-next" . }}
+
 {{/* tag pages: map of the tagged posts above the post list (first page only) */}}
 {{ if and (eq .Kind "term") (eq .Paginator.PageNumber 1) }}
   {{ partial "docs/trip-map" (dict

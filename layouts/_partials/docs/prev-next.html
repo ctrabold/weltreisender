@@ -9,7 +9,7 @@
   {{ $next := $pages.Prev $ }}
 
   {{- if or $prev $next }}
-  <div class="flex flex-wrap justify-between">
+  <nav class="book-prev-next flex flex-wrap justify-between" aria-label="{{ i18n "prevNext.aria" }}">
     <span>
     {{ with $prev }}
       <a href="{{ .RelPermalink }}" class="flex align-center">
@@ -26,6 +26,6 @@
       </a>
     {{ end }}
     </span>
-  </div>
+  </nav>
   {{ end -}}
 {{ end }}

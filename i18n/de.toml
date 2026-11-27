@@ -76,3 +76,4 @@ metrics.mood.aria = 'Stimmung pro Tag über dem höchsten Punkt des Tages. Jeder
 metrics.mood.caption = 'Tage pro Stimmung: {{ .counts }}'
 metrics.temperature.aria = 'Temperatur pro Tag von der Tiefst- bis zur Höchsttemperatur. Jeder Tag ist ein Link zum Tagebucheintrag.'
 metrics.temperature.caption = 'Kälteste Nacht <strong>{{ .min }} °C</strong> in {{ .minPlace }}, heißester Tag <strong>{{ .max }} °C</strong> in {{ .maxPlace }}.'
+prevNext.aria = 'Vorherige und nächste Seite'

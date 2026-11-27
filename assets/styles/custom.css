@@ -397,3 +397,8 @@
   width: auto;
   margin-inline: auto;
 }
+
+/* previous/next links above the content (docs/inject/content-before); the footer copy keeps the theme style */
+.book-page > .book-prev-next {
+  margin-block-end: 1rem;
+}
