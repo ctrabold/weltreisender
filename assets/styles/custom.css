@@ -544,3 +544,40 @@
   font-weight: 400;
   white-space: nowrap; /* one line next to the globe */
 }
+
+/* menu: page entries dimmed (contrast ≥ 5.5:1, WCAG AA) so the text stays in focus; the current page
+   keeps the link colour, hover and keyboard focus show full colour; section headings unchanged */
+:root {
+  --menu-muted: #5f6b75;
+}
+
+:root[data-theme="dark"] {
+  --menu-muted: #a5adba;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --menu-muted: #a5adba;
+  }
+}
+
+.book-menu-content li > a:not(.active) {
+  color: var(--menu-muted);
+}
+
+.book-menu-content li > a:not(.active):hover,
+.book-menu-content li > a:not(.active):focus-visible {
+  color: var(--body-font-color);
+}
+
+/* menu: children indented below their parent (the theme draws "flat" sections without indent):
+   Vorgeschichte > days, 2009 > April > days */
+.book-menu-content li > ul,
+.book-menu-content .book-section-flat > ul {
+  padding-inline-start: 1rem;
+}
+
+/* menu: the current page in bold as well, so it is marked by more than colour (WCAG 1.4.1) */
+.book-menu-content a.active {
+  font-weight: 600;
+}

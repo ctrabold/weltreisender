@@ -63,5 +63,11 @@
 {{- with .Page.Params.BookIcon -}}
   <svg class="book-icon" aria-hidden="true">{{ partial "docs/icon" . }}</svg>
 {{- end -}}
-{{- partial "docs/title" .Page -}}
+{{- /* diary posts: short localised date (year and month are given by the sections above), full
+     title stays on the page, in the tab and in the prev/next links */ -}}
+{{- if and .Page.IsPage .Page.File (findRE `^docs/20\d\d/` .Page.File.Path) -}}
+  {{- time.Format (i18n "menu.dateFormat") .Page.Date -}}
+{{- else -}}
+  {{- partial "docs/title" .Page -}}
+{{- end -}}
 {{ end }}
