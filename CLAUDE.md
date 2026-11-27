@@ -24,7 +24,7 @@ git submodule update --init --recursive
 
 There are no tests; verify changes with a local build/server. `--printPathWarnings` lists path clashes on demand;
 it bypasses `ignoreLogs`, so it always shows the expected duplicate image paths of both languages.
-Tool versions (Hugo, uv) are pinned in `mise.toml`; CI installs uv from it via `jdx/mise-action`.
+Tool versions (Hugo, uv) are pinned in `mise.toml`; CI installs both from it via `jdx/mise-action`.
 CI (`deploy.yml`) and local development both use Hugo `0.169`; use current APIs (`hugo.Data`,
 `Image.Meta`) instead of deprecated ones (`.Site.Data`, `.Exif`).
 

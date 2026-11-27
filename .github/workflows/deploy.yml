@@ -36,20 +36,13 @@ jobs:
           args: --offline --config lychee.conf --no-progress content content.en
           jobSummary: false
       - name: Setup tools
-        # versions from mise.toml; only uv for now, Hugo still comes from actions-hugo below
+        # Hugo and uv in the versions of mise.toml, the same as locally
         uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
-        with:
-          install_args: uv
       - name: Check route legs
         # no leg file without a post that needs it (same command as the hk hook, no network)
         run: uv run scripts/build_routes.py --check
       - name: Setup Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@d1c81a15d4e6dca7086a17b9c2565cb70fd576bf # v3.3.0
-        with:
-          hugo-version: 0.169.0
-          extended: true
       - name: Run Hugo
         working-directory: .
         run: hugo --minify --baseURL="https://ctrabold.github.io/weltreisender"
