@@ -511,3 +511,36 @@
   outline: 2px solid var(--color-link);
   outline-offset: -2px;
 }
+
+/* menu column: reserve the scrollbar's space from the start, so expanding a long section (e.g. a year)
+   does not shift the layout when the scrollbar appears */
+.book-menu .book-menu-content {
+  scrollbar-gutter: stable;
+}
+
+/* site name in the menu (docs/brand): globe, name, tagline below */
+.book-brand a {
+  gap: 0.5rem;
+}
+
+.book-brand-icon {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.book-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.book-brand-name {
+  font-weight: 600;
+}
+
+.book-brand-tagline {
+  font-size: 0.75rem;
+  font-weight: 400;
+  white-space: nowrap; /* one line next to the globe */
+}
