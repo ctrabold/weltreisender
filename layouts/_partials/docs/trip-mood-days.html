@@ -1,0 +1,29 @@
+{{- /*
+  Days per mood of a trip as horizontal bars (plain HTML, read row by row by screen readers):
+  one row per mood from great to terrible with its number of days. Same days as the mood chart
+  (docs/trip-metrics-data rows: one per day with a post). Styles: .trip-mood-days in custom.css.
+  Usage: partial "docs/trip-mood-days" (dict "trip" "singapore")
+*/ -}}
+{{- $trip := .trip | default site.Params.defaultTrip -}}
+{{- $d := partialCached "docs/trip-metrics-data" $trip site.Language.Lang $trip -}}
+{{- $names := slice "" "terrible" "bad" "neutral" "good" "great" -}}
+{{- $emoji := slice "" "😫" "🙁" "😐" "🙂" "😄" -}}
+{{- $c := dict -}}
+{{- range $d.rows }}{{ $c = merge $c (dict (string .mood) (add 1 (index $c (string .mood) | default 0))) }}{{ end -}}
+{{- $max := 0 -}}
+{{- range $k, $v := $c }}{{ if gt $v $max }}{{ $max = $v }}{{ end }}{{ end -}}
+{{- with $d.rows }}
+<figure class="trip-mood-days">
+  <ul>
+    {{- range seq 5 -1 1 }}
+      {{- $n := index $c (string .) | default 0 }}
+    <li>
+      <span class="mood-days-label"><span aria-hidden="true">{{ index $emoji . }}</span> {{ i18n (printf "mood.%s" (index $names .)) }}</span>
+      <span class="mood-days-bar" aria-hidden="true"><span style="width: {{ if $max }}{{ printf "%.1f" (mul 100 (div (float $n) $max)) }}{{ else }}0{{ end }}%"></span></span>
+      <span class="mood-days-count">{{ i18n "metrics.moodDays.count" $n }}</span>
+    </li>
+    {{- end }}
+  </ul>
+  <figcaption><small>{{ i18n "metrics.moodDays.caption" (dict "days" (len $d.rows)) }}</small></figcaption>
+</figure>
+{{- end -}}

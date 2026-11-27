@@ -32,6 +32,12 @@ The mood of each day above the highest point of the day (grey area).
 
 {{< trip-metrics chart="mood" >}}
 
+## Days per mood {icon="bar-chart"}
+
+How many days did I feel which way?
+
+{{< trip-metrics chart="moodDays" >}}
+
 ## Temperature {icon="thermostat"}
 
 The line shows the range of the day. On cold days (below 14 °C on average) the dot marks the low, on warm days (above 20 °C) the high, and the mean in between.

@@ -112,11 +112,8 @@
     <text x="{{ add $x0 $w 22 }}" y="{{ printf "%.1f" (add $y0 (mul (div (sub 5.0 .) 4.0) $h) 5) }}" text-anchor="middle" class="emoji">{{ index $emoji . }}</text>
       {{- end }}
       {{- $pts := slice -}}
-      {{- $counts := dict -}}
       {{- range $d.rows -}}
         {{- $pts = $pts | append (printf "%.1f,%.1f" (add $x0 (mul (div (sub (float .day) 0.5) $total) $w)) (add $y0 (mul (div (sub 5.0 .mood) 4.0) $h))) -}}
-        {{- $k := index $names .mood -}}
-        {{- $counts = merge $counts (dict $k (add 1 (index $counts $k | default 0))) -}}
       {{- end }}
     <polyline points="{{ delimit $pts " " }}" class="mood-line" />
       {{- range $d.rows }}
@@ -124,9 +121,7 @@
         {{- $y := add $y0 (mul (div (sub 5.0 .mood) 4.0) $h) }}
     <a href="{{ .page.RelPermalink }}"><title>{{ .page.LinkTitle }} · {{ .place }} · {{ index $emoji .mood }} {{ i18n (printf "mood.%s" (index $names .mood)) }}{{ if gt .maxEle 0 }} · {{ .maxEle }} m{{ end }}</title><circle cx="{{ printf "%.1f" $x }}" cy="{{ printf "%.1f" $y }}" r="3" class="mood mood-{{ .mood }}" /></a>
       {{- end }}
-      {{- $parts := slice -}}
-      {{- range seq 5 -1 1 }}{{ $parts = $parts | append (printf "%s %d" (index $emoji .) (index $counts (index $names .) | default 0)) }}{{ end -}}
-      {{- $caption = i18n "metrics.mood.caption" (dict "counts" (delimit $parts " · ")) -}}
+      {{- /* no caption: the days per mood are shown as bars (docs/trip-mood-days) */ -}}
 
     {{- else if eq $chart "temperature" }}
       {{- $lo := 100.0 -}}

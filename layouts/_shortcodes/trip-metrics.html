@@ -1,6 +1,11 @@
 {{/*
   One chart of the trip numbers over the days of the trip; every bar or dot links to its post.
-  Usage: {{< trip-metrics chart="distance|km|ascent|mood|temperature" [trip="budapest"] >}}
+  Usage: {{< trip-metrics chart="distance|km|ascent|mood|moodDays|temperature" [trip="budapest"] >}}
+  moodDays: days per mood as bars (docs/trip-mood-days)
   trip: key of site.Params.trips, default site.Params.defaultTrip
 */}}
-{{ partial "docs/trip-metrics" (dict "chart" (.Get "chart") "trip" (.Get "trip")) }}
+{{ if eq (.Get "chart") "moodDays" }}
+  {{ partial "docs/trip-mood-days" (dict "trip" (.Get "trip")) }}
+{{ else }}
+  {{ partial "docs/trip-metrics" (dict "chart" (.Get "chart") "trip" (.Get "trip")) }}
+{{ end }}

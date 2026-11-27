@@ -32,6 +32,12 @@ Die Stimmung des Tages über dem höchsten Punkt des Tages (graue Fläche).
 
 {{< trip-metrics chart="mood" >}}
 
+## Tage pro Stimmung {icon="bar-chart"}
+
+An wie vielen Tagen war ich wie drauf?
+
+{{< trip-metrics chart="moodDays" >}}
+
 ## Temperatur {icon="thermostat"}
 
 Der Strich zeigt die Spanne des Tages. Der Punkt zeigt an kalten Tagen (im Mittel unter 14 °C) die Tiefsttemperatur, an warmen Tagen (über 20 °C) die Höchsttemperatur, dazwischen den Mittelwert.
