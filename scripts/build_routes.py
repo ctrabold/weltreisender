@@ -15,10 +15,12 @@ via points, finish) - also for the first post, which has no previous location. `
 another BRouter profile for that leg (e.g. car-fast to stay on main roads). Legs never cross
 trips (`params.trips` in hugo.toml): the first post of a trip is treated like the first post.
 Existing legs with unchanged
-input are not requested again; stale leg files are reported, never deleted.
+input are not requested again; stale leg files are reported, never deleted. `--check` (no network)
+lists leg files no post needs (stale or orphaned) and exits 1 if there are any (hk hook, CI).
 
     uv run scripts/build_routes.py              # compute missing/changed legs
     uv run scripts/build_routes.py --dry-run    # only list legs
+    uv run scripts/build_routes.py --check      # fail on leg files no post needs
 """
 
 import argparse
@@ -221,11 +223,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--dry-run", action="store_true", help="only list legs")
     parser.add_argument(
+        "--check",
+        action="store_true",
+        help="fail if a leg file is not needed by any post (stale or orphaned), no network",
+    )
+    parser.add_argument(
         "--only", action="append", help="only compute this leg, e.g. 2009/05/2009-05-12"
     )
     args = parser.parse_args()
+    args.dry_run = args.dry_run or args.check
 
     counts: dict[str, int] = {}
+    wanted: set[Path] = set()  # leg files the posts need
     items = posts()
     for previous, current in zip([None, *items], items, strict=False):
         if previous is not None and previous["trip"] != current["trip"]:
@@ -248,6 +257,7 @@ def main() -> int:
             if target.exists():
                 print(f"{current['key']}: stale leg file {target.relative_to(ROOT)}")
         else:
+            wanted.add(target)
             leg = {
                 "from": start,
                 "to": end,
@@ -307,8 +317,17 @@ def main() -> int:
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_text(json.dumps(leg, separators=(",", ":")) + "\n")
         counts[status] = counts.get(status, 0) + 1
-        print(f"{current['key']}: {mode}, {km:.0f} km, {status}")
+        if not args.check:
+            print(f"{current['key']}: {mode}, {km:.0f} km, {status}")
 
+    if args.check:
+        unneeded = sorted(set(TARGET.rglob("*.json")) - wanted)
+        for path in unneeded:
+            print(
+                f"leg file no post needs (stale or orphaned): {path.relative_to(ROOT)}"
+            )
+        print(f"{len(unneeded)} unneeded leg file(s)")
+        return 1 if unneeded else 0
     print(f"{len(items)} posts with location: {counts}")
     return 0
 

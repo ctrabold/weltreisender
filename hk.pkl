@@ -41,6 +41,14 @@ local linters = new Mapping {
     ["terragrunt_hcl_validate"] = Builtins.terragrunt_hcl_validate
     ["tf_lint"] = Builtins.tf_lint
     //["vale"] = Builtins.vale
+    // route legs: no leg file without a post that needs it (stale legs inflate the data page)
+    ["routes"] {
+      glob = List("content/docs/**/*.md", "data/routes/**/*.json")
+      check = new Config.CommandSpec {
+        command = "uv run scripts/build_routes.py --check"
+        effect = "read"
+      }
+    }
     ["lychee-instructions"] {
     glob = List("*instructions.md", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "SKILL.md")
     check = new Config.CommandSpec {
@@ -58,7 +66,7 @@ hooks {
       stash = false
       steps = linters
     }
-    //["pre-push"] {
-    //    steps = linters
-    //}
+    ["pre-push"] {
+        steps = linters
+    }
 }

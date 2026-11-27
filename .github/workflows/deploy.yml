@@ -35,6 +35,10 @@ jobs:
         with:
           args: --offline --config lychee.conf --no-progress content content.en
           jobSummary: false
+      - name: Check route legs
+        # no leg file without a post that needs it (scripts/build_routes.py --check, no network);
+        # pipx reads the script's inline dependencies (PEP 723)
+        run: pipx run scripts/build_routes.py --check
       - name: Setup Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - name: Setup Hugo
