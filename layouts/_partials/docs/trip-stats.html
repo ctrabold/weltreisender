@@ -6,7 +6,8 @@
     trip        key of the trip ("" outside every trip)
     day         day of the trip (departure = first post with a bike leg = day 1, 0 before)
     totalDays   length of the trip in days (departure to the last post with a location)
-    gapDays     days since the previous post with a location of the same trip (0 for the first)
+    gapDays     days since the previous post with a location of the same trip (0 for the first), at
+                least the post's `legDays` (a post that tells two days of riding: Koh Kong, 2010-02-06)
     mode        travel mode of the leg ending at this post ("" if none)
     km          length of that leg in km
     ascent, descent, maxEle   only for bike legs with an elevation profile
@@ -27,7 +28,7 @@
       {{- $departure = merge $departure (dict $trip $date) -}}
     {{- end -}}
     {{- $lastDate = merge $lastDate (dict $trip $date) -}}
-    {{- $entries = $entries | append (dict "key" $src.File.Path "date" $date "leg" $leg "trip" $trip) -}}
+    {{- $entries = $entries | append (dict "key" $src.File.Path "date" $date "leg" $leg "trip" $trip "legDays" (int ($src.Params.legDays | default 0))) -}}
   {{- end -}}
 {{- end -}}
 
@@ -52,6 +53,7 @@
   {{- with index $prevDate $trip -}}
     {{- $gap = div (sub (time.AsTime $date).Unix (time.AsTime .).Unix) 86400 -}}
   {{- end -}}
+  {{- if gt .legDays $gap }}{{ $gap = .legDays }}{{ end -}}
   {{- $prevDate = merge $prevDate (dict $trip .date) -}}
   {{- $km := 0.0 -}}
   {{- $mode := "" -}}

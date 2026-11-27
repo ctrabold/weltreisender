@@ -11,7 +11,8 @@ with BRouter (https://brouter.de) depending on the post's `travelMode` front mat
 are stored as a straight line with `routed: false`. Posts at the same place as the previous
 one (< SAME_PLACE_KM) or with `travelMode: static` get no leg. A `route:` list of [lat, lon]
 waypoints in the front matter replaces the automatic leg with the route of the day (start,
-via points, finish) - also for the first post, which has no previous location. Legs never cross
+via points, finish) - also for the first post, which has no previous location. `routeProfile:` sets
+another BRouter profile for that leg (e.g. car-fast to stay on main roads). Legs never cross
 trips (`params.trips` in hugo.toml): the first post of a trip is treated like the first post.
 Existing legs with unchanged
 input are not requested again; stale leg files are reported, never deleted.
@@ -91,6 +92,7 @@ def posts() -> list[dict]:
                 "point": [float(loc["latitude"]), float(loc["longitude"])],
                 "mode": fm.get("travelMode", "bike"),
                 "waypoints": [[float(a), float(b)] for a, b in fm.get("route") or []],
+                "routeProfile": fm.get("routeProfile", ""),
             }
         )
     return sorted(result, key=lambda p: (p["date"], str(p["key"])))
@@ -251,7 +253,9 @@ def main() -> int:
                 "to": end,
                 "fromPost": str(previous["key"]) if previous else "",
                 "mode": mode,
-                "profile": PROFILES.get(mode, ""),
+                # `routeProfile` overrides the BRouter profile of the mode, e.g. car-fast for a bike
+                # leg on main roads that the trekking profile avoids (2010-02-06); mode stays as is
+                "profile": current["routeProfile"] or PROFILES.get(mode, ""),
             }
             if current["waypoints"]:  # only custom routes store their waypoints
                 leg["waypoints"] = current["waypoints"]
