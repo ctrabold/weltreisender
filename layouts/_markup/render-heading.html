@@ -1,0 +1,19 @@
+{{- /*
+  As the hugo-book hook (anchor link), plus: the first heading of a page that repeats the page title
+  (every diary post starts with `## <date>`) becomes the page's <h1>, diary posts only (other pages
+  show their beginning in category lists); all other headings keep their level.
+  Styles: .book-title in assets/styles/custom.css.
+*/ -}}
+{{- $level := .Level -}}
+{{- $class := .Attributes.class -}}
+{{- $diary := and .Page.File (findRE `^docs/20\d\d/` .Page.File.Path) -}}
+{{- if and $diary (eq .Ordinal 0) (eq .Level 2) (eq .PlainText .Page.Title) -}}
+  {{- $level = 1 -}}
+  {{- $class = delimit (slice "book-title" $class) " " | strings.TrimSpace -}}
+{{- end -}}
+<h{{ $level }} id="{{ .Anchor }}" {{- with $class -}} class="{{ . }}"{{- end -}}>
+  {{- .Text -}}
+  {{- if default true .Attributes.anchor -}}
+  <a class="anchor" href="#{{ .Anchor }}" aria-label="{{ partial "docs/text/i18n" "Link" }}"></a>
+  {{- end -}}
+</h{{ $level }}>

@@ -402,3 +402,14 @@
 .book-page > .book-prev-next {
   margin-block-end: 1rem;
 }
+
+/* page title: the date of a diary post as <h1> (layouts/_markup/render-heading.html); prominent by
+   size and position, regular weight so the post's own title (h2) below stays the first thing read;
+   a thin line below marks the start of the post */
+.markdown h1.book-title {
+  font-size: 1.75rem;
+  font-weight: 400;
+  margin-block-end: 1.25rem;
+  padding-block-end: 0.5rem;
+  border-block-end: 1px solid var(--gray-200);
+}
