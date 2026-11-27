@@ -1,0 +1,20 @@
+{{- /*
+  Site name in the menu (replaces the hugo-book partial): globe icon, name and a small tagline on a
+  second line, instead of the full site title wrapping at random. The browser tab keeps .Site.Title.
+  Texts: brand.name / brand.tagline in i18n/*.toml. Styles: .book-brand in assets/styles/custom.css.
+*/ -}}
+<div class="book-brand">
+  <a class="flex align-center" href="{{ partial "docs/links/home" . }}">
+    <svg class="book-brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="12" r="9.25" />
+        <ellipse cx="12" cy="12" rx="4" ry="9.25" />
+        <path d="M2.75 12h18.5M4.5 7h15M4.5 17h15" />
+      </g>
+    </svg>
+    <span class="book-brand-text">
+      <span class="book-brand-name">{{ i18n "brand.name" }}</span>
+      <span class="book-brand-tagline">{{ i18n "brand.tagline" }}</span>
+    </span>
+  </a>
+</div>
