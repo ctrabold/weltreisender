@@ -2,6 +2,8 @@
   As the hugo-book hook (anchor link), plus: the first heading of a page that repeats the page title
   (every diary post starts with `## <date>`) becomes the page's <h1>, diary posts only (other pages
   show their beginning in category lists); all other headings keep their level.
+  `## Title {icon="directions-bike"}` puts a decorative icon in front of the text (aria-hidden, not in the
+  anchor): an assets/icons/<name>.svg from the icon sprite (monochrome), otherwise the text, e.g. an emoji.
   Styles: .book-title in assets/styles/custom.css.
 */ -}}
 {{- $level := .Level -}}
@@ -12,6 +14,13 @@
   {{- $class = delimit (slice "book-title" $class) " " | strings.TrimSpace -}}
 {{- end -}}
 <h{{ $level }} id="{{ .Anchor }}" {{- with $class -}} class="{{ . }}"{{- end -}}>
+  {{- with .Attributes.icon -}}
+    {{- if resources.Get (printf "icons/%s.svg" .) -}}
+      <svg class="book-icon heading-icon" aria-hidden="true">{{ partial "docs/icon" . }}</svg>
+    {{- else -}}
+      <span class="heading-icon" aria-hidden="true">{{ . }}</span>
+    {{- end -}}
+  {{- end -}}
   {{- .Text -}}
   {{- if default true .Attributes.anchor -}}
   <a class="anchor" href="#{{ .Anchor }}" aria-label="{{ partial "docs/text/i18n" "Link" }}"></a>

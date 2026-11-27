@@ -615,3 +615,14 @@
 .book-menu-content a.active {
   font-weight: 600;
 }
+
+/* decorative icon in front of a heading ({icon="…"}, layouts/_markup/render-heading.html) */
+.heading-icon {
+  margin-inline-end: 0.4em;
+}
+
+svg.heading-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+}
