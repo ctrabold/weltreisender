@@ -110,7 +110,7 @@
         <span>{{ if gt $left 0 }}{{ i18n "datasheet.left" (dict "left" $left) }}{{ else }}{{ i18n "datasheet.arrived" }}{{ end }}</span>
       </div>
       <div class="ds-track">
-        <span class="ds-bike" aria-hidden="true" style="left: {{ printf "%.1f" (mul 100 (div (float .day) .totalDays)) }}%; transform: translateX(-{{ printf "%.1f" (mul 100 (div (float .day) .totalDays)) }}%)">{{ (resources.Get "icons/bicycle.svg").Content | safeHTML }}</span>
+        <span class="ds-bike" aria-hidden="true" style="left: {{ printf "%.1f" (mul 100 (div (float .day) .totalDays)) }}%; transform: translateX(-{{ printf "%.1f" (mul 100 (div (float .day) .totalDays)) }}%)"><svg>{{ partial "docs/icon" "directions-bike" }}</svg></span>
       <div class="ds-bar" role="progressbar" aria-label="{{ i18n "datasheet.day" }}" aria-valuemin="0" aria-valuemax="{{ .totalDays }}" aria-valuenow="{{ .day }}">
         <span style="width: {{ printf "%.1f" (mul 100 (div (float .day) .totalDays)) }}%"></span>
       </div>

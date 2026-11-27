@@ -389,11 +389,11 @@
   color: var(--color-link);
 }
 
-/* Font Awesome Free 6.7.2 bicycle (assets/icons/bicycle.svg, CC BY 4.0), inlined, faces right */
+/* bike on the progress bar: the Material "directions-bike" icon from the sprite, as on the data page */
 .book-datasheet .ds-bike svg {
   display: block;
-  height: 1em;
-  width: 1.25em;
+  width: 1.1em;
+  height: 1.1em;
   fill: currentColor;
 }
 
