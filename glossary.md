@@ -61,7 +61,6 @@ Kinds of posts, not topics (moved from tags by `scripts/update_tags.py`, `TAG_TO
 | Essen       | Food      | was tag `Essen`                                      |
 | Mindset     | Mindset   |                                                      |
 | equipment   | equipment |                                                      |
-| travel      | –         | legacy, only `posts/2017-01-29-…` (German only)      |
 
 ## Datasheet and events
 
@@ -86,7 +85,7 @@ Non-date pages get English file and directory names. Both language versions shar
 
 | German path                                 | English path                                   | `translationKey`         |
 | ------------------------------------------- | ---------------------------------------------- | ------------------------ |
-| `posts/2025-11-01-schlagworte.md`           | `posts/2025-11-01-tags.md`                     | `tags`                   |
+| `tags/_index.md`                            | `tags/_index.md`                               | –                        |
 | `docs/vorbereitung/_index.md`               | `docs/preparation/_index.md`                   | `preparation`            |
 | `docs/vorbereitung/vorfahrt.md`             | `docs/preparation/before-departure.md`         | `vorfahrt`               |
 | `docs/vorbereitung/risiko-management.md`    | `docs/preparation/risk-management.md`          | `risiko-management`      |

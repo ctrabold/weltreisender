@@ -36,7 +36,9 @@ CI (`deploy.yml`) and local development both use Hugo `0.169`; use current APIs 
 - Section indexes (`docs/<year>/_index.md`, month `_index.md`) contain only front matter plus
   `{{<section>}}`; ordering in menus and section lists is by `date` ascending
   (overrides in `layouts/_partials/docs/menu-filetree.html` and `layouts/_shortcodes/section.html`).
-  Other top-level sections: `docs/vorbereitung`, `docs/rueckblick`, `posts/` (tag overview).
+  Other top-level sections: `docs/vorbereitung`, `docs/rueckblick`, `tags/` (overview of categories, countries
+  and places, `layouts/taxonomy.html`, country tags in `data/tags.yaml`; old `/posts/` addresses
+  redirect there via `aliases`).
 - URLs drop the `docs/` section (`[permalinks]` in `hugo.toml`; files stay in `docs/` for the
   hugo-book menu): `vorbereitung/vorfahrt.md` → `/vorbereitung/vorfahrt/`. Diary `slug` = day plus
   suffix letter (`2009-05-21a.md` → `/2009/05/21a/`, English `/en/2009/05/21a/`). `aliases` keeps

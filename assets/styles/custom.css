@@ -578,7 +578,7 @@
 }
 
 /* categories & tags overview (layouts/taxonomy.html): each group a list in columns, name left and
-   number of posts right (as the theme's taxonomy column on /posts/); one column on mobile */
+   number of posts right (as the theme's taxonomy column); one column on mobile */
 .markdown .book-term-list {
   columns: 13rem;
   column-gap: 2.5rem;
