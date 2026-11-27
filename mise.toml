@@ -1,0 +1,4 @@
+# Tool versions for this repo (local shell, hk hooks and CI via jdx/mise-action in deploy.yml).
+[tools]
+hugo = '0.169.0'
+uv = '0.13.7'
