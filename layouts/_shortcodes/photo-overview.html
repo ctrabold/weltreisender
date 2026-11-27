@@ -18,7 +18,7 @@
   <a class="book-photo-tile" href="{{ $term.RelPermalink }}">
     <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $term.LinkTitle }}" loading="lazy" />
     <span class="book-photo-tile-title">{{ $term.LinkTitle }}</span>
-    <span class="book-photo-tile-meta">{{ len $all }} {{ i18n "photos" }} · {{ time.Format ":date_medium" (index $posts 0).Date }} – {{ time.Format ":date_medium" (index $posts (sub (len $posts) 1)).Date }}</span>
+    <span class="book-photo-tile-meta">{{ len $all }} {{ i18n "photos" }}<br>{{ time.Format ":date_medium" (index $posts 0).Date }} – {{ time.Format ":date_medium" (index $posts (sub (len $posts) 1)).Date }}</span>
   </a>
     {{- end }}
   {{- else }}

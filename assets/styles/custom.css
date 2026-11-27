@@ -44,13 +44,25 @@
   border-radius: 6px;
 }
 
+/* photo tiles: no underline on the whole tile (calmer); hover underlines just the name */
+.markdown a.book-photo-tile,
+.markdown a.book-photo-tile:hover {
+  text-decoration: none;
+}
+
+.markdown a.book-photo-tile:hover .book-photo-tile-title {
+  text-decoration: underline;
+}
+
 .book-photo-tile-title {
   font-weight: bold;
+  text-align: center;
   margin-top: 0.4rem;
 }
 
 .book-photo-tile-meta {
   font-size: 0.85em;
+  text-align: center;
   opacity: 0.75;
 }
 
