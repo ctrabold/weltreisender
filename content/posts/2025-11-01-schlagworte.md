@@ -6,6 +6,9 @@ draft: false
 tags: []
 categories: []
 layout: post
+# obsolete: replaced by the overview /tags/ (layouts/taxonomy.html), which redirects this address
+build:
+  render: never
 ---
 
 ## Anleitung
